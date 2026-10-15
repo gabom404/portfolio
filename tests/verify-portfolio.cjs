@@ -76,6 +76,16 @@ for (const id of idsToCheck) {
 }
 console.log("All critical DOM hooks verified successfully!");
 
+// Verification of F1 Cartoon Racing Elements
+const f1Elements = ["f1-track-container", "f1-car-wrapper", "f1-smoke-container", "f1-badge"];
+for (const el of f1Elements) {
+    if (!html.includes(`id="${el}"`)) {
+        console.error(`Missing F1 DOM ID in index.html: ${el}`);
+        process.exit(1);
+    }
+}
+console.log("F1 DOM structure verified successfully!");
+
 // Verification of Work Experience in Production (Dipal Design & Empire Barber Shop / NovaPOS)
 const experienceMentions = ["Dipal Design", "Empire Barber Shop", "C3 El Salvador", "CFP Colegio Salesiano Santa Cecilia"];
 for (const company of experienceMentions) {
