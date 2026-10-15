@@ -1,19 +1,19 @@
 /**
  * app.js
  * Interactive controller for Gabriel Martínez's Portfolio
- * User-Friendly Card Architecture (inspired by modern SaaS / product cards)
- * with Accessible Detailed Reader Modal.
+ * Google Material Design 3 Architecture, Material Symbols & Full Mobile Responsiveness
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   renderFilterTabs();
   renderProjects('all');
   setupModalHandlers();
+  setupMobileNav();
   setupSmoothScroll();
 });
 
 /* ==========================================================================
-   Filter Categories
+   Filter Categories (Material 3 Filter Chips)
    ========================================================================== */
 
 const CATEGORIES = [
@@ -39,16 +39,26 @@ function renderFilterTabs() {
   });
 
   container.innerHTML = CATEGORIES.map((cat, idx) => `
-    <button class="filter-pill ${idx === 0 ? 'active' : ''}" data-category="${cat.key}" type="button">
-      ${cat.label} (${counts[cat.key] || 0})
+    <button class="md-filter-chip ${idx === 0 ? 'active' : ''}" data-category="${cat.key}" type="button">
+      ${idx === 0 ? '<span class="material-symbols-outlined chip-icon">check</span>' : ''}
+      <span class="chip-label">${cat.label} (${counts[cat.key] || 0})</span>
     </button>
   `).join('');
 
-  container.querySelectorAll('.filter-pill').forEach(btn => {
+  container.querySelectorAll('.md-filter-chip').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const targetBtn = e.currentTarget;
-      container.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      container.querySelectorAll('.md-filter-chip').forEach(b => {
+        b.classList.remove('active');
+        const icon = b.querySelector('.chip-icon');
+        if (icon) icon.remove();
+      });
+
       targetBtn.classList.add('active');
+      const checkSpan = document.createElement('span');
+      checkSpan.className = 'material-symbols-outlined chip-icon';
+      checkSpan.textContent = 'check';
+      targetBtn.prepend(checkSpan);
 
       currentCategory = targetBtn.getAttribute('data-category');
       renderProjects(currentCategory);
@@ -57,77 +67,77 @@ function renderFilterTabs() {
 }
 
 /* ==========================================================================
-   Project Icons & Friendly Pastel Palettes
+   Project Icons (Google Material Symbols & Tonal Surface Colors)
    ========================================================================== */
 
 const PROJECT_ICONS = {
   promora: {
     bg: '#FFF7ED',
-    color: '#EA580C',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="15" x2="15.01" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>`
+    color: '#C2410C',
+    icon: 'loyalty'
   },
   biblioteca: {
     bg: '#EFF6FF',
-    color: '#2563EB',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`
+    color: '#1D4ED8',
+    icon: 'menu_book'
   },
   novapos: {
     bg: '#ECFDF5',
-    color: '#059669',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>`
+    color: '#047857',
+    icon: 'point_of_sale'
   },
   'wallet-id': {
     bg: '#EEF2FF',
-    color: '#4F46E5',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>`
+    color: '#4338CA',
+    icon: 'account_balance_wallet'
   },
   'attendance-track': {
     bg: '#F0FDFA',
-    color: '#0D9488',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>`
+    color: '#0F766E',
+    icon: 'badge'
   },
   'proyecto-arqui': {
     bg: '#F0F9FF',
-    color: '#0284C7',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>`
+    color: '#0369A1',
+    icon: 'hub'
   },
   'cupon-x': {
     bg: '#F5F3FF',
-    color: '#7C3AED',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`
+    color: '#6D28D9',
+    icon: 'bolt'
   },
   'enfoque-app': {
     bg: '#FFF1F2',
-    color: '#E11D48',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`
+    color: '#BE123C',
+    icon: 'timer'
   },
   delieat: {
     bg: '#FEFCE8',
-    color: '#CA8A04',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`
+    color: '#A16207',
+    icon: 'restaurant'
   },
   'data-analytics': {
     bg: '#EEF2FF',
-    color: '#4338CA',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`
+    color: '#3730A3',
+    icon: 'analytics'
   },
   turimox: {
     bg: '#F0FDF4',
-    color: '#16A34A',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>`
+    color: '#15803D',
+    icon: 'travel_explore'
   }
 };
 
 function getProjectIcon(id) {
   return PROJECT_ICONS[id] || {
     bg: '#F1F5F9',
-    color: '#475569',
-    svg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`
+    color: '#334155',
+    icon: 'terminal'
   };
 }
 
 /* ==========================================================================
-   Render User-Friendly Cards (Matching Reference Aesthetic)
+   Render User-Friendly Material 3 Project Cards
    ========================================================================== */
 
 function renderProjects(filterCategory = 'all') {
@@ -146,27 +156,24 @@ function renderProjects(filterCategory = 'all') {
     card.setAttribute('data-id', project.id);
 
     const iconMeta = getProjectIcon(project.id);
-    const stackPreviewText = project.stack.slice(0, 4).join(' · ');
+    const stackPreviewText = project.stack.slice(0, 4).join(', ');
     const primaryMetric = project.metrics && project.metrics[0] ? project.metrics[0] : '';
     
     const metricPillHtml = primaryMetric ? `
       <div class="card-metric-pill" title="${primaryMetric}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span class="material-symbols-outlined">verified</span>
         <span>${primaryMetric}</span>
       </div>
     ` : '';
 
     card.innerHTML = `
-      <!-- Top Row: Icon squircle + Top-Right Action -->
+      <!-- Top Row: Icon squircle + Direct GitHub Action Link -->
       <div class="card-top-row">
         <div class="card-icon-squircle" style="background-color: ${iconMeta.bg}; color: ${iconMeta.color};">
-          ${iconMeta.svg}
+          <span class="material-symbols-outlined">${iconMeta.icon}</span>
         </div>
         <a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn" title="Ver repositorio en GitHub" aria-label="Ver repositorio ${project.title} en GitHub">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="7" y1="17" x2="17" y2="7"></line>
-            <polyline points="7 7 17 7 17 17"></polyline>
-          </svg>
+          <span class="material-symbols-outlined">arrow_outward</span>
         </a>
       </div>
 
@@ -183,11 +190,11 @@ function renderProjects(filterCategory = 'all') {
         </div>
       </div>
 
-      <!-- Bottom Action Button: Friendly Pill Button ("Ver detalles") matching "Learn more" -->
+      <!-- Bottom Action Button: Material 3 Tonal Button -->
       <div class="card-bottom-action">
         <button class="btn-card-learn-more" type="button" data-project-id="${project.id}">
           <span>Ver detalles</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span class="material-symbols-outlined">arrow_forward</span>
         </button>
       </div>
     `;
@@ -205,7 +212,7 @@ function renderProjects(filterCategory = 'all') {
 }
 
 /* ==========================================================================
-   Project Details Modal (Reader Experience)
+   Material 3 Project Details Dialog (Reader Experience)
    ========================================================================== */
 
 function setupModalHandlers() {
@@ -217,14 +224,12 @@ function setupModalHandlers() {
   }
 
   if (modal) {
-    // Click outside to close
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         closeProjectModal();
       }
     });
 
-    // Escape key to close
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.classList.contains('is-visible')) {
         closeProjectModal();
@@ -245,7 +250,7 @@ function openProjectModal(projectId) {
 
   const metricsListHtml = (project.metrics || []).map(m => `
     <li class="modal-metric-item">
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span class="material-symbols-outlined">check_circle</span>
       <span>${m}</span>
     </li>
   `).join('');
@@ -258,7 +263,7 @@ function openProjectModal(projectId) {
     <!-- Header -->
     <div class="modal-header">
       <div class="modal-icon-box" style="background-color: ${iconMeta.bg}; color: ${iconMeta.color};">
-        ${iconMeta.svg}
+        <span class="material-symbols-outlined">${iconMeta.icon}</span>
       </div>
       <div>
         <span class="modal-category">${project.categoryLabel}</span>
@@ -270,7 +275,7 @@ function openProjectModal(projectId) {
     <!-- Highlighted Verified Results -->
     <div class="modal-metrics-card">
       <div class="modal-metrics-title">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+        <span class="material-symbols-outlined">trending_up</span>
         <span>Métricas Clave Verificadas</span>
       </div>
       <ul class="modal-metrics-list">
@@ -283,7 +288,7 @@ function openProjectModal(projectId) {
       <!-- 1. El Reto y Contexto -->
       <div class="modal-spec-block challenge">
         <div class="modal-spec-heading">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          <span class="material-symbols-outlined">crisis_alert</span>
           <span>El Reto y Contexto</span>
         </div>
         <p class="modal-spec-text"><strong>Contexto:</strong> ${project.star.situation}</p>
@@ -293,7 +298,7 @@ function openProjectModal(projectId) {
       <!-- 2. Arquitectura y Solución Técnica -->
       <div class="modal-spec-block solution">
         <div class="modal-spec-heading">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+          <span class="material-symbols-outlined">architecture</span>
           <span>Arquitectura y Solución Técnica</span>
         </div>
         <p class="modal-spec-text">${project.star.action}</p>
@@ -302,7 +307,7 @@ function openProjectModal(projectId) {
       <!-- 3. Impacto y Resultados Clave -->
       <div class="modal-spec-block results">
         <div class="modal-spec-heading">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+          <span class="material-symbols-outlined">task_alt</span>
           <span>Impacto y Resultados Clave</span>
         </div>
         <p class="modal-spec-text">${project.star.result}</p>
@@ -323,18 +328,16 @@ function openProjectModal(projectId) {
       <a class="btn-modal-github" href="${project.repoUrl}" target="_blank" rel="noopener noreferrer">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
         <span>Ver repositorio en GitHub</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+        <span class="material-symbols-outlined">arrow_outward</span>
       </a>
     </div>
   `;
 
-  // Attach footer close button listener
   const footerClose = document.getElementById('btn-modal-footer-close');
   if (footerClose) {
     footerClose.addEventListener('click', closeProjectModal);
   }
 
-  // Open modal
   modal.classList.add('is-visible');
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
@@ -350,11 +353,56 @@ function closeProjectModal() {
 }
 
 /* ==========================================================================
+   Material 3 Mobile Navigation Drawer
+   ========================================================================== */
+
+function setupMobileNav() {
+  const toggleBtn = document.getElementById('md-nav-toggle');
+  const drawer = document.getElementById('md-nav-drawer');
+  const scrim = document.getElementById('md-drawer-scrim');
+  const closeBtn = document.getElementById('md-drawer-close');
+
+  if (!toggleBtn || !drawer || !scrim) return;
+
+  function openDrawer() {
+    drawer.classList.add('is-open');
+    scrim.classList.add('is-open');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    drawer.setAttribute('aria-hidden', 'false');
+    scrim.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    scrim.classList.remove('is-open');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    drawer.setAttribute('aria-hidden', 'true');
+    scrim.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  toggleBtn.addEventListener('click', openDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+      closeDrawer();
+    }
+  });
+
+  drawer.querySelectorAll('.md-drawer-link, .btn-drawer-contact').forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+}
+
+/* ==========================================================================
    Smooth Navigation & Active Link Tracking
    ========================================================================== */
 
 function setupSmoothScroll() {
-  const navLinks = document.querySelectorAll('.nav-link');
+  const navLinks = document.querySelectorAll('.nav-link, .md-drawer-link');
   const sections = document.querySelectorAll('section[id], footer[id]');
 
   window.addEventListener('scroll', () => {
