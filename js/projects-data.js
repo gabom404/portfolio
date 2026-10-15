@@ -266,8 +266,8 @@ const SKILLS_MATRIX = {
     icon: "server",
     skills: [
       { name: "PHP (Laravel 11, PHP 8 PDO)", level: "Avanzado" },
+      { name: "NestJS & Node.js / Express", level: "Intermedio - Avanzado" },
       { name: "Python (Django, FastAPI, MVC)", level: "Avanzado" },
-      { name: "Node.js / Express", level: "Intermedio" },
       { name: "RESTful API Design & OpenAPI 3.0", level: "Avanzado" },
       { name: "Postman Collections & Automated Testing", level: "Avanzado" },
       { name: "PHPUnit & Unit Testing", level: "Intermedio" }
@@ -323,15 +323,15 @@ const SKILLS_MATRIX = {
 // Experience & Co-Founding Data
 const EXPERIENCES = [
   {
-    role: "Co-Owner & Software Developer",
-    organization: "PartFix",
-    period: "2024 - Presente",
+    role: "Backend Developer",
+    organization: "C3 El Salvador",
+    period: "01/2026 - 01/2026",
     location: "El Salvador",
-    description: "Co-fundador y desarrollador principal del sistema integral para comercio de repuestos y servicios automotrices.",
+    description: "Implementación de la lógica backend y APIs con NestJS para la landing oficial de la Copa Salvadoreña de Programación, garantizando alta disponibilidad y soporte concurrente para el registro masivo y la gestión de participantes a nivel nacional.",
     achievements: [
-      "Diseño y desarrollo de catálogo digital de piezas y módulo de control de inventario de repuestos.",
-      "Optimización en la atención al cliente y consulta de repuestos compatibles reduciendo el tiempo de cotización.",
-      "Manejo de base de datos relacional para control de inventario, proveedores y pedidos."
+      "Implementación de la lógica backend y APIs con NestJS para la landing oficial de la Copa Salvadoreña de Programación.",
+      "Garantía de alta disponibilidad y soporte concurrente para el registro masivo y la gestión de participantes a nivel nacional.",
+      "Arquitectura de servicios escalable y robusta para eventos tecnológicos de alcance nacional."
     ]
   },
   {
