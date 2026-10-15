@@ -164,9 +164,8 @@
       const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
 
       const currentCarY = topPadding + (progress * travelDistance);
-      carWrapper.style.top = `${currentCarY.toFixed(1)}px`;
-
       updateSector(progress);
+      carWrapper.style.top = `${currentCarY.toFixed(1)}px`;
 
       const velocity = Math.abs(deltaY) / deltaTime;
       targetSpeed = Math.min(340, Math.round(velocity * 130));

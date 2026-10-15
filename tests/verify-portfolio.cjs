@@ -86,6 +86,13 @@ for (const el of f1Elements) {
 }
 console.log("F1 DOM structure verified successfully!");
 
+// Verification of Circuit Accents (Traffic Cones & Checkered Flag)
+if (!html.includes("f1-cone-badge") || !html.includes("f1-checkered-flag")) {
+    console.error("Missing circuit accents in index.html");
+    process.exit(1);
+}
+console.log("F1 circuit accents verified successfully!");
+
 // Verification of F1 CSS styles, transitions and keyframes
 const cssContent = fs.readFileSync(path.join(root, "css/style.css"), "utf8");
 if (!cssContent.includes(".f1-car-wrapper") || !cssContent.includes(".f1-smoke-puff") || !cssContent.includes("@keyframes f1-flag-wave")) {
