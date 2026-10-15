@@ -63,10 +63,6 @@ for (const p of projects) {
 console.log("All 11 projects successfully validated with complete STAR criteria.");
 
 const idsToCheck = [
-    "theme-toggle-btn",
-    "stat-contrib",
-    "stat-repos",
-    "stat-projects",
     "filter-tabs",
     "projects-grid",
     "star-modal",
