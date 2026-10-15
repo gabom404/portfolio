@@ -94,6 +94,17 @@ if (!cssContent.includes(".f1-car-wrapper") || !cssContent.includes(".f1-smoke-p
 }
 console.log("F1 CSS styles and keyframes verified successfully!");
 
+// Verification of F1 Controller script
+if (!fs.existsSync(path.join(root, "js/f1-racer.js"))) {
+    console.error("Missing js/f1-racer.js controller");
+    process.exit(1);
+}
+if (!html.includes('src="js/f1-racer.js"')) {
+    console.error("Missing js/f1-racer.js script tag in index.html");
+    process.exit(1);
+}
+console.log("F1 Racer controller verified successfully!");
+
 // Verification of Work Experience in Production (Dipal Design & Empire Barber Shop / NovaPOS)
 const experienceMentions = ["Dipal Design", "Empire Barber Shop", "C3 El Salvador", "CFP Colegio Salesiano Santa Cecilia"];
 for (const company of experienceMentions) {
@@ -138,6 +149,7 @@ const filesToVerifyForEmojis = [
     "css/style.css",
     "js/app.js",
     "js/projects-data.js",
+    "js/f1-racer.js",
     "README.md"
 ];
 
