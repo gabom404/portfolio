@@ -81,3 +81,33 @@ for (const id of idsToCheck) {
     }
 }
 console.log("All critical DOM hooks verified successfully!");
+
+// Strict Zero-Emoji Rule Verification
+const emojiRegex = /[\u{1F000}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1FA00}-\u{1FAFF}\u{2300}-\u{23FF}\u{2B50}\u{2B55}\u{200D}\u{FE0F}]/u;
+const filesToVerifyForEmojis = [
+    "index.html",
+    "css/style.css",
+    "js/app.js",
+    "js/projects-data.js",
+    "README.md"
+];
+
+let emojiViolations = 0;
+for (const relFile of filesToVerifyForEmojis) {
+    const full = path.join(root, relFile);
+    const content = fs.readFileSync(full, "utf8");
+    const lines = content.split("\n");
+    lines.forEach((line, idx) => {
+        if (emojiRegex.test(line)) {
+            console.error(`Emoji violation in ${relFile}:${idx + 1} -> ${line.trim()}`);
+            emojiViolations++;
+        }
+    });
+}
+
+if (emojiViolations > 0) {
+    console.error(`FAIL: Found ${emojiViolations} emoji occurrences. Emojis are strictly prohibited.`);
+    process.exit(1);
+}
+
+console.log("Zero-Emoji verification PASSED: 0 emojis found across all files.");

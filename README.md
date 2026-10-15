@@ -9,18 +9,18 @@
 
 ---
 
-## 🌟 Highlights
+## Highlights
 
 - **Zero-Build Architecture:** Pure HTML5, modern CSS3, and ES6+ JavaScript. No npm build, no bundler overhead, instant deployment directly to GitHub Pages.
 - **STAR Methodology Integration:** Every single project is documented through Situation, Task, Action, and Result with quantifiable outcomes, architecture decisions, and security measures.
 - **Dynamic Project Filtering:** Instant category switching (`Todos`, `Backend & APIs`, `Fullstack`, `Mobile`, `Python & IA`, `Frontend`) with real-time project counts.
-- **Interactive Technical Modals:** Deep dive into the architectural challenges, database schemas, and benchmarks of each project.
-- **Dark & Light Mode:** Sleek dark-mode by default inspired by Linear and Vercel design aesthetics, with persistent theme storage via `localStorage`.
+- **Engineering Case Study Modals:** Deep dive into architectural challenges, database schemas, and benchmarks of each project with clean vector iconography.
+- **Minimalist Editorial UI:** Warm, distraction-free aesthetic with crisp typography, line-art SVG visuals, and high contrast readability.
 - **100% Responsive & Accessible:** Fluid layouts tested across mobile, tablet, and desktop screens with semantic HTML and keyboard accessibility.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 portfolio-gabom404/
@@ -37,7 +37,7 @@ portfolio-gabom404/
 
 ---
 
-## 🚀 Curated Projects (11)
+## Curated Projects (11)
 
 | # | Project | Category | Tech Stack | STAR Focus |
 |---|---|---|---|---|
@@ -55,7 +55,7 @@ portfolio-gabom404/
 
 ---
 
-## 🛠️ Local Development & Testing
+## Local Development & Testing
 
 Since this project requires zero build steps, you can serve it locally using any static web server:
 
@@ -69,7 +69,7 @@ python -m http.server 8000
 
 ---
 
-## 👤 Candidate Profile
+## Candidate Profile
 
 - **Name:** Gabriel Martínez (`gabom404`)
 - **Education:**
@@ -82,6 +82,6 @@ python -m http.server 8000
 
 ---
 
-## 📄 License
+## License
 
 This project is open-source and available under the [MIT License](LICENSE).

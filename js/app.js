@@ -131,7 +131,7 @@ function renderProjects(filterCategory = 'all') {
     const primaryMetric = project.metrics && project.metrics[0] ? project.metrics[0] : '';
     const metricHtml = primaryMetric ? `
       <div class="card-metric-badge">
-        <span class="metric-icon">⚡</span>
+        <span class="metric-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
         <span class="metric-text">${primaryMetric}</span>
       </div>
     ` : '';
@@ -257,7 +257,7 @@ function openStarModal(projectId) {
   if (modalMetricsList && project.metrics) {
     modalMetricsList.innerHTML = project.metrics.map(m => `
       <li class="metric-item">
-        <span class="metric-check">✓</span>
+        <span class="metric-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
         <span>${m}</span>
       </li>
     `).join('');

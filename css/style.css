@@ -682,7 +682,10 @@ button {
 }
 
 .card-metric-badge .metric-icon {
-  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .card-actions {
@@ -1137,6 +1140,10 @@ button {
   color: var(--text-primary);
 }
 
+.case-label svg {
+  flex-shrink: 0;
+}
+
 .case-block.solution .case-label {
   color: var(--accent);
 }
@@ -1169,8 +1176,11 @@ button {
 }
 
 .metric-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   color: #059669;
-  font-weight: bold;
 }
 
 .modal-footer {
