@@ -86,6 +86,14 @@ for (const el of f1Elements) {
 }
 console.log("F1 DOM structure verified successfully!");
 
+// Verification of F1 CSS styles, transitions and keyframes
+const cssContent = fs.readFileSync(path.join(root, "css/style.css"), "utf8");
+if (!cssContent.includes(".f1-car-wrapper") || !cssContent.includes(".f1-smoke-puff") || !cssContent.includes("@keyframes f1-flag-wave")) {
+    console.error("Missing F1 CSS transition classes in style.css");
+    process.exit(1);
+}
+console.log("F1 CSS styles and keyframes verified successfully!");
+
 // Verification of Work Experience in Production (Dipal Design & Empire Barber Shop / NovaPOS)
 const experienceMentions = ["Dipal Design", "Empire Barber Shop", "C3 El Salvador", "CFP Colegio Salesiano Santa Cecilia"];
 for (const company of experienceMentions) {
