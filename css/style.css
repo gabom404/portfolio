@@ -666,41 +666,68 @@ button {
   font-weight: bold;
 }
 
+.card-metric-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--accent-light);
+  border: 1px solid rgba(249, 87, 33, 0.2);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.9rem;
+  align-self: flex-start;
+}
+
+.card-metric-badge .metric-icon {
+  font-size: 0.85rem;
+}
+
 .card-actions {
   display: flex;
   gap: 0.6rem;
 }
 
-.btn-star-details {
+.btn-case-study {
   flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   background-color: #ffffff;
-  border: 1px solid var(--border-card);
+  border: 1.5px solid var(--text-primary);
   color: var(--text-primary);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  padding: 0.6rem 0.8rem;
+  padding: 0.65rem 1rem;
   border-radius: var(--radius-full);
   transition: all var(--transition);
 }
 
-.btn-star-details:hover {
-  background-color: var(--accent);
-  border-color: var(--accent);
+.btn-case-study:hover {
+  background-color: var(--dark-btn);
+  border-color: var(--dark-btn);
   color: #ffffff;
+}
+
+.btn-case-study svg {
+  transition: transform var(--transition);
+}
+
+.btn-case-study:hover svg {
+  transform: translateX(3px);
 }
 
 .btn-repo-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   background-color: #ffffff;
-  border: 1px solid var(--border-card);
+  border: 1.5px solid var(--border-card);
   color: var(--text-primary);
   border-radius: var(--radius-full);
   transition: all var(--transition);
@@ -1079,52 +1106,71 @@ button {
   gap: 1.25rem;
 }
 
-.star-block {
-  padding: 1.25rem;
+.case-block {
+  padding: 1.35rem;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
 }
 
-.star-block.situation {
-  background-color: var(--star-s-bg);
-  border-color: rgba(2, 132, 199, 0.15);
+.case-block.challenge {
+  background-color: var(--bg-surface);
+  border-color: var(--border-card);
 }
 
-.star-block.task {
-  background-color: var(--star-t-bg);
-  border-color: rgba(124, 58, 237, 0.15);
+.case-block.solution {
+  background-color: #fff9f5;
+  border-color: rgba(249, 87, 33, 0.2);
 }
 
-.star-block.action {
-  background-color: var(--star-a-bg);
-  border-color: rgba(249, 87, 33, 0.18);
+.case-block.results {
+  background-color: #f0fdf4;
+  border-color: rgba(16, 185, 129, 0.25);
 }
 
-.star-block.result {
-  background-color: var(--star-r-bg);
-  border-color: rgba(5, 150, 105, 0.2);
-}
-
-.star-label {
+.case-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
-.star-block.situation .star-label { color: var(--star-s); }
-.star-block.task .star-label { color: var(--star-t); }
-.star-block.action .star-label { color: var(--star-a); }
-.star-block.result .star-label { color: var(--star-r); }
+.case-block.solution .case-label {
+  color: var(--accent);
+}
 
-.star-text {
+.case-block.results .case-label {
+  color: #047857;
+}
+
+.case-text {
   font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.case-metrics-list {
+  list-style: none;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.6;
+}
+
+.metric-check {
+  color: #059669;
+  font-weight: bold;
 }
 
 .modal-footer {

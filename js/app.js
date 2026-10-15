@@ -128,6 +128,13 @@ function renderProjects(filterCategory = 'all') {
     card.setAttribute('data-id', project.id);
 
     const stackText = project.stack.join(' · ');
+    const primaryMetric = project.metrics && project.metrics[0] ? project.metrics[0] : '';
+    const metricHtml = primaryMetric ? `
+      <div class="card-metric-badge">
+        <span class="metric-icon">⚡</span>
+        <span class="metric-text">${primaryMetric}</span>
+      </div>
+    ` : '';
 
     card.innerHTML = `
       <div class="card-mockup-frame">
@@ -154,16 +161,19 @@ function renderProjects(filterCategory = 'all') {
 
         <p class="project-description">${project.tagline}</p>
 
+        ${metricHtml}
+
         <div class="project-tags">
           <span>${stackText}</span>
         </div>
 
         <div class="card-actions">
-          <button class="btn-star-details" type="button" data-star-id="${project.id}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F95721" stroke="#F95721" stroke-width="1">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          <button class="btn-case-study" type="button" data-star-id="${project.id}">
+            <span>Ver Caso de Estudio</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
-            <span>Ver Método STAR</span>
           </button>
           <a class="btn-repo-link" href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" title="Ver código en GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -177,8 +187,8 @@ function renderProjects(filterCategory = 'all') {
     grid.appendChild(card);
   });
 
-  // Attach modal trigger listeners
-  grid.querySelectorAll('.btn-star-details').forEach(btn => {
+  // Attach case study trigger listeners
+  grid.querySelectorAll('.btn-case-study').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const projectId = e.currentTarget.getAttribute('data-star-id');
       openStarModal(projectId);
@@ -187,7 +197,7 @@ function renderProjects(filterCategory = 'all') {
 }
 
 /* ==========================================================================
-   STAR Modal Logic
+   Engineering Case Study Modal Logic
    ========================================================================== */
 
 function setupModalHandlers() {
@@ -223,19 +233,35 @@ function openStarModal(projectId) {
   const modalTitle = document.getElementById('modal-title');
   const modalTagline = document.getElementById('modal-tagline');
   const modalSituation = document.getElementById('modal-star-situation');
-  const modalTask = document.getElementById('modal-star-task');
   const modalAction = document.getElementById('modal-star-action');
   const modalResult = document.getElementById('modal-star-result');
+  const modalMetricsList = document.getElementById('modal-metrics-list');
   const modalRepoBtn = document.getElementById('modal-repo-btn');
 
-  if (modalBadge) modalBadge.textContent = project.badge || 'Arquitectura STAR';
+  if (modalBadge) modalBadge.textContent = project.categoryLabel || 'Caso de Estudio de Ingeniería';
   if (modalTitle) modalTitle.textContent = project.title;
   if (modalTagline) modalTagline.textContent = project.tagline;
 
-  if (modalSituation) modalSituation.textContent = project.star.situation;
-  if (modalTask) modalTask.textContent = project.star.task;
-  if (modalAction) modalAction.textContent = project.star.action;
-  if (modalResult) modalResult.textContent = project.star.result;
+  // Fluid, natural storytelling
+  if (modalSituation) {
+    modalSituation.innerHTML = `<strong>Contexto:</strong> ${project.star.situation}<br><br><strong>El Desafío:</strong> ${project.star.task}`;
+  }
+  if (modalAction) {
+    modalAction.textContent = project.star.action;
+  }
+  if (modalResult) {
+    modalResult.textContent = project.star.result;
+  }
+
+  // Populate bullet points for key achievements
+  if (modalMetricsList && project.metrics) {
+    modalMetricsList.innerHTML = project.metrics.map(m => `
+      <li class="metric-item">
+        <span class="metric-check">✓</span>
+        <span>${m}</span>
+      </li>
+    `).join('');
+  }
 
   if (modalRepoBtn) {
     modalRepoBtn.setAttribute('href', project.repoUrl);

@@ -69,7 +69,6 @@ const idsToCheck = [
     "modal-close-btn",
     "modal-title",
     "modal-star-situation",
-    "modal-star-task",
     "modal-star-action",
     "modal-star-result",
     "skills-container",
