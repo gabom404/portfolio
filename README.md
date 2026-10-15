@@ -43,9 +43,9 @@ portfolio-gabom404/
 |---|---|---|---|---|
 | 1 | **Promora: Motor Transaccional de Cupones** | Backend y APIs | Laravel 11, PHPUnit, Postman, MySQL | Bloqueos pesimistas (`SELECT FOR UPDATE`), canje atómico, reducción del 35% en tiempo de respuesta. |
 | 2 | **Biblioteca: API REST y Contratos OpenAPI** | Backend y APIs | Laravel, OpenAPI 3.0, Stoplight, Postman | Diseño bajo enfoque API-First con Stoplight Studio, integración de clientes web 50% más ágil. |
-| 3 | **NovaPOS: Sistema de Punto de Venta** | Full Stack | PHP 8 PDO, MySQL, BCrypt, Bootstrap 5 | Punto de venta sin dependencias externas, 100% consultas preparadas, 40% reducción en tiempos de espera. |
+| 3 | **NovaPOS: Sistema de Punto de Venta** | Full Stack | PHP 8 PDO, MySQL, BCrypt, Bootstrap 5 | Experiencia laboral (Empire Barber Shop): Punto de venta en producción, 100% consultas preparadas, 40% reducción en tiempos de espera. |
 | 4 | **WalletID: Billetera Digital Institucional** | Full Stack | PHP, MySQL, JavaScript, Identidad Digital | Doble portal desacoplado, transacciones sin efectivo en campus, balances atómicos. |
-| 5 | **AttendanceTrack: Control de Asistencia y Turnos** | Backend y APIs | PHP, Cámara Web, API REST, TCPDF | Foto-verificación en vivo, motor de reglas de turnos, 85% ahorro administrativo en planillas. |
+| 5 | **AttendanceTrack: Control de Asistencia y Turnos** | Backend y APIs | PHP, Cámara Web, API REST, TCPDF | Experiencia laboral (Dipal Design): Control de asistencia y turnos en producción, foto-verificación en vivo, 85% ahorro en planillas. |
 | 6 | **Plataforma de Microservicios Contenerizados** | Full Stack | TypeScript, Python, Docker Compose, Microservicios | Orquestación políglota de microservicios, redes contenerizadas aisladas, despliegue con un comando. |
 | 7 | **Cupon-X: Motor de Cupones de Alto Desempeño** | Backend y APIs | Node.js, PostgreSQL (PL/pgSQL), Netlify | Lógica atómica en procedimientos almacenados PL/pgSQL (<25ms por validación). |
 | 8 | **Enfoque: Aplicación Móvil de Productividad** | Desarrollo Móvil | Flutter, Dart, SQLite, Material 3 | Técnica Pomodoro, gestión reactiva de estado, 60 FPS estables, persistencia local. |

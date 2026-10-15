@@ -894,13 +894,42 @@ button {
   margin-bottom: 1.2rem;
 }
 
+.card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+  flex-wrap: wrap;
+}
+
 .card-category-label {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent);
-  margin-bottom: 0.35rem;
+}
+
+.card-badge-exp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--accent);
+  border: 1px solid rgba(249, 87, 33, 0.2);
+  line-height: 1.2;
+}
+
+.card-badge-exp .material-symbols-outlined {
+  font-size: 13px;
+  line-height: 1;
 }
 
 .card-title {
@@ -1099,14 +1128,42 @@ button {
   font-size: 26px;
 }
 
+.modal-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
+}
+
 .modal-category {
   font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent);
-  margin-bottom: 0.25rem;
   display: inline-block;
+}
+
+.modal-badge-exp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.22rem 0.65rem;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--accent);
+  border: 1px solid rgba(249, 87, 33, 0.25);
+  line-height: 1.2;
+}
+
+.modal-badge-exp .material-symbols-outlined {
+  font-size: 14px;
+  line-height: 1;
 }
 
 .modal-title {

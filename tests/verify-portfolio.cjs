@@ -76,6 +76,28 @@ for (const id of idsToCheck) {
 }
 console.log("All critical DOM hooks verified successfully!");
 
+// Verification of Work Experience in Production (Dipal Design & Empire Barber Shop / NovaPOS)
+const experienceMentions = ["Dipal Design", "Empire Barber Shop", "C3 El Salvador", "CFP Colegio Salesiano Santa Cecilia"];
+for (const company of experienceMentions) {
+    if (!html.includes(company)) {
+        console.error(`Missing expected experience entry in index.html: ${company}`);
+        process.exit(1);
+    }
+}
+
+const attendanceProj = projects.find(p => p.id === "attendance-track");
+if (!attendanceProj || !attendanceProj.isWorkExperience || attendanceProj.workExperienceCompany !== "Dipal Design") {
+    console.error("AttendanceTrack must be marked as work experience for Dipal Design");
+    process.exit(1);
+}
+
+const novaposProj = projects.find(p => p.id === "novapos");
+if (!novaposProj || !novaposProj.isWorkExperience || novaposProj.workExperienceCompany !== "Empire Barber Shop") {
+    console.error("NovaPOS must be marked as work experience for Empire Barber Shop");
+    process.exit(1);
+}
+console.log("Work experience verification PASSED (Dipal Design & Empire Barber Shop / NovaPOS).");
+
 // Strict Zero Explicit STAR Mention Verification (Natural Storytelling Rule)
 const forbiddenVisibleKeywords = ["metodología star", "método star", "arquitectura star", "ciclo star", "star methodology"];
 const filesToCheckForStar = ["index.html", "README.md"];

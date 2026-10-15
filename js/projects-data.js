@@ -55,21 +55,23 @@ const PROJECTS = [
     title: "NovaPOS: Sistema de Punto de Venta",
     category: "fullstack",
     categoryLabel: "Full Stack",
-    tagline: "Sistema de Punto de Venta, inventario y facturación ágil con PHP 8 nativo, consultas preparadas PDO y seguridad BCrypt.",
-    badge: "Arquitectura Limpia y Facturación",
+    isWorkExperience: true,
+    workExperienceCompany: "Empire Barber Shop",
+    tagline: "Sistema comercial de Punto de Venta, inventario y facturación desarrollado e implementado en producción para Empire Barber Shop con PHP 8 nativo, consultas preparadas PDO y seguridad BCrypt.",
+    badge: "Experiencia Laboral • Sistema en Producción",
     repoUrl: "https://github.com/gabom404/novapos-system",
     demoUrl: null,
     stack: ["PHP 8", "PDO MySQL", "BCrypt", "Bootstrap 5", "HTML5 y CSS3", "JavaScript"],
     metrics: [
-      "Reducción del 40% en tiempos de espera en caja",
-      "0 vulnerabilidades de inyección SQL (100% consultas preparadas)",
-      "Cero dependencias externas: despliegue ágil y ultraligero"
+      "Implementado y operando en producción comercial para Empire Barber Shop",
+      "Reducción del 40% en tiempos de espera en caja y mostrador",
+      "0 vulnerabilidades de inyección SQL (100% consultas preparadas)"
     ],
     star: {
-      situation: "Pequeños y medianos comercios minoristas requerían un sistema de facturación e inventario rápido y confiable sin la sobrecarga ni los costos de mantenimiento de marcos de trabajo pesados, con total capacidad de operar en servidores locales y alojamiento compartido.",
-      task: "Construir un software de punto de venta integral que gestione productos, control de existencias mínimas, clientes, corte de caja y emisión de comprobantes de venta, manteniendo los más altos estándares de seguridad en autenticación y base de datos.",
-      action: "Se desarrolló una arquitectura modular en PHP 8 nativo utilizando PDO para todas las operaciones con MySQL, garantizando el 100% de consultas preparadas para eliminar riesgos de inyección SQL. Se integró cifrado de contraseñas de alta seguridad con BCrypt (`password_hash`), control de sesiones seguras contra secuestro, transacciones ACID para el descuento atómico de existencias al momento de cobrar, y una interfaz responsiva con Bootstrap 5.",
-      result: "Reducción del 40% en tiempos de espera de clientes en caja frente a métodos manuales, cero brechas de seguridad identificadas en auditoría de código y empaquetado profesional con esquemas SQL de migración y datos de prueba."
+      situation: "Durante mi experiencia laboral para Empire Barber Shop, el negocio requería modernizar su operación y sustituir el registro manual por un sistema comercial de punto de venta, facturación rápida y administración de inventario sin incurrir en licencias costosas ni marcos de trabajo pesados.",
+      task: "Construir y desplegar en producción un software de punto de venta integral para la gestión ágil de productos, inventario con existencias mínimas, clientes, corte de caja diario y emisión de comprobantes, manteniendo altos estándares de seguridad y confiabilidad operativa.",
+      action: "Se diseñó y programó en producción una arquitectura modular en PHP 8 nativo utilizando PDO para todas las operaciones con MySQL, garantizando el 100% de consultas preparadas para eliminar riesgos de inyección SQL. Se integró cifrado de contraseñas de alta seguridad con BCrypt (`password_hash`), control de sesiones seguras contra secuestro, transacciones ACID para el descuento atómico de existencias al momento de cobrar, y una interfaz responsiva con Bootstrap 5.",
+      result: "Despliegue exitoso en producción para Empire Barber Shop con reducción del 40% en tiempos de espera de clientes en caja frente a métodos manuales, cero brechas de seguridad identificadas en auditoría de código y empaquetado profesional con esquemas SQL de migración y datos de prueba."
     },
     featured: true
   },
@@ -101,21 +103,23 @@ const PROJECTS = [
     title: "AttendanceTrack: Control de Asistencia y Turnos",
     category: "backend",
     categoryLabel: "Backend y APIs",
-    tagline: "Control de asistencias y turnos laborales con validación biométrica y visual vía cámara web, API REST y reportes en PDF.",
-    badge: "API Biométrica y Turnos",
+    isWorkExperience: true,
+    workExperienceCompany: "Dipal Design",
+    tagline: "Sistema comercial de control de asistencias y turnos laborales con validación biométrica/visual vía cámara web, desarrollado e implementado en producción para Dipal Design.",
+    badge: "Experiencia Laboral • Sistema en Producción",
     repoUrl: "https://github.com/gabom404/attendance-track",
     demoUrl: null,
     stack: ["PHP", "API de Cámara Web", "API REST", "TCPDF", "MySQL", "JavaScript"],
     metrics: [
+      "Implementado y operando en entorno productivo real para Dipal Design",
       "Cero suplantaciones de identidad mediante foto-verificación en vivo",
-      "85% de ahorro de tiempo administrativo en consolidación de planillas",
-      "Puntos de enlace REST en formato JSON para terminales fijas"
+      "85% de ahorro de tiempo administrativo en consolidación de planillas"
     ],
     star: {
-      situation: "Empresas con personal distribuido y turnos rotativos sufrían de fraude en el marcaje de asistencia (suplantación de identidad entre compañeros) y retrasos semanales de varias horas procesando planillas de forma manual.",
-      task: "Construir una solución de marcaje instantáneo que capture una fotografía en tiempo real del empleado al marcar, calcule retardos según reglas de turno y provea puntos de enlace y reportes consolidados en PDF.",
-      action: "Se implementó un módulo cliente con la API de dispositivos multimedia de HTML5 que captura y comprime imágenes en el navegador antes de enviarlas al servidor. En el backend en PHP, se crearon controladores para verificar la ventana horaria del turno asignado (lunes a domingo con tolerancias configurables), puntos de enlace REST en formato JSON para terminales de autoservicio, generador de reportes consolidados con TCPDF y saneamiento estricto de datos personales sensibles.",
-      result: "Eliminación absoluta de suplantaciones de identidad gracias al respaldo fotográfico automático, reducción del 85% en tiempo de procesamiento administrativo de planillas y 286 archivos de código limpios y documentados."
+      situation: "Durante mi experiencia laboral en Dipal Design, la empresa contaba con personal distribuido y turnos rotativos donde se presentaban retrasos en la toma de asistencia, riesgos de suplantación de identidad y más de 8 horas semanales invertidas en la consolidación manual de planillas.",
+      task: "Diseñar, desarrollar e implementar en producción para Dipal Design una solución de marcaje instantáneo que capture una fotografía en tiempo real del empleado al marcar, calcule retardos según reglas de turno y provea puntos de enlace REST y reportes consolidados en PDF.",
+      action: "Se implementó en producción un módulo cliente con la API de dispositivos multimedia de HTML5 que captura y comprime imágenes en el navegador antes de enviarlas al servidor. En el backend en PHP y MySQL, se crearon controladores para verificar la ventana horaria del turno asignado (lunes a domingo con tolerancias configurables), puntos de enlace REST en formato JSON para terminales de autoservicio, generador de reportes consolidados con TCPDF y saneamiento estricto de datos sensibles.",
+      result: "Puesta en marcha exitosa en producción en Dipal Design con eliminación total de suplantaciones de identidad gracias al respaldo fotográfico automático, reducción del 85% en tiempo de procesamiento administrativo de nómina y 286 archivos de código limpios y documentados."
     },
     featured: false
   },

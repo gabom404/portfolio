@@ -179,7 +179,15 @@ function renderProjects(filterCategory = 'all') {
 
       <!-- Main Body -->
       <div class="card-main-content">
-        <span class="card-category-label">${project.categoryLabel}</span>
+        <div class="card-meta-row">
+          <span class="card-category-label">${project.categoryLabel}</span>
+          ${project.isWorkExperience ? `
+            <span class="card-badge-exp" title="Proyecto desarrollado en entorno de producción real">
+              <span class="material-symbols-outlined">work</span>
+              <span>Experiencia Laboral</span>
+            </span>
+          ` : ''}
+        </div>
         <h3 class="card-title">${project.title}</h3>
         <p class="card-tagline">${project.tagline}</p>
 
@@ -266,7 +274,15 @@ function openProjectModal(projectId) {
         <span class="material-symbols-outlined">${iconMeta.icon}</span>
       </div>
       <div>
-        <span class="modal-category">${project.categoryLabel}</span>
+        <div class="modal-meta-row">
+          <span class="modal-category">${project.categoryLabel}</span>
+          ${project.isWorkExperience ? `
+            <span class="modal-badge-exp">
+              <span class="material-symbols-outlined">work</span>
+              <span>Experiencia Laboral • ${project.workExperienceCompany}</span>
+            </span>
+          ` : ''}
+        </div>
         <h2 class="modal-title">${project.title}</h2>
         <p class="modal-tagline">${project.tagline}</p>
       </div>
