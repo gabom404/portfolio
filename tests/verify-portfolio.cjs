@@ -185,3 +185,36 @@ if (emojiViolations > 0) {
 }
 
 console.log("Zero-Emoji verification PASSED: 0 emojis found across all files.");
+
+// Friendly Horizontal Filter Bar Verification
+const appJsContent = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
+const expectedFilterIcons = ["apps", "dns", "layers", "smartphone", "psychology", "public"];
+for (const icon of expectedFilterIcons) {
+    if (!appJsContent.includes(`icon: '${icon}'`)) {
+        console.error(`Missing expected category filter icon: ${icon}`);
+        process.exit(1);
+    }
+}
+if (!appJsContent.includes("chip-count") || !cssContent.includes(".chip-count")) {
+    console.error("Missing chip-count badge in filter bar");
+    process.exit(1);
+}
+console.log("Friendly Filter Bar with category icons & micro-badges verified successfully!");
+
+// Concise Executive Project Modal & README Callout Verification
+const modalRequiredClasses = ["modal-executive-grid", "modal-exec-card", "modal-readme-box", "btn-modal-readme-action"];
+for (const cls of modalRequiredClasses) {
+    if (!appJsContent.includes(cls)) {
+        console.error(`Missing modal class ${cls} in js/app.js`);
+        process.exit(1);
+    }
+    if (!cssContent.includes(`.${cls}`)) {
+        console.error(`Missing modal class .${cls} in css/style.css`);
+        process.exit(1);
+    }
+}
+if (!appJsContent.includes("#readme")) {
+    console.error("Missing direct GitHub #readme anchor link in modal callout action");
+    process.exit(1);
+}
+console.log("Executive Project Modal with README callout verified successfully!");

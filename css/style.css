@@ -733,27 +733,19 @@ button {
 .work-header {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-@media (min-width: 860px) {
-  .work-header {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-}
-
-/* Material 3 Filter Chips (Swipeable Horizontal Scroll on Mobile) */
+/* Material 3 Filter Chips (Continuous Horizontal Flow, Swipeable on Mobile) */
 .work-filter-pills {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  gap: 0.5rem;
-  padding: 0.2rem 0 0.4rem;
+  gap: 0.65rem;
+  padding: 0.25rem 0.15rem 0.6rem;
   width: 100%;
 }
 
@@ -765,41 +757,71 @@ button {
   .work-filter-pills {
     flex-wrap: wrap;
     overflow-x: visible;
+    padding-bottom: 0.25rem;
   }
 }
 
 .md-filter-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  height: 34px;
-  padding: 0 1rem;
-  border-radius: var(--radius-sm);
+  gap: 0.5rem;
+  height: 38px;
+  padding: 0 0.95rem;
+  border-radius: var(--radius-full);
   background-color: var(--bg-surface);
   border: 1px solid var(--border-card);
   color: var(--text-secondary);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all var(--transition);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .md-filter-chip:hover {
   background-color: var(--md-sys-color-surface-container);
   color: var(--text-primary);
-  border-color: var(--md-sys-color-outline);
+  border-color: var(--border-subtle);
+  transform: translateY(-1px);
 }
 
 .md-filter-chip.active {
   background-color: var(--dark-btn);
   border-color: var(--dark-btn);
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
 }
 
 .chip-icon {
-  font-size: 16px !important;
+  font-size: 18px !important;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.md-filter-chip:hover .chip-icon {
+  color: var(--text-primary);
+}
+
+.md-filter-chip.active .chip-icon {
+  color: #F95721;
+}
+
+.chip-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--text-secondary);
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.md-filter-chip.active .chip-count {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 /* 4-Column Responsive Grid (Material Design Grid) */
@@ -1239,31 +1261,40 @@ button {
   margin-top: 2px;
 }
 
-.modal-specs-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.6rem;
+/* Executive Engineering Breakdown (Clean Scannable Summary) */
+.modal-executive-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin-bottom: 1.25rem;
 }
 
-.modal-spec-block {
+@media (min-width: 620px) {
+  .modal-executive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.modal-exec-card {
   background-color: #fafaf9;
   border: 1px solid var(--border-card);
-  border-left: 3.5px solid #78716c;
+  border-left: 4px solid #78716c;
   border-radius: 12px;
-  padding: 0.95rem 1.1rem;
+  padding: 1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.modal-spec-block.solution {
+.modal-exec-card.challenge {
+  border-left-color: #e11d48;
+}
+
+.modal-exec-card.solution {
   border-left-color: var(--accent);
 }
 
-.modal-spec-block.results {
-  border-left-color: #059669;
-}
-
-.modal-spec-heading {
-  font-size: 0.82rem;
+.modal-exec-heading {
+  font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -1274,24 +1305,106 @@ button {
   gap: 0.45rem;
 }
 
-.modal-spec-heading .material-symbols-outlined {
+.modal-exec-card.challenge .modal-exec-heading .material-symbols-outlined {
+  color: #e11d48;
   font-size: 18px;
 }
 
-.modal-spec-text {
+.modal-exec-card.solution .modal-exec-heading .material-symbols-outlined {
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.modal-exec-text {
   font-size: 0.86rem;
   color: var(--text-secondary);
-  line-height: 1.65;
-  margin-bottom: 0.4rem;
+  line-height: 1.6;
+  margin: 0;
 }
 
-.modal-spec-text:last-of-type {
-  margin-bottom: 0;
+/* Prominent GitHub README Callout Box */
+.modal-readme-box {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.modal-spec-text strong {
-  color: var(--text-primary);
+@media (min-width: 580px) {
+  .modal-readme-box {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.modal-readme-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.readme-icon {
+  font-size: 24px !important;
+  color: #2563eb;
+  background-color: #dbeafe;
+  padding: 0.45rem;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.modal-readme-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-readme-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.modal-readme-desc {
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 380px;
+}
+
+.btn-modal-readme-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
   font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-modal-readme-action:hover {
+  background-color: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+  color: #ffffff;
+}
+
+.btn-modal-readme-action .material-symbols-outlined {
+  font-size: 15px;
 }
 
 .modal-tech-stack {

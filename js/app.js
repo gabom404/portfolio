@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================================== */
 
 const CATEGORIES = [
-  { key: 'all', label: 'Todos' },
-  { key: 'backend', label: 'Backend y APIs' },
-  { key: 'fullstack', label: 'Full Stack' },
-  { key: 'mobile', label: 'Desarrollo Móvil' },
-  { key: 'python-ai', label: 'Python e IA' },
-  { key: 'frontend', label: 'Frontend Web' }
+  { key: 'all', label: 'Todos', icon: 'apps' },
+  { key: 'backend', label: 'Backend y APIs', icon: 'dns' },
+  { key: 'fullstack', label: 'Full Stack', icon: 'layers' },
+  { key: 'mobile', label: 'Desarrollo Móvil', icon: 'smartphone' },
+  { key: 'python-ai', label: 'Python e IA', icon: 'psychology' },
+  { key: 'frontend', label: 'Frontend Web', icon: 'public' }
 ];
 
 let currentCategory = 'all';
@@ -38,10 +38,11 @@ function renderFilterTabs() {
     }
   });
 
-  container.innerHTML = CATEGORIES.map((cat, idx) => `
-    <button class="md-filter-chip ${idx === 0 ? 'active' : ''}" data-category="${cat.key}" type="button">
-      ${idx === 0 ? '<span class="material-symbols-outlined chip-icon">check</span>' : ''}
-      <span class="chip-label">${cat.label} (${counts[cat.key] || 0})</span>
+  container.innerHTML = CATEGORIES.map((cat) => `
+    <button class="md-filter-chip ${cat.key === currentCategory ? 'active' : ''}" data-category="${cat.key}" type="button" aria-pressed="${cat.key === currentCategory}">
+      <span class="material-symbols-outlined chip-icon">${cat.icon}</span>
+      <span class="chip-label">${cat.label}</span>
+      <span class="chip-count">${counts[cat.key] || 0}</span>
     </button>
   `).join('');
 
@@ -50,16 +51,11 @@ function renderFilterTabs() {
       const targetBtn = e.currentTarget;
       container.querySelectorAll('.md-filter-chip').forEach(b => {
         b.classList.remove('active');
-        const icon = b.querySelector('.chip-icon');
-        if (icon) icon.remove();
+        b.setAttribute('aria-pressed', 'false');
       });
 
       targetBtn.classList.add('active');
-      const checkSpan = document.createElement('span');
-      checkSpan.className = 'material-symbols-outlined chip-icon';
-      checkSpan.textContent = 'check';
-      targetBtn.prepend(checkSpan);
-
+      targetBtn.setAttribute('aria-pressed', 'true');
       currentCategory = targetBtn.getAttribute('data-category');
       renderProjects(currentCategory);
     });
@@ -246,6 +242,13 @@ function setupModalHandlers() {
   }
 }
 
+function getShortSentences(text, max = 2) {
+  if (!text) return '';
+  const sentences = text.match(/[^.!?]+[.!?]+/g);
+  if (!sentences || sentences.length === 0) return text;
+  return sentences.slice(0, max).join(' ').trim();
+}
+
 function openProjectModal(projectId) {
   const modal = document.getElementById('project-modal');
   const content = document.getElementById('modal-content');
@@ -266,6 +269,9 @@ function openProjectModal(projectId) {
   const stackPillsHtml = (project.stack || []).map(t => `
     <span class="modal-tech-pill">${t}</span>
   `).join('');
+
+  const challengeSummary = getShortSentences(project.star.task, 2);
+  const solutionSummary = getShortSentences(project.star.action, 2);
 
   content.innerHTML = `
     <!-- Header -->
@@ -299,35 +305,41 @@ function openProjectModal(projectId) {
       </ul>
     </div>
 
-    <!-- Structured Engineering Breakdown -->
-    <div class="modal-specs-container">
-      <!-- 1. El Reto y Contexto -->
-      <div class="modal-spec-block challenge">
-        <div class="modal-spec-heading">
+    <!-- Executive Engineering Breakdown (Clean Scannable Summary) -->
+    <div class="modal-executive-grid">
+      <div class="modal-exec-card challenge">
+        <div class="modal-exec-heading">
           <span class="material-symbols-outlined">crisis_alert</span>
-          <span>El Reto y Contexto</span>
+          <span>El Desafío</span>
         </div>
-        <p class="modal-spec-text"><strong>Contexto:</strong> ${project.star.situation}</p>
-        <p class="modal-spec-text"><strong>Desafío:</strong> ${project.star.task}</p>
+        <p class="modal-exec-text">${challengeSummary}</p>
       </div>
 
-      <!-- 2. Arquitectura y Solución Técnica -->
-      <div class="modal-spec-block solution">
-        <div class="modal-spec-heading">
+      <div class="modal-exec-card solution">
+        <div class="modal-exec-heading">
           <span class="material-symbols-outlined">architecture</span>
-          <span>Arquitectura y Solución Técnica</span>
+          <span>Solución Técnica</span>
         </div>
-        <p class="modal-spec-text">${project.star.action}</p>
+        <p class="modal-exec-text">${solutionSummary}</p>
       </div>
+    </div>
 
-      <!-- 3. Impacto y Resultados Clave -->
-      <div class="modal-spec-block results">
-        <div class="modal-spec-heading">
-          <span class="material-symbols-outlined">task_alt</span>
-          <span>Impacto y Resultados Clave</span>
+    <!-- Prominent README Callout Box -->
+    <div class="modal-readme-box">
+      <div class="modal-readme-header">
+        <span class="material-symbols-outlined readme-icon">menu_book</span>
+        <div class="modal-readme-info">
+          <h4 class="modal-readme-title">Documentación y Arquitectura Completa</h4>
+          <p class="modal-readme-desc">
+            Los diagramas de arquitectura C4, esquemas de bases de datos relacionales, contratos de APIs y guías de configuración se detallan en el README oficial del proyecto.
+          </p>
         </div>
-        <p class="modal-spec-text">${project.star.result}</p>
       </div>
+      <a class="btn-modal-readme-action" href="${project.repoUrl}#readme" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        <span>Explorar README en GitHub</span>
+        <span class="material-symbols-outlined">arrow_outward</span>
+      </a>
     </div>
 
     <!-- Tech Stack Tags -->
