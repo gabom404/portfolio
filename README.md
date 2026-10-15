@@ -12,11 +12,21 @@
 ## Características Principales
 
 - **Arquitectura Cero Compilación:** HTML5 puro, CSS3 moderno y JavaScript ES6+. Sin sobrecarga de herramientas de compilación, despliegue directo e instantáneo a GitHub Pages.
+- **Progresión de Circuito F1 Cartoon:** Carro F1 cartoon vectorial que desciende por una pista lateral con transiciones CSS aceleradas por GPU (`transform: translate3d/rotate`), generación procedural de humo dinámico en derrapes, tacómetro de sectores con telemetría en vivo, conos de tráfico delimitadores y bandera a cuadros animada al cruzar la meta; desarrollado con cero dependencias externas y cero emojis.
 - **Análisis de Ingeniería Exhaustivo:** Cada proyecto documenta contexto de negocio, desafíos técnicos, decisiones arquitectónicas (Capa de Servicio, concurrencia transaccional, contratos OpenAPI, BCrypt) y resultados cuantificables.
 - **Filtrado Dinámico:** Cambio instantáneo por categoría (`Todos`, `Backend y APIs`, `Full Stack`, `Desarrollo Móvil`, `Python e IA`, `Frontend Web`) con conteo en tiempo real.
 - **Divulgación Progresiva:** Visualización elegante de tarjetas compactas con paneles desplegables integrados para explorar el desglose técnico sin modales invasivos ni saturación visual.
 - **Diseño Editorial Minimalista:** Estética sobria y cálida inspirada en interfaces editoriales modernas, con tipografía nítida, ilustraciones vectoriales en SVG y alto contraste de lectura.
 - **100% Responsivo y Accesible:** Distribución adaptativa probada en dispositivos móviles, tabletas y computadoras de escritorio con estándares de accesibilidad web.
+
+### Ingeniería de la Pista Interactiva F1
+
+La pista lateral interactiva traduce el desplazamiento del visitante en una carrera visual a lo largo del portafolio:
+- **Renderizado Vectorial SVG Nativo:** El monoplaza F1, los conos de seguridad y la bandera a cuadros fueron diseñados con trazados SVG limpios y paleta corporativa de carreras (`#e10600`, `#1f2937`, `#38bdf8`), garantizando nitidez absoluta sin sobrecarga de imágenes de mapa de bits.
+- **Transiciones CSS Aceleradas por GPU:** El controlador (`js/f1-racer.js`) sincroniza el porcentaje de desplazamiento vertical mediante `requestAnimationFrame`, aplicando traslaciones `translate3d` y rotaciones angulares en curvas pronunciadas para una tasa de refresco constante de 60 FPS sin provocar reflujos de renderizado (*layout reflows*).
+- **Simulación Dinámica de Humo y Derrape:** Al detectar aceleraciones y cambios de trayectoria, el motor instancia bocanadas de humo procedurales con desvanecimiento gradual en opacidad y escala.
+- **Tacómetro y Telemetría de Sectores:** Un panel flotante superior calcula el avance porcentual y actualiza en tiempo real el sector del circuito correspondiente a cada sección temática (Inicio, Proyectos, Experiencia, Habilidades y Meta).
+- **Meta con Bandera a Cuadros Animada:** Al llegar al pie de página, la bandera de meta activa una animación ondulatoria fluida en CSS puro (`@keyframes f1-flag-wave`).
 
 ---
 
@@ -26,10 +36,11 @@
 portfolio-gabom404/
 ├── index.html              # Estructura semántica accesible
 ├── css/
-│   └── style.css           # Variables CSS, cuadrícula responsiva y animaciones
+│   └── style.css           # Variables CSS, cuadrícula responsiva, circuito y animaciones F1
 ├── js/
 │   ├── projects-data.js    # Catálogo de 11 proyectos con análisis técnico detallado
-│   └── app.js              # Controlador interactivo de filtrado y divulgación progresiva
+│   ├── app.js              # Controlador interactivo de filtrado y divulgación progresiva
+│   └── f1-racer.js         # Controlador de telemetría de scroll, física y partículas del F1
 ├── assets/
 │   └── icons/              # Iconografía vectorial SVG limpia
 └── README.md               # Documentación y descripción del portafolio

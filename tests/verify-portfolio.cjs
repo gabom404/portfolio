@@ -9,6 +9,7 @@ const requiredFiles = [
     "css/style.css",
     "js/projects-data.js",
     "js/app.js",
+    "js/f1-racer.js",
     "assets/icons/github.svg",
     "assets/icons/linkedin.svg",
     "assets/icons/mail.svg",
@@ -110,7 +111,12 @@ if (!html.includes('src="js/f1-racer.js"')) {
     console.error("Missing js/f1-racer.js script tag in index.html");
     process.exit(1);
 }
-console.log("F1 Racer controller verified successfully!");
+const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
+if (!readme.includes("js/f1-racer.js")) {
+    console.error("Missing js/f1-racer.js in README.md");
+    process.exit(1);
+}
+console.log("F1 Racer controller verified successfully in index.html and README.md!");
 
 // Verification of Work Experience in Production (Dipal Design & Empire Barber Shop / NovaPOS)
 const experienceMentions = ["Dipal Design", "Empire Barber Shop", "C3 El Salvador", "CFP Colegio Salesiano Santa Cecilia"];
