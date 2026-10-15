@@ -598,6 +598,14 @@ button {
   border-radius: 4px;
 }
 
+.section-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 650px;
+  line-height: 1.6;
+  margin-top: -0.25rem;
+}
+
 .about-text {
   font-size: 1rem;
   color: var(--text-secondary);
@@ -1388,68 +1396,157 @@ button {
    ========================================================================== */
 
 .experience-section {
-  padding: 4rem 0;
+  padding: 4.5rem 0;
   background-color: var(--bg-surface);
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
 }
 
+.experience-grid,
 .experience-timeline {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
-  max-width: 880px;
-  margin-top: 2rem;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 2.25rem;
+}
+
+@media (min-width: 820px) {
+  .experience-grid,
+  .experience-timeline {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem;
+  }
 }
 
 .experience-card {
   background-color: #ffffff;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  position: relative;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
   box-shadow: var(--shadow-level-1);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+  position: relative;
+}
+
+.experience-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-level-2);
+  border-color: rgba(249, 87, 33, 0.35);
+}
+
+.exp-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.exp-role-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
 }
 
 .exp-icon-circle {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background-color: var(--accent-light);
   color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.75rem;
+  flex-shrink: 0;
 }
 
-.exp-date {
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
+.exp-icon-circle .material-symbols-outlined {
+  font-size: 22px;
 }
 
 .exp-role {
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-primary);
+  line-height: 1.25;
   margin-bottom: 0.25rem;
 }
 
 .exp-company {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-secondary);
-  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.exp-date-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background-color: var(--accent-light);
+  border: 1px solid rgba(249, 87, 33, 0.2);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  white-space: nowrap;
 }
 
 .exp-desc {
   font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.65;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.exp-metric-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--border-card);
+  color: var(--text-primary);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+  max-width: 100%;
+  line-height: 1.35;
+}
+
+.exp-metric-pill .material-symbols-outlined {
+  font-size: 14px;
+  color: #059669;
+  flex-shrink: 0;
+}
+
+.exp-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.exp-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--md-sys-color-surface-container);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
 }
 
 /* ==========================================================================
