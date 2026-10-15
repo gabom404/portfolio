@@ -6,126 +6,126 @@
 const PROJECTS = [
   {
     id: "promora",
-    title: "Promora Marketplace & PromoCode Engine",
+    title: "Promora: Motor Transaccional de Cupones",
     category: "backend",
-    categoryLabel: "Backend & APIs",
-    tagline: "Motor transaccional de cupones y marketplace de alto rendimiento con validación atómica y suite de testing automatizada.",
-    badge: "Featured • API Architecture",
+    categoryLabel: "Backend y APIs",
+    tagline: "Motor transaccional de cupones y catálogo de ofertas de alto rendimiento con validación atómica y pruebas unitarias automatizadas.",
+    badge: "Arquitectura de APIs",
     repoUrl: "https://github.com/Desarrollo-de-apis-Chocolatina/Promora-Marketplace",
     demoUrl: null,
-    stack: ["PHP", "Laravel 11", "PHPUnit", "Postman", "MySQL", "REST API", "Git"],
+    stack: ["PHP", "Laravel 11", "PHPUnit", "Postman", "MySQL", "API REST", "Git"],
     metrics: [
       "100% prevención de doble gasto en cupones concurrentes",
-      "Reducción del 35% en tiempo de respuesta en checkout",
-      "Suite de pruebas unitarias automatizada en CI/CD"
+      "Reducción del 35% en tiempo de procesamiento de compras",
+      "Batería de pruebas unitarias automatizadas con PHPUnit"
     ],
     star: {
-      situation: "Los marketplaces que manejan promociones concurrentes y canje de cupones a gran escala suelen experimentar colisiones transaccionales, vulnerabilidades a explotación por doble canje simultáneo y severos cuellos de botella en la validación de reglas de descuento en tiempo real.",
-      task: "Diseñar e implementar un motor transaccional de cupones y checkout promocional con validaciones de negocio multicapa (fechas de vigencia, cupos máximos, restricciones por usuario y categorías de productos), garantizando consistencia transaccional y amplia cobertura de pruebas unitarias.",
-      action: "Se implementó una API RESTful en Laravel 11 desacoplada bajo patrones Service Layer y Repository Pattern. Se emplearon Form Requests estrictos para sanitización de payloads, transacciones atómicas con bloqueos pesimistas en MySQL (`SELECT ... FOR UPDATE`) para evitar condiciones de carrera, una suite exhaustiva de tests unitarios y de integración con PHPUnit simulando concurrencia de canjes, y una colección en Postman con scripts de assertions para validación continua.",
-      result: "Cero fallas por doble gasto en pruebas de estrés concurrentes, reducción del 35% en la latencia del cálculo de promociones y documentación 100% interactiva para consumo de clientes web y móviles."
+      situation: "Las plataformas de comercio digital que procesan promociones concurrentes y canje masivo de cupones suelen experimentar colisiones transaccionales, vulnerabilidades por doble canje simultáneo y cuellos de botella en la validación de reglas de descuento en tiempo real.",
+      task: "Diseñar e implementar un motor transaccional de cupones y procesamiento promocional de compras con validaciones de negocio multicapa (vigencia temporal, límites máximos de uso, restricciones por usuario y categorías de productos), garantizando consistencia transaccional y amplia cobertura de pruebas unitarias.",
+      action: "Se implementó una API REST desacoplada en Laravel 11 bajo patrones de Capa de Servicio (Service Layer) y Repositorio. Se emplearon validaciones estrictas en Form Requests para sanitización de datos, transacciones atómicas con bloqueos pesimistas en MySQL (`SELECT ... FOR UPDATE`) para evitar condiciones de carrera, una batería exhaustiva de pruebas unitarias y de integración con PHPUnit simulando concurrencia de canjes, y una colección en Postman con aserciones automatizadas para validación continua.",
+      result: "Cero fallas por doble gasto en pruebas de estrés concurrentes, reducción del 35% en la latencia del cálculo de promociones y documentación interactiva para consumo de clientes web y móviles."
     },
     featured: true
   },
   {
     id: "biblioteca",
-    title: "Biblioteca REST API & OpenAPI Specs",
+    title: "Biblioteca: API REST y Contratos OpenAPI",
     category: "backend",
-    categoryLabel: "Backend & APIs",
-    tagline: "API RESTful con especificación formal OpenAPI 3.0, Stoplight y suite de testing en Postman para control bibliotecario.",
-    badge: "OpenAPI Specification",
+    categoryLabel: "Backend y APIs",
+    tagline: "API REST con especificación formal OpenAPI 3.0, Stoplight y batería de pruebas automatizadas en Postman para control bibliotecario.",
+    badge: "Especificación OpenAPI 3.0",
     repoUrl: "https://github.com/RivasMel2024/biblioteca",
     demoUrl: null,
     stack: ["PHP", "Laravel", "OpenAPI 3.0", "Stoplight", "Postman", "MySQL", "Vite"],
     metrics: [
-      "100% endpoints validados contra contrato OpenAPI",
-      "Reducción del 50% en tiempo de integración frontend",
-      "Tests automatizados de contrato y schemas en Postman"
+      "100% de puntos de enlace validados contra contrato OpenAPI",
+      "Reducción del 50% en tiempo de integración con clientes web",
+      "Pruebas automatizadas de contrato y esquemas en Postman"
     ],
     star: {
       situation: "Los sistemas de préstamo y gestión de catálogos bibliotecarios compartidos entre múltiples clientes (aplicaciones web y de escritorio) presentaban divergencias en las respuestas de la API, falta de tipado estricto y documentación desactualizada que retrasaba el desarrollo de los clientes.",
-      task: "Desarrollar una API REST robusta aplicando el enfoque API-First, definiendo un contrato OpenAPI formal previo y asegurando que las respuestas de Laravel y las colecciones de prueba cumplieran rigurosamente con dicho estándar.",
-      action: "Se diseñaron los esquemas de datos y contratos en Stoplight Studio bajo el estándar OpenAPI 3.0. En el backend con Laravel, se estructuraron API Resource Collections para tipado homogéneo de respuestas, autenticación por tokens con Laravel Sanctum, control granular de relaciones (libros, autores, préstamos y usuarios), y se generó una colección de pruebas automatizadas en Postman con verificaciones de JSON Schema para cada endpoint.",
-      result: "Integración frontend 50% más ágil gracias a los contratos OpenAPI sincronizados, eliminación total de discrepancias de tipos en payloads y documentación navegable e interactiva para desarrolladores."
+      task: "Desarrollar una API REST robusta aplicando el enfoque de diseño primero (API-First), definiendo un contrato OpenAPI formal previo y asegurando que las respuestas de Laravel y las colecciones de prueba cumplieran rigurosamente con dicho estándar.",
+      action: "Se diseñaron los esquemas de datos y contratos en Stoplight Studio bajo el estándar OpenAPI 3.0. En el backend con Laravel, se estructuraron colecciones de recursos API (Resource Collections) para tipado homogéneo de respuestas, autenticación por tokens con Laravel Sanctum, control granular de relaciones (libros, autores, préstamos y usuarios), y se generó una colección de pruebas automatizadas en Postman con verificaciones de esquemas JSON para cada punto de enlace.",
+      result: "Integración de clientes web un 50% más ágil gracias a los contratos OpenAPI sincronizados, eliminación total de discrepancias de tipos en cargas útiles y documentación navegable e interactiva para desarrolladores."
     },
     featured: true
   },
   {
     id: "novapos",
-    title: "NovaPOS System",
+    title: "NovaPOS: Sistema de Punto de Venta",
     category: "fullstack",
-    categoryLabel: "Fullstack",
+    categoryLabel: "Full Stack",
     tagline: "Sistema de Punto de Venta, inventario y facturación ágil con PHP 8 nativo, consultas preparadas PDO y seguridad BCrypt.",
-    badge: "Clean Architecture POS",
+    badge: "Arquitectura Limpia y Facturación",
     repoUrl: "https://github.com/gabom404/novapos-system",
     demoUrl: null,
-    stack: ["PHP 8", "PDO MySQL", "BCrypt", "Bootstrap 5", "HTML5/CSS3", "JavaScript"],
+    stack: ["PHP 8", "PDO MySQL", "BCrypt", "Bootstrap 5", "HTML5 y CSS3", "JavaScript"],
     metrics: [
-      "40% reducción en tiempos de espera en caja",
-      "0 vulnerabilidades SQL Injection (100% Prepared Statements)",
-      "Zero-dependency framework: despliegue ultraligero"
+      "Reducción del 40% en tiempos de espera en caja",
+      "0 vulnerabilidades de inyección SQL (100% consultas preparadas)",
+      "Cero dependencias externas: despliegue ágil y ultraligero"
     ],
     star: {
-      situation: "Pequeños y medianos negocios minoristas necesitaban un sistema de facturación e inventario rápido y confiable sin la sobrecarga ni los costos de mantenimiento de frameworks pesados, con total capacidad de operar en servidores locales y hosting compartido.",
-      task: "Construir un software POS integral que gestione productos, control de stock mínimo, clientes, corte de caja y emisión de comprobantes de venta, manteniendo los más altos estándares de seguridad en autenticación y base de datos.",
-      action: "Se desarrolló una arquitectura modular en PHP 8 nativo utilizando PDO para todas las operaciones con MySQL, garantizando 100% de consultas preparadas para eliminar riesgos de inyección SQL. Se integró hashing de contraseñas de alta seguridad con BCrypt (`password_hash`), control de sesiones seguras contra secuestro, transacciones ACID para el descuento atómico de existencias al momento de cobrar, y una interfaz responsiva con Bootstrap 5.",
+      situation: "Pequeños y medianos comercios minoristas requerían un sistema de facturación e inventario rápido y confiable sin la sobrecarga ni los costos de mantenimiento de marcos de trabajo pesados, con total capacidad de operar en servidores locales y alojamiento compartido.",
+      task: "Construir un software de punto de venta integral que gestione productos, control de existencias mínimas, clientes, corte de caja y emisión de comprobantes de venta, manteniendo los más altos estándares de seguridad en autenticación y base de datos.",
+      action: "Se desarrolló una arquitectura modular en PHP 8 nativo utilizando PDO para todas las operaciones con MySQL, garantizando el 100% de consultas preparadas para eliminar riesgos de inyección SQL. Se integró cifrado de contraseñas de alta seguridad con BCrypt (`password_hash`), control de sesiones seguras contra secuestro, transacciones ACID para el descuento atómico de existencias al momento de cobrar, y una interfaz responsiva con Bootstrap 5.",
       result: "Reducción del 40% en tiempos de espera de clientes en caja frente a métodos manuales, cero brechas de seguridad identificadas en auditoría de código y empaquetado profesional con esquemas SQL de migración y datos de prueba."
     },
     featured: true
   },
   {
     id: "wallet-id",
-    title: "WalletID Platform",
+    title: "WalletID: Billetera Digital Institucional",
     category: "fullstack",
-    categoryLabel: "Fullstack",
+    categoryLabel: "Full Stack",
     tagline: "Plataforma de billetera digital y cobro sin efectivo con doble portal desacoplado para instituciones educativas.",
-    badge: "Campus FinTech",
+    badge: "Tecnología Financiera para Campus",
     repoUrl: "https://github.com/gabom404/wallet-id-platform",
     demoUrl: null,
-    stack: ["PHP", "MySQL", "JavaScript ES6", "CSS3", "REST API", "Identidad Digital"],
+    stack: ["PHP", "MySQL", "JavaScript ES6", "CSS3", "API REST", "Identidad Digital"],
     metrics: [
-      "100% eliminación de efectivo en terminales del campus",
-      "Sub-segundo en procesamiento de pagos por balance digital",
+      "100% de eliminación de efectivo en terminales del campus",
+      "Procesamiento de pagos por saldo digital en menos de un segundo",
       "Conciliación contable automatizada sin descuadres"
     ],
     star: {
-      situation: "El manejo de efectivo físico en cafeterías y librerías de campus educativos causaba aglomeraciones, pérdidas por cambio incorrecto y falta de control parental sobre los consumos diarios de los alumnos.",
-      task: "Diseñar una plataforma de identidad y billetera digital compuesta por un portal de autoservicio para estudiantes/padres y un sistema POS de cobro rápido para cajeros, con conciliación de saldos en tiempo real.",
-      action: "Se estructuró una arquitectura desacoplada en dos subsistemas independientes (`portal/` para usuarios y `admin/` para cajas y recargas). Se diseñó una base de datos relacional con 14 tablas normalizadas en MySQL con integridad referencial estricta, validaciones transaccionales para impedir saldos negativos, módulo de recargas auditadas y saneamiento completo de credenciales y marcas institucionales.",
+      situation: "El manejo de efectivo físico en cafeterías y librerías de campus educativos causaba aglomeraciones, pérdidas por cambio incorrecto y falta de control de los responsables de familia sobre los consumos diarios de los alumnos.",
+      task: "Diseñar una plataforma de identidad y billetera digital compuesta por un portal de autoservicio para estudiantes y tutores, y un sistema de cobro rápido para cajas, con conciliación de saldos en tiempo real.",
+      action: "Se estructuró una arquitectura desacoplada en dos subsistemas independientes (portal de autoservicio para usuarios y módulo administrativo para cajas y recargas). Se diseñó una base de datos relacional con 14 tablas normalizadas en MySQL con integridad referencial estricta, validaciones transaccionales para impedir saldos negativos, módulo de recargas auditadas y saneamiento completo de credenciales institucionales.",
       result: "Transacciones de compra completadas en menos de 10 segundos, cero inconsistencias en los balances de cuenta durante pruebas de carga y una experiencia de cobro moderna y sin contacto."
     },
     featured: false
   },
   {
     id: "attendance-track",
-    title: "AttendanceTrack",
+    title: "AttendanceTrack: Control de Asistencia y Turnos",
     category: "backend",
-    categoryLabel: "Backend & APIs",
-    tagline: "Control de asistencias y turnos laborales con validación biométrica/visual vía Webcam, API REST y reportes PDF.",
-    badge: "Biometric Shift API",
+    categoryLabel: "Backend y APIs",
+    tagline: "Control de asistencias y turnos laborales con validación biométrica y visual vía cámara web, API REST y reportes en PDF.",
+    badge: "API Biométrica y Turnos",
     repoUrl: "https://github.com/gabom404/attendance-track",
     demoUrl: null,
-    stack: ["PHP", "Webcam API", "REST API", "TCPDF", "MySQL", "JavaScript"],
+    stack: ["PHP", "API de Cámara Web", "API REST", "TCPDF", "MySQL", "JavaScript"],
     metrics: [
-      "Cero suplantaciones ('buddy punching') con foto-verificación",
-      "85% ahorro de tiempo administrativo en consolidación de nómina",
-      "Endpoints REST JSON para terminales y kioscos"
+      "Cero suplantaciones de identidad mediante foto-verificación en vivo",
+      "85% de ahorro de tiempo administrativo en consolidación de planillas",
+      "Puntos de enlace REST en formato JSON para terminales fijas"
     ],
     star: {
-      situation: "Empresas con personal distribuido y turnos rotativos sufrían de fraude en el marcaje de asistencia (compañeros registrando a ausentes) y retrasos semanales de varias horas procesando planillas manualmente.",
-      task: "Construir una solución de marcaje instantáneo que capture una fotografía en tiempo real del empleado al marcar, calcule retardos según reglas de turno y provea endpoints y reportes consolidados en PDF.",
-      action: "Se implementó un módulo cliente con la HTML5 MediaDevices/Webcam API que captura y comprime imágenes en el navegador antes de enviarlas al servidor. En el backend en PHP, se crearon controladores para verificar la ventana horaria del turno asignado (lunes a domingo con tolerancias configurables), endpoints REST en formato JSON para kioscos remotos, generador de reportes consolidados con TCPDF y saneamiento estricto de PII.",
-      result: "Eliminación absoluta de suplantaciones de identidad gracias al respaldo fotográfico automático, reducción del 85% en tiempo de procesamiento administrativo de nómina y 286 archivos de código limpios y documentados."
+      situation: "Empresas con personal distribuido y turnos rotativos sufrían de fraude en el marcaje de asistencia (suplantación de identidad entre compañeros) y retrasos semanales de varias horas procesando planillas de forma manual.",
+      task: "Construir una solución de marcaje instantáneo que capture una fotografía en tiempo real del empleado al marcar, calcule retardos según reglas de turno y provea puntos de enlace y reportes consolidados en PDF.",
+      action: "Se implementó un módulo cliente con la API de dispositivos multimedia de HTML5 que captura y comprime imágenes en el navegador antes de enviarlas al servidor. En el backend en PHP, se crearon controladores para verificar la ventana horaria del turno asignado (lunes a domingo con tolerancias configurables), puntos de enlace REST en formato JSON para terminales de autoservicio, generador de reportes consolidados con TCPDF y saneamiento estricto de datos personales sensibles.",
+      result: "Eliminación absoluta de suplantaciones de identidad gracias al respaldo fotográfico automático, reducción del 85% en tiempo de procesamiento administrativo de planillas y 286 archivos de código limpios y documentados."
     },
     featured: false
   },
   {
     id: "proyecto-arqui",
-    title: "Proyecto Final Arquitectura",
+    title: "Plataforma de Microservicios Contenerizados",
     category: "fullstack",
-    categoryLabel: "Fullstack",
+    categoryLabel: "Full Stack",
     tagline: "Arquitectura de microservicios políglota contenerizada con Docker Compose orquestando servicios en TypeScript y Python.",
-    badge: "Microservices & Docker",
+    badge: "Microservicios y Docker",
     repoUrl: "https://github.com/ProyectoFinalArquitectura/proyecto_final_arqui",
     demoUrl: null,
     stack: ["TypeScript", "Python", "Docker Compose", "Microservicios", "Node.js", "PostgreSQL"],
@@ -136,124 +136,124 @@ const PROJECTS = [
     ],
     star: {
       situation: "Las aplicaciones monolíticas que intentan resolver simultáneamente servicios de alta concurrencia de entrada y módulos de cálculo intensivo experimentan contención de recursos, lentitud y complejas fricciones de despliegue.",
-      task: "Diseñar e implementar una arquitectura de microservicios desacoplada y contenerizada, aprovechando las fortalezas de TypeScript para la API pública y Python para el procesamiento analítico interno.",
-      action: "Se crearon servicios independientes contenerizados con Docker: un API Gateway y servicio de cara al cliente desarrollado en TypeScript con Node.js, conectado a microservicios especializados en Python mediante comunicación por red interna aislada. Se orquestó la persistencia mediante PostgreSQL con volúmenes dedicados y se definió el archivo `docker-compose.yml` para garantizar repetibilidad determinista en cualquier entorno.",
+      task: "Diseñar e implementar una arquitectura de microservicios desacoplada y contenerizada, aprovechando las fortalezas de TypeScript para la pasarela de la API pública y Python para el procesamiento analítico interno.",
+      action: "Se crearon servicios independientes contenerizados con Docker: una pasarela de API y servicio de cara al cliente desarrollado en TypeScript con Node.js, conectado a microservicios especializados en Python mediante comunicación por red interna aislada. Se orquestó la persistencia mediante PostgreSQL con volúmenes dedicados y se definió el archivo `docker-compose.yml` para garantizar repetibilidad determinista en cualquier entorno.",
       result: "Configuración y despliegue del ecosistema completo en menos de 2 minutos con Docker Compose, cero conflictos de dependencias entre entornos políglotas y arquitectura modular preparada para escalamiento horizontal."
     },
     featured: true
   },
   {
     id: "cupon-x",
-    title: "Cupon-X Platform",
+    title: "Cupon-X: Motor de Cupones de Alto Desempeño",
     category: "backend",
-    categoryLabel: "Backend & APIs",
+    categoryLabel: "Backend y APIs",
     tagline: "Plataforma de comercio con lógica de negocio atómica en procedimientos almacenados PL/pgSQL de PostgreSQL y Node.js.",
-    badge: "High-Performance PL/pgSQL",
+    badge: "Alto Rendimiento con PL/pgSQL",
     repoUrl: "https://github.com/RivasMel2024/webII_proyecto",
     demoUrl: null,
     stack: ["JavaScript", "Node.js", "PostgreSQL", "PL/pgSQL", "Express", "Netlify"],
     metrics: [
-      "Validaciones de compra y stock < 25ms a nivel de motor SQL",
-      "Garantía ACID absoluta contra condiciones de carrera",
-      "Despliegue ágil con separación backend-frontend"
+      "Validaciones de compra y existencias inferiores a 25ms en base de datos",
+      "Garantía transaccional ACID absoluta contra condiciones de carrera",
+      "Despliegue ágil con separación entre backend y frontend"
     ],
     star: {
-      situation: "En plataformas de comercio electrónico y ofertas masivas, ejecutar las complejas reglas de validación de cupones y control de inventario en la capa de aplicación web genera múltiples viajes de red (round-trips) a la base de datos y riesgo de inconsistencias ante accesos concurrentes.",
-      task: "Desarrollar una solución integral donde la lógica crítica de canje, validación de expiración y stock se procese directamente en el motor de base de datos relacional para máxima velocidad y consistencia.",
-      action: "Se diseñó e implementó un esquema relacional avanzado en PostgreSQL con triggers y funciones almacenadas en PL/pgSQL que ejecutan las validaciones atómicas en milisegundos. Se conectó una API ligera en Node.js/Express que orquesta las solicitudes y un frontend moderno alojado en Netlify, logrando una estricta separación de responsabilidades.",
+      situation: "En plataformas de comercio electrónico y ofertas masivas, ejecutar las complejas reglas de validación de cupones y control de inventario en la capa de aplicación web genera múltiples viajes de red de ida y vuelta a la base de datos y riesgo de inconsistencias ante accesos concurrentes.",
+      task: "Desarrollar una solución integral donde la lógica crítica de canje, validación de expiración y existencias se procese directamente en el motor de base de datos relacional para máxima velocidad y consistencia.",
+      action: "Se diseñó e implementó un esquema relacional avanzado en PostgreSQL con disparadores (triggers) y funciones almacenadas en PL/pgSQL que ejecutan las validaciones atómicas en milisegundos. Se conectó una API ligera en Node.js y Express que orquesta las solicitudes y una interfaz moderna alojada en Netlify, logrando una estricta separación de responsabilidades.",
       result: "Tiempos de respuesta de canje inferiores a 25 milisegundos en la base de datos, total blindaje contra condiciones de carrera y reducción drástica de la carga de cómputo en el servidor de aplicación."
     },
     featured: false
   },
   {
     id: "enfoque-app",
-    title: "Enfoque App",
+    title: "Enfoque: Aplicación Móvil de Productividad",
     category: "mobile",
-    categoryLabel: "Mobile",
+    categoryLabel: "Desarrollo Móvil",
     tagline: "Aplicación móvil multiplataforma para gestión del tiempo y productividad personal con Flutter y técnica Pomodoro.",
-    badge: "Productivity & Mobile UX",
+    badge: "Productividad y Experiencia Móvil",
     repoUrl: "https://github.com/Gaboum11/enfoque_app",
     demoUrl: null,
-    stack: ["Flutter", "Dart", "BLoC / Provider", "SQLite", "Local Notifications", "Material 3"],
+    stack: ["Flutter", "Dart", "BLoC y Provider", "SQLite", "Notificaciones Locales", "Material 3"],
     metrics: [
-      "Renderizado fluido a 60 FPS constante en Android/iOS",
-      "Persistencia de hábitos offline sin requerir conexión",
+      "Renderizado fluido a 60 FPS constante en dispositivos móviles",
+      "Persistencia local de hábitos sin requerir conexión a internet",
       "Arquitectura reactiva desacoplada para gestión de estado"
     ],
     star: {
       situation: "La constante sobrecarga de estímulos y notificaciones dificulta mantener la concentración en bloques de estudio prolongados, y la mayoría de aplicaciones de temporizador existentes sufren de interfaces saturadas o alto consumo de batería en segundo plano.",
       task: "Construir una aplicación móvil nativa y minimalista basada en la técnica Pomodoro, con un diseño visual libre de distracciones, persistencia local de métricas de desempeño y bajo impacto energético.",
-      action: "Se desarrolló la aplicación con Flutter y Dart empleando principios de Clean Architecture y gestión reactiva del estado. Se implementaron temporizadores optimizados en segundo plano con notificaciones locales del sistema, persistencia estructurada de sesiones de concentración en SQLite para auditoría de productividad, y una interfaz inmersiva basada en Material Design 3 con soporte dinámico de modo oscuro.",
-      result: "Tasa de rendimiento estable a 60 FPS con mínimo impacto en la batería, funcionamiento 100% offline y feedback altamente positivo de estudiantes para el seguimiento de sus metas de estudio."
+      action: "Se desarrolló la aplicación con Flutter y Dart empleando principios de Arquitectura Limpia y gestión reactiva del estado. Se implementaron temporizadores optimizados en segundo plano con notificaciones locales del sistema, persistencia estructurada de sesiones de concentración en SQLite para auditoría de productividad, y una interfaz inmersiva basada en Material Design 3 con soporte dinámico de modo oscuro.",
+      result: "Tasa de rendimiento estable a 60 fotogramas por segundo con mínimo impacto en la batería, funcionamiento completamente local y sin conexión, y retroalimentación altamente positiva de estudiantes para el seguimiento de sus metas de estudio."
     },
     featured: false
   },
   {
     id: "delieat",
-    title: "DeliEat Assistant",
+    title: "DeliEat: Asistente Gastronómico Inteligente",
     category: "python-ai",
-    categoryLabel: "Python & IA",
+    categoryLabel: "Python e IA",
     tagline: "Asistente conversacional inteligente para recomendación gastronómica con procesamiento de lenguaje natural en Python.",
-    badge: "NLP Conversational AI",
+    badge: "Inteligencia Artificial Conversacional",
     repoUrl: "https://github.com/Gaboum11/DeliEat",
     demoUrl: null,
-    stack: ["Python", "Django", "NLP", "JavaScript", "NLTK", "RegEx"],
+    stack: ["Python", "Django", "Procesamiento de Lenguaje Natural", "JavaScript", "NLTK", "Expresiones Regulares"],
     metrics: [
-      "88%+ de precisión en extracción de ingredientes y platos",
-      "Tiempo de inferencia del bot < 300ms por interacción",
-      "Algoritmo de similitud semántica para recomendaciones"
+      "Más del 88% de precisión en extracción de ingredientes y platillos",
+      "Tiempo de inferencia del asistente menor a 300ms por interacción",
+      "Algoritmo de similitud semántica para recomendaciones culinarias"
     ],
     star: {
       situation: "Los usuarios a menudo no saben qué preparar con los ingredientes específicos que tienen disponibles en casa, y los buscadores tradicionales exigen coincidencias de texto exactas sin interpretar sinónimos ni lenguaje coloquial.",
-      task: "Desarrollar un chatbot conversacional interactivo capaz de comprender intenciones en lenguaje natural, extraer ingredientes ingresados por el usuario y recomendar opciones culinarias óptimas en tiempo real.",
-      action: "Se implementó un backend en Python con Django integrando algoritmos de procesamiento de lenguaje natural (NLP) para tokenización, lematización y extracción de entidades. Se desarrolló un algoritmo de similitud semántica y puntuación ponderada para correlacionar la despensa del usuario con la base de conocimiento culinaria, respaldado por una interfaz de chat web fluida en JavaScript.",
-      result: "Tasa de acierto superior al 88% en la interpretación de peticiones de usuario, respuestas del asistente en menos de 300ms y una experiencia de usuario interactiva y amigable."
+      task: "Desarrollar un asistente conversacional interactivo capaz de comprender intenciones en lenguaje natural, extraer ingredientes ingresados por el usuario y recomendar opciones culinarias óptimas en tiempo real.",
+      action: "Se implementó un backend en Python con Django integrando algoritmos de procesamiento de lenguaje natural para tokenización, lematización y extracción de entidades. Se desarrolló un algoritmo de similitud semántica y puntuación ponderada para correlacionar la despensa del usuario con la base de conocimiento culinaria, respaldado por una interfaz de chat web fluida en JavaScript.",
+      result: "Tasa de acierto superior al 88% en la interpretación de peticiones de usuario, respuestas del asistente en menos de 300 milisegundos y una experiencia de usuario interactiva y amigable."
     },
     featured: false
   },
   {
     id: "data-analytics",
-    title: "Data Analytics Core System",
+    title: "Sistema Central de Análisis de Datos",
     category: "python-ai",
-    categoryLabel: "Python & IA",
+    categoryLabel: "Python e IA",
     tagline: "Motor de análisis, transformación y visualización de datos estructurados bajo arquitectura MVC pura en Python.",
-    badge: "Python MVC Architecture",
+    badge: "Arquitectura MVC en Python",
     repoUrl: "https://github.com/Dae51/Proyecto_DAI",
     demoUrl: null,
-    stack: ["Python 3", "Arquitectura MVC", "Pandas", "NumPy", "Matplotlib", "Data Pipelines"],
+    stack: ["Python 3", "Arquitectura MVC", "Pandas", "NumPy", "Matplotlib", "Flujos de Datos"],
     metrics: [
       "60% de reducción de código redundante mediante patrón MVC",
-      "Ingestión y limpieza automatizada de datasets heterogéneos",
+      "Ingesta y limpieza automatizada de conjuntos de datos heterogéneos",
       "Generación de reportes analíticos con métricas estadísticas"
     ],
     star: {
-      situation: "Los proyectos de ciencia de datos suelen implementarse en scripts desestructurados donde la limpieza de datos, los cálculos estadísticos y la visualización se mezclan, haciendo imposible la mantenibilidad y reutilización.",
-      task: "Diseñar un pipeline y sistema de procesamiento analítico aplicando el patrón arquitectónico Modelo-Vista-Controlador (MVC) en Python, separando rigurosamente el modelado de datos, la lógica de agregación y la presentación gráfica.",
+      situation: "Los proyectos de ciencia de datos suelen implementarse en archivos desestructurados donde la limpieza de datos, los cálculos estadísticos y la visualización se mezclan, dificultando la mantenibilidad y reutilización.",
+      task: "Diseñar un flujo estructurado y sistema de procesamiento analítico aplicando el patrón arquitectónico Modelo-Vista-Controlador (MVC) en Python, separando rigurosamente el modelado de datos, la lógica de agregación y la presentación gráfica.",
       action: "Se crearon modelos de datos con Pandas y NumPy dedicados exclusivamente a la validación de tipos, saneamiento de valores atípicos y normalización; controladores encargados de aplicar reglas de negocio y cálculo de estadísticos descriptivos; y vistas modulares generadoras de gráficos interactivos con Matplotlib e informes estructurados.",
-      result: "Arquitectura modular que permitió integrar nuevos orígenes de datos sin tocar la lógica de visualización, reducción del 60% en duplicación de código analítico y facilidad de auditoría de resultados."
+      result: "Arquitectura modular que permitió integrar nuevos orígenes de datos sin alterar la lógica de visualización, reducción del 60% en duplicación de código analítico y facilidad de auditoría de resultados."
     },
     featured: false
   },
   {
     id: "turimox",
-    title: "Turimox Ecoturismo",
+    title: "Turimox: Portal de Ecoturismo",
     category: "frontend",
-    categoryLabel: "Frontend",
+    categoryLabel: "Frontend Web",
     tagline: "Plataforma web de promoción ecoturística con diseño responsivo de alta fidelidad, SCSS modular y Firebase.",
-    badge: "Modern Web & Tourism",
+    badge: "Diseño Web y Turismo",
     repoUrl: "https://github.com/ChristianRende22/Turimox",
     demoUrl: null,
-    stack: ["HTML5 Semántico", "SCSS / SASS", "JavaScript ES6+", "Firebase", "Responsive Design"],
+    stack: ["HTML5 Semántico", "SCSS y SASS", "JavaScript ES6+", "Firebase", "Diseño Responsivo"],
     metrics: [
-      "Puntuación 95+ en métricas Lighthouse (SEO y Accesibilidad)",
+      "Puntuación 95+ en métricas de rendimiento y accesibilidad web",
       "Arquitectura SCSS modular con metodología BEM",
-      "100% responsivo para móviles, tablets y monitores ultrawide"
+      "100% responsivo para dispositivos móviles, tabletas y computadoras"
     ],
     star: {
-      situation: "Destinos turísticos locales y microempresarios de ecoturismo carecían de una plataforma moderna y atractiva para difundir sus rutas, servicios de guía y actividades al aire libre ante turistas nacionales e internacionales.",
+      situation: "Destinos turísticos locales y microempresarios de ecoturismo carecían de una plataforma moderna y atractiva para difundir sus rutas, servicios de guía y actividades al aire libre ante visitantes nacionales e internacionales.",
       task: "Diseñar y desarrollar un portal web rápido, interactivo y visualmente envolvente con arquitectura de estilos mantenible (SCSS modular) y sistema de consulta de rutas dinámicas.",
-      action: "Se construyó la interfaz con HTML5 semántico aplicando convenciones BEM para nomenclatura CSS. Se estructuró un sistema de diseño con SCSS (tokens de color, tipografía y mixins responsivos), se agregaron componentes dinámicos en JavaScript vanilla para filtros de itinerarios y visualización de galerías interactivas, y se integró Firebase para la gestión en la nube.",
-      result: "Puntuación de rendimiento y buenas prácticas superior a 95 puntos en Google Lighthouse, experiencia de usuario fluida y carga instantánea en conexiones móviles."
+      action: "Se construyó la interfaz con HTML5 semántico aplicando convenciones BEM para nomenclatura CSS. Se estructuró un sistema de diseño con SCSS (variables de color, tipografía y reglas responsivas), se agregaron componentes dinámicos en JavaScript nativo para filtros de itinerarios y visualización de galerías interactivas, y se integró Firebase para la gestión en la nube.",
+      result: "Puntuación de rendimiento y buenas prácticas superior a 95 puntos en auditorías web, experiencia de usuario fluida y carga instantánea en conexiones móviles."
     },
     featured: false
   }
@@ -262,68 +262,68 @@ const PROJECTS = [
 // Technical Skills Matrix Data
 const SKILLS_MATRIX = {
   backend: {
-    title: "Backend & APIs",
+    title: "Backend y APIs",
     icon: "server",
     skills: [
       { name: "PHP (Laravel 11, PHP 8 PDO)", level: "Avanzado" },
-      { name: "NestJS & Node.js / Express", level: "Intermedio - Avanzado" },
+      { name: "NestJS, Node.js y Express", level: "Intermedio - Avanzado" },
       { name: "Python (Django, FastAPI, MVC)", level: "Avanzado" },
-      { name: "RESTful API Design & OpenAPI 3.0", level: "Avanzado" },
-      { name: "Postman Collections & Automated Testing", level: "Avanzado" },
-      { name: "PHPUnit & Unit Testing", level: "Intermedio" }
+      { name: "Diseño de APIs REST y OpenAPI 3.0", level: "Avanzado" },
+      { name: "Colecciones de Postman y Pruebas Automatizadas", level: "Avanzado" },
+      { name: "PHPUnit y Pruebas Unitarias", level: "Intermedio" }
     ]
   },
   frontend: {
-    title: "Frontend & Web",
+    title: "Frontend y Tecnologías Web",
     icon: "layout",
     skills: [
-      { name: "JavaScript (ES6+) & TypeScript", level: "Avanzado" },
-      { name: "HTML5 Semántico & Accesibilidad", level: "Avanzado" },
-      { name: "CSS3 Moderno (Flexbox, Grid, Custom Properties)", level: "Avanzado" },
-      { name: "SCSS / SASS & Arquitectura BEM", level: "Intermedio" },
-      { name: "Bootstrap 5 & Tailwind CSS", level: "Avanzado" },
-      { name: "Vite & Modern Tooling", level: "Intermedio" }
+      { name: "JavaScript (ES6+) y TypeScript", level: "Avanzado" },
+      { name: "HTML5 Semántico y Accesibilidad", level: "Avanzado" },
+      { name: "CSS3 Moderno (Flexbox, Grid, Variables CSS)", level: "Avanzado" },
+      { name: "SCSS / SASS y Arquitectura BEM", level: "Intermedio" },
+      { name: "Bootstrap 5 y Tailwind CSS", level: "Avanzado" },
+      { name: "Vite y Herramientas Modernas", level: "Intermedio" }
     ]
   },
   mobileDesktop: {
-    title: "Mobile & Desktop",
+    title: "Desarrollo Móvil y Escritorio",
     icon: "smartphone",
     skills: [
-      { name: "Flutter & Dart", level: "Intermedio - Avanzado" },
-      { name: "BLoC & Provider State Management", level: "Intermedio" },
+      { name: "Flutter y Dart", level: "Intermedio - Avanzado" },
+      { name: "Gestión de Estado BLoC y Provider", level: "Intermedio" },
       { name: "Material Design 3", level: "Avanzado" },
-      { name: "SQLite & Offline Persistence", level: "Intermedio" },
-      { name: "Local Push Notifications & Background Tasks", level: "Intermedio" }
+      { name: "SQLite y Persistencia Local", level: "Intermedio" },
+      { name: "Notificaciones Locales y Tareas en Segundo Plano", level: "Intermedio" }
     ]
   },
   databases: {
-    title: "Bases de Datos & Persistencia",
+    title: "Bases de Datos y Persistencia",
     icon: "database",
     skills: [
-      { name: "MySQL & MariaDB (Índices, Transacciones ACID)", level: "Avanzado" },
-      { name: "PostgreSQL & PL/pgSQL (Triggers, Stored Procedures)", level: "Intermedio - Avanzado" },
-      { name: "Modelado Relacional & Normalización (1FN-3FN)", level: "Avanzado" },
+      { name: "MySQL y MariaDB (Índices, Transacciones ACID)", level: "Avanzado" },
+      { name: "PostgreSQL y PL/pgSQL (Disparadores, Procedimientos)", level: "Intermedio - Avanzado" },
+      { name: "Modelado Relacional y Normalización (1FN-3FN)", level: "Avanzado" },
       { name: "Firebase Firestore", level: "Intermedio" },
-      { name: "Sanitización & PDO Prepared Statements", level: "Avanzado" }
+      { name: "Sanitización y Consultas Preparadas con PDO", level: "Avanzado" }
     ]
   },
   devopsTools: {
-    title: "DevOps & Herramientas",
+    title: "DevOps y Herramientas",
     icon: "terminal",
     skills: [
-      { name: "Git & GitHub Workflow (157+ contribuciones)", level: "Avanzado" },
-      { name: "Docker & Docker Compose", level: "Intermedio" },
-      { name: "Linux / Shell Scripting & Apache / XAMPP", level: "Intermedio - Avanzado" },
-      { name: "Stoplight Studio & Swagger UI", level: "Avanzado" },
-      { name: "Netlify & GitHub Pages Deployment", level: "Avanzado" }
+      { name: "Flujo de Trabajo Git y GitHub (157+ contribuciones)", level: "Avanzado" },
+      { name: "Docker y Docker Compose", level: "Intermedio" },
+      { name: "Entornos Linux, Shell Scripting y Apache", level: "Intermedio - Avanzado" },
+      { name: "Stoplight Studio y Swagger UI", level: "Avanzado" },
+      { name: "Despliegues en Netlify y GitHub Pages", level: "Avanzado" }
     ]
   }
 };
 
-// Experience & Co-Founding Data
+// Experience Data
 const EXPERIENCES = [
   {
-    role: "Backend Developer",
+    role: "Desarrollador Backend",
     organization: "C3 El Salvador",
     period: "01/2026 - 01/2026",
     location: "El Salvador",
@@ -335,7 +335,7 @@ const EXPERIENCES = [
     ]
   },
   {
-    role: "Web Developer & Soluciones Digitales",
+    role: "Desarrollador Web y Soluciones Digitales",
     organization: "Empire Barber Shop",
     period: "2023 - 2024",
     location: "El Salvador",
@@ -347,7 +347,7 @@ const EXPERIENCES = [
     ]
   },
   {
-    role: "Soporte de Sistemas & Infraestructura",
+    role: "Soporte de Sistemas e Infraestructura",
     organization: "Centro de Formación Profesional (CFP) - Colegio Salesiano Santa Cecilia",
     period: "2022 - 2023",
     location: "Santa Tecla, El Salvador",
@@ -363,7 +363,7 @@ const EXPERIENCES = [
 // Profile Metadata
 const CANDIDATE_PROFILE = {
   name: "Gabriel Martínez",
-  tagline: "Software Developer | Backend & Web Systems",
+  tagline: "Ingeniero de Software | Desarrollador Backend y Sistemas Web",
   stackSummary: "PHP, Python, TypeScript, Flutter, MySQL, PostgreSQL, Docker",
   location: "Nueva San Salvador, La Libertad, El Salvador",
   email: "gemc1172005@gmail.com",
@@ -378,7 +378,7 @@ const CANDIDATE_PROFILE = {
   education: [
     {
       institution: "ESEN (Escuela Superior de Economía y Negocios)",
-      degree: "Bachelor of Engineering in Software Engineering",
+      degree: "Ingeniería de Software",
       period: "2024 - 2028",
       status: "En curso"
     },
@@ -391,6 +391,6 @@ const CANDIDATE_PROFILE = {
   ],
   languages: [
     { name: "Español", level: "Nativo" },
-    { name: "Inglés", level: "Profesional de Trabajo (B2/C1)" }
+    { name: "Inglés", level: "Competencia Profesional Completa (B2/C1)" }
   ]
 };
