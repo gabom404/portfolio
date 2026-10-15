@@ -1,7 +1,6 @@
 /**
  * projects-data.js
- * Curated projects catalog for Gabriel Martínez (gabom404)
- * Incorporating the STAR Methodology (Situation, Task, Action, Result)
+ * Curated projects catalog with in-depth engineering breakdowns for Gabriel Martínez (gabom404)
  */
 
 const PROJECTS = [

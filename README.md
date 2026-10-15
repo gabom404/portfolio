@@ -1,7 +1,7 @@
 # Gabriel Martínez — Developer Portfolio
 
 > **Software Developer | Backend & Web Systems (PHP, Python, TypeScript, Flutter, MySQL)**  
-> Minimalist, zero-build developer portfolio web application built with semantic HTML5, CSS3 Custom Properties, and Vanilla ES6+ JavaScript, incorporating the **STAR Methodology** (Situation, Task, Action, Result).
+> Minimalist, zero-build developer portfolio web application built with semantic HTML5, CSS3 Custom Properties, and Vanilla ES6+ JavaScript, featuring structured technical case studies (Context & Challenge, Architecture & Implementation, and Quantifiable Impact).
 
 [![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-2563eb?style=flat-square&logo=github)](https://gabom404.github.io/portfolio/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
@@ -12,9 +12,9 @@
 ## Highlights
 
 - **Zero-Build Architecture:** Pure HTML5, modern CSS3, and ES6+ JavaScript. No npm build, no bundler overhead, instant deployment directly to GitHub Pages.
-- **STAR Methodology Integration:** Every single project is documented through Situation, Task, Action, and Result with quantifiable outcomes, architecture decisions, and security measures.
+- **In-Depth Engineering Breakdowns:** Every project is documented with business context, technical challenges, architectural decisions (Service Layer, concurrency locking, OpenAPI contracts, BCrypt) and quantifiable results.
 - **Dynamic Project Filtering:** Instant category switching (`Todos`, `Backend & APIs`, `Fullstack`, `Mobile`, `Python & IA`, `Frontend`) with real-time project counts.
-- **Engineering Case Study Modals:** Deep dive into architectural challenges, database schemas, and benchmarks of each project with clean vector iconography.
+- **Integrated On-Card Technical Breakdown:** Direct access to architectural decisions, concurrency models, database schemas, and benchmarks right on each project card without artificial popups.
 - **Minimalist Editorial UI:** Warm, distraction-free aesthetic with crisp typography, line-art SVG visuals, and high contrast readability.
 - **100% Responsive & Accessible:** Fluid layouts tested across mobile, tablet, and desktop screens with semantic HTML and keyboard accessibility.
 
@@ -28,8 +28,8 @@ portfolio-gabom404/
 ├── css/
 │   └── style.css           # CSS Custom properties, responsive grid & animations
 ├── js/
-│   ├── projects-data.js    # 11 curated projects with STAR methodology data
-│   └── app.js              # Theme switcher, filtering, modal controller & DOM renderer
+│   ├── projects-data.js    # 11 curated projects with engineering breakdown data
+│   └── app.js              # Theme switcher, filtering, and DOM renderer
 ├── assets/
 │   └── icons/              # Clean inline & standalone SVG assets
 └── README.md               # Technical overview & documentation
@@ -39,7 +39,7 @@ portfolio-gabom404/
 
 ## Curated Projects (11)
 
-| # | Project | Category | Tech Stack | STAR Focus |
+| # | Project | Category | Tech Stack | Key Technical Focus & Outcomes |
 |---|---|---|---|---|
 | 1 | **Promora Marketplace & Engine** | Backend & APIs | Laravel 11, PHPUnit, Postman, MySQL | Concurrency locking (`SELECT FOR UPDATE`), atomic coupon redemption, 35% checkout latency reduction. |
 | 2 | **Biblioteca REST API** | Backend & APIs | Laravel, OpenAPI 3.0, Stoplight, Postman | API-First contract design, Stoplight Studio, 50% faster client integration. |

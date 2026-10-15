@@ -7,7 +7,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   renderFilterTabs();
   renderProjects('all');
-  setupModalHandlers();
   setupSmoothScroll();
 });
 
@@ -129,12 +128,19 @@ function renderProjects(filterCategory = 'all') {
 
     const stackText = project.stack.join(' · ');
     const primaryMetric = project.metrics && project.metrics[0] ? project.metrics[0] : '';
-    const metricHtml = primaryMetric ? `
+    const metricBadgeHtml = primaryMetric ? `
       <div class="card-metric-badge">
         <span class="metric-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
         <span class="metric-text">${primaryMetric}</span>
       </div>
     ` : '';
+
+    const metricsListHtml = (project.metrics || []).map(m => `
+      <li class="story-metric-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>${m}</span>
+      </li>
+    `).join('');
 
     card.innerHTML = `
       <div class="card-mockup-frame">
@@ -150,7 +156,10 @@ function renderProjects(filterCategory = 'all') {
 
       <div class="card-content">
         <div class="card-top">
-          <h3 class="project-title">${project.title}</h3>
+          <div>
+            <span class="card-category-tag">${project.categoryLabel}</span>
+            <h3 class="project-title">${project.title}</h3>
+          </div>
           <a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="project-link-icon" title="Ver repositorio en GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="7" y1="17" x2="17" y2="7"></line>
@@ -161,24 +170,51 @@ function renderProjects(filterCategory = 'all') {
 
         <p class="project-description">${project.tagline}</p>
 
-        ${metricHtml}
+        ${metricBadgeHtml}
+
+        <div class="project-story-blocks">
+          <!-- 1. El Reto & Contexto -->
+          <div class="story-block challenge">
+            <div class="story-header">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+              <span class="story-title">El Reto & Contexto</span>
+            </div>
+            <p class="story-text"><strong>Contexto:</strong> ${project.star.situation}</p>
+            <p class="story-text"><strong>Desafío:</strong> ${project.star.task}</p>
+          </div>
+
+          <!-- 2. Arquitectura & Solución -->
+          <div class="story-block solution">
+            <div class="story-header">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+              <span class="story-title">Arquitectura & Solución Técnica</span>
+            </div>
+            <p class="story-text">${project.star.action}</p>
+          </div>
+
+          <!-- 3. Impacto & Resultados -->
+          <div class="story-block results">
+            <div class="story-header">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+              <span class="story-title">Impacto & Resultados Clave</span>
+            </div>
+            <p class="story-text">${project.star.result}</p>
+            <ul class="story-metrics-list">
+              ${metricsListHtml}
+            </ul>
+          </div>
+        </div>
 
         <div class="project-tags">
           <span>${stackText}</span>
         </div>
 
-        <div class="card-actions">
-          <button class="btn-case-study" type="button" data-star-id="${project.id}">
-            <span>Ver Caso de Estudio</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </button>
-          <a class="btn-repo-link" href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" title="Ver código en GitHub">
+        <div class="card-footer-action">
+          <a class="btn-pill-dark btn-card-repo" href="${project.repoUrl}" target="_blank" rel="noopener noreferrer">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
             </svg>
+            <span>Ver Repositorio en GitHub</span>
           </a>
         </div>
       </div>
@@ -186,99 +222,6 @@ function renderProjects(filterCategory = 'all') {
 
     grid.appendChild(card);
   });
-
-  // Attach case study trigger listeners
-  grid.querySelectorAll('.btn-case-study').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const projectId = e.currentTarget.getAttribute('data-star-id');
-      openStarModal(projectId);
-    });
-  });
-}
-
-/* ==========================================================================
-   Engineering Case Study Modal Logic
-   ========================================================================== */
-
-function setupModalHandlers() {
-  const modalBackdrop = document.getElementById('star-modal');
-  const closeBtn = document.getElementById('modal-close-btn');
-
-  if (!modalBackdrop) return;
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => closeStarModal());
-  }
-
-  modalBackdrop.addEventListener('click', (e) => {
-    if (e.target === modalBackdrop) {
-      closeStarModal();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
-      closeStarModal();
-    }
-  });
-}
-
-function openStarModal(projectId) {
-  if (typeof PROJECTS === 'undefined') return;
-  const project = PROJECTS.find(p => p.id === projectId);
-  if (!project) return;
-
-  const modalBackdrop = document.getElementById('star-modal');
-  const modalBadge = document.getElementById('modal-badge');
-  const modalTitle = document.getElementById('modal-title');
-  const modalTagline = document.getElementById('modal-tagline');
-  const modalSituation = document.getElementById('modal-star-situation');
-  const modalAction = document.getElementById('modal-star-action');
-  const modalResult = document.getElementById('modal-star-result');
-  const modalMetricsList = document.getElementById('modal-metrics-list');
-  const modalRepoBtn = document.getElementById('modal-repo-btn');
-
-  if (modalBadge) modalBadge.textContent = project.categoryLabel || 'Caso de Estudio de Ingeniería';
-  if (modalTitle) modalTitle.textContent = project.title;
-  if (modalTagline) modalTagline.textContent = project.tagline;
-
-  // Fluid, natural storytelling
-  if (modalSituation) {
-    modalSituation.innerHTML = `<strong>Contexto:</strong> ${project.star.situation}<br><br><strong>El Desafío:</strong> ${project.star.task}`;
-  }
-  if (modalAction) {
-    modalAction.textContent = project.star.action;
-  }
-  if (modalResult) {
-    modalResult.textContent = project.star.result;
-  }
-
-  // Populate bullet points for key achievements
-  if (modalMetricsList && project.metrics) {
-    modalMetricsList.innerHTML = project.metrics.map(m => `
-      <li class="metric-item">
-        <span class="metric-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-        <span>${m}</span>
-      </li>
-    `).join('');
-  }
-
-  if (modalRepoBtn) {
-    modalRepoBtn.setAttribute('href', project.repoUrl);
-  }
-
-  modalBackdrop.classList.add('active');
-  modalBackdrop.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeStarModal() {
-  const modalBackdrop = document.getElementById('star-modal');
-  if (!modalBackdrop) return;
-
-  modalBackdrop.classList.remove('active');
-  modalBackdrop.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
 }
 
 /* ==========================================================================

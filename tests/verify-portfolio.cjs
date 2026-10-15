@@ -60,17 +60,11 @@ for (const p of projects) {
     }
 }
 
-console.log("All 11 projects successfully validated with complete STAR criteria.");
+console.log("All 11 projects successfully validated with complete engineering criteria.");
 
 const idsToCheck = [
     "filter-tabs",
     "projects-grid",
-    "star-modal",
-    "modal-close-btn",
-    "modal-title",
-    "modal-star-situation",
-    "modal-star-action",
-    "modal-star-result",
     "skills-container",
     "experience-container"
 ];
@@ -81,6 +75,21 @@ for (const id of idsToCheck) {
     }
 }
 console.log("All critical DOM hooks verified successfully!");
+
+// Strict Zero Explicit STAR Mention Verification (Natural Storytelling Rule)
+const forbiddenVisibleKeywords = ["metodología star", "método star", "arquitectura star", "ciclo star", "star methodology"];
+const filesToCheckForStar = ["index.html", "README.md"];
+for (const rel of filesToCheckForStar) {
+    const full = path.join(root, rel);
+    const content = fs.readFileSync(full, "utf8").toLowerCase();
+    for (const kw of forbiddenVisibleKeywords) {
+        if (content.includes(kw)) {
+            console.error(`Explicit STAR keyword "${kw}" found in ${rel}`);
+            process.exit(1);
+        }
+    }
+}
+console.log("Zero explicit STAR keyword violations verified successfully!");
 
 // Strict Zero-Emoji Rule Verification
 const emojiRegex = /[\u{1F000}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1FA00}-\u{1FAFF}\u{2300}-\u{23FF}\u{2B50}\u{2B55}\u{200D}\u{FE0F}]/u;
