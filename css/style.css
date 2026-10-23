@@ -2151,3 +2151,78 @@ button {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   Team / private project labels
+   ========================================================================== */
+.card-badge-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid rgba(29, 78, 216, 0.18);
+  line-height: 1.2;
+}
+
+.card-badge-team .material-symbols-outlined {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.modal-badge-team {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border-color: rgba(29, 78, 216, 0.18);
+}
+
+.card-private-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0.3rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-card);
+}
+
+.card-private-label .material-symbols-outlined {
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   F1 track: keep it clear of the header and out of the way on small screens
+   ========================================================================== */
+.f1-track-container {
+  top: 72px;
+  height: calc(100vh - 72px);
+}
+
+@media (max-width: 900px) {
+  .f1-track-container {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .f1-track-container {
+    display: none;
+  }
+}

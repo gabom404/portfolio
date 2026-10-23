@@ -92,10 +92,10 @@ const PROJECT_ICONS = {
     color: '#0F766E',
     icon: 'badge'
   },
-  'proyecto-arqui': {
+  eventos: {
     bg: '#F0F9FF',
     color: '#0369A1',
-    icon: 'hub'
+    icon: 'event'
   },
   'cupon-x': {
     bg: '#F5F3FF',
@@ -112,10 +112,10 @@ const PROJECT_ICONS = {
     color: '#A16207',
     icon: 'restaurant'
   },
-  'data-analytics': {
+  databusters: {
     bg: '#EEF2FF',
     color: '#3730A3',
-    icon: 'analytics'
+    icon: 'inventory_2'
   },
   turimox: {
     bg: '#F0FDF4',
@@ -153,14 +153,23 @@ function renderProjects(filterCategory = 'all') {
 
     const iconMeta = getProjectIcon(project.id);
     const stackPreviewText = project.stack.slice(0, 4).join(', ');
-    const primaryMetric = project.metrics && project.metrics[0] ? project.metrics[0] : '';
-    
-    const metricPillHtml = primaryMetric ? `
-      <div class="card-metric-pill" title="${primaryMetric}">
-        <span class="material-symbols-outlined">verified</span>
-        <span>${primaryMetric}</span>
+    const primaryHighlight = project.highlights && project.highlights[0] ? project.highlights[0] : '';
+
+    const metricPillHtml = primaryHighlight ? `
+      <div class="card-metric-pill">
+        <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+        <span>${primaryHighlight}</span>
       </div>
     ` : '';
+
+    const repoActionHtml = project.repoUrl ? `
+        <a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn" title="Ver repositorio en GitHub" aria-label="Ver repositorio ${project.title} en GitHub">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+        </a>` : `
+        <span class="card-private-label" title="El código de este proyecto está en un repositorio privado">
+          <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+          <span>Privado</span>
+        </span>`;
 
     card.innerHTML = `
       <!-- Top Row: Icon squircle + Direct GitHub Action Link -->
@@ -168,9 +177,7 @@ function renderProjects(filterCategory = 'all') {
         <div class="card-icon-squircle" style="background-color: ${iconMeta.bg}; color: ${iconMeta.color};">
           <span class="material-symbols-outlined">${iconMeta.icon}</span>
         </div>
-        <a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn" title="Ver repositorio en GitHub" aria-label="Ver repositorio ${project.title} en GitHub">
-          <span class="material-symbols-outlined">arrow_outward</span>
-        </a>
+        ${repoActionHtml}
       </div>
 
       <!-- Main Body -->
@@ -178,9 +185,15 @@ function renderProjects(filterCategory = 'all') {
         <div class="card-meta-row">
           <span class="card-category-label">${project.categoryLabel}</span>
           ${project.isWorkExperience ? `
-            <span class="card-badge-exp" title="Proyecto desarrollado en entorno de producción real">
-              <span class="material-symbols-outlined">work</span>
+            <span class="card-badge-exp" title="Desarrollado para ${project.workExperienceCompany}">
+              <span class="material-symbols-outlined" aria-hidden="true">work</span>
               <span>Experiencia Laboral</span>
+            </span>
+          ` : ''}
+          ${project.team ? `
+            <span class="card-badge-team" title="Proyecto académico desarrollado en equipo">
+              <span class="material-symbols-outlined" aria-hidden="true">groups</span>
+              <span>En equipo</span>
             </span>
           ` : ''}
         </div>
@@ -235,19 +248,32 @@ function setupModalHandlers() {
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('is-visible')) {
+      if (!modal.classList.contains('is-visible')) return;
+
+      if (e.key === 'Escape') {
         closeProjectModal();
+        return;
+      }
+
+      // Keep keyboard focus inside the dialog while it is open
+      if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll('a[href], button:not([disabled])');
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     });
   }
 }
 
-function getShortSentences(text, max = 2) {
-  if (!text) return '';
-  const sentences = text.match(/[^.!?]+[.!?]+/g);
-  if (!sentences || sentences.length === 0) return text;
-  return sentences.slice(0, max).join(' ').trim();
-}
+let lastFocusedElement = null;
 
 function openProjectModal(projectId) {
   const modal = document.getElementById('project-modal');
@@ -259,9 +285,9 @@ function openProjectModal(projectId) {
 
   const iconMeta = getProjectIcon(project.id);
 
-  const metricsListHtml = (project.metrics || []).map(m => `
+  const metricsListHtml = (project.highlights || []).map(m => `
     <li class="modal-metric-item">
-      <span class="material-symbols-outlined">check_circle</span>
+      <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
       <span>${m}</span>
     </li>
   `).join('');
@@ -270,8 +296,8 @@ function openProjectModal(projectId) {
     <span class="modal-tech-pill">${t}</span>
   `).join('');
 
-  const challengeSummary = getShortSentences(project.star.task, 2);
-  const solutionSummary = getShortSentences(project.star.action, 2);
+  const challengeSummary = project.challenge || '';
+  const solutionSummary = project.solution || '';
 
   content.innerHTML = `
     <!-- Header -->
@@ -284,12 +310,18 @@ function openProjectModal(projectId) {
           <span class="modal-category">${project.categoryLabel}</span>
           ${project.isWorkExperience ? `
             <span class="modal-badge-exp">
-              <span class="material-symbols-outlined">work</span>
+              <span class="material-symbols-outlined" aria-hidden="true">work</span>
               <span>Experiencia Laboral • ${project.workExperienceCompany}</span>
             </span>
           ` : ''}
+          ${project.team ? `
+            <span class="modal-badge-exp modal-badge-team">
+              <span class="material-symbols-outlined" aria-hidden="true">groups</span>
+              <span>Proyecto en equipo</span>
+            </span>
+          ` : ''}
         </div>
-        <h2 class="modal-title">${project.title}</h2>
+        <h2 class="modal-title" id="modal-title">${project.title}</h2>
         <p class="modal-tagline">${project.tagline}</p>
       </div>
     </div>
@@ -298,7 +330,7 @@ function openProjectModal(projectId) {
     <div class="modal-metrics-card">
       <div class="modal-metrics-title">
         <span class="material-symbols-outlined">trending_up</span>
-        <span>Métricas Clave Verificadas</span>
+        <span>Aspectos destacados</span>
       </div>
       <ul class="modal-metrics-list">
         ${metricsListHtml}
@@ -324,23 +356,16 @@ function openProjectModal(projectId) {
       </div>
     </div>
 
-    <!-- Prominent README Callout Box -->
+    ${project.repoUrl ? '' : `
     <div class="modal-readme-box">
       <div class="modal-readme-header">
-        <span class="material-symbols-outlined readme-icon">menu_book</span>
+        <span class="material-symbols-outlined readme-icon" aria-hidden="true">lock</span>
         <div class="modal-readme-info">
-          <h4 class="modal-readme-title">Documentación y Arquitectura Completa</h4>
-          <p class="modal-readme-desc">
-            Los diagramas de arquitectura C4, esquemas de bases de datos relacionales, contratos de APIs y guías de configuración se detallan en el README oficial del proyecto.
-          </p>
+          <h4 class="modal-readme-title">Repositorio privado</h4>
+          <p class="modal-readme-desc">El código no es público. Puedo mostrarlo y explicarlo en una entrevista.</p>
         </div>
       </div>
-      <a class="btn-modal-readme-action" href="${project.repoUrl}#readme" target="_blank" rel="noopener noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-        <span>Explorar README en GitHub</span>
-        <span class="material-symbols-outlined">arrow_outward</span>
-      </a>
-    </div>
+    </div>`}
 
     <!-- Tech Stack Tags -->
     <div class="modal-tech-stack">
@@ -353,11 +378,11 @@ function openProjectModal(projectId) {
     <!-- Footer Actions -->
     <div class="modal-footer-actions">
       <button class="btn-modal-close" id="btn-modal-footer-close" type="button">Cerrar</button>
-      <a class="btn-modal-github" href="${project.repoUrl}" target="_blank" rel="noopener noreferrer">
+      ${project.repoUrl ? `<a class="btn-modal-github" href="${project.repoUrl}" target="_blank" rel="noopener noreferrer">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
         <span>Ver repositorio en GitHub</span>
-        <span class="material-symbols-outlined">arrow_outward</span>
-      </a>
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+      </a>` : ''}
     </div>
   `;
 
@@ -366,9 +391,14 @@ function openProjectModal(projectId) {
     footerClose.addEventListener('click', closeProjectModal);
   }
 
+  lastFocusedElement = document.activeElement;
   modal.classList.add('is-visible');
   modal.setAttribute('aria-hidden', 'false');
+  modal.setAttribute('aria-labelledby', 'modal-title');
   document.body.style.overflow = 'hidden';
+
+  const closeBtn = document.getElementById('modal-close-btn');
+  if (closeBtn) closeBtn.focus();
 }
 
 function closeProjectModal() {
@@ -378,6 +408,10 @@ function closeProjectModal() {
   modal.classList.remove('is-visible');
   modal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+    lastFocusedElement.focus();
+  }
 }
 
 /* ==========================================================================

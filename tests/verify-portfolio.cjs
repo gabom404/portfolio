@@ -9,14 +9,7 @@ const requiredFiles = [
     "css/style.css",
     "js/projects-data.js",
     "js/app.js",
-    "js/f1-racer.js",
-    "assets/icons/github.svg",
-    "assets/icons/linkedin.svg",
-    "assets/icons/mail.svg",
-    "assets/icons/external-link.svg",
-    "assets/icons/star.svg",
-    "assets/icons/sun.svg",
-    "assets/icons/moon.svg"
+    "js/f1-racer.js"
 ];
 
 let allExist = true;
@@ -39,35 +32,62 @@ const fn = new Function(dataCode + "; return PROJECTS;");
 const projects = fn();
 
 console.log(`Loaded ${projects.length} projects.`);
-if (projects.length !== 11) {
-    console.error("Expected 11 projects, found:", projects.length);
+if (projects.length === 0) {
+    console.error("No projects found");
     process.exit(1);
 }
 
 const categories = new Set(["backend", "fullstack", "mobile", "python-ai", "frontend"]);
+const ids = new Set();
 for (const p of projects) {
-    if (!p.id || !p.title || !p.category || !p.star) {
-        console.error("Project missing required fields:", p);
+    for (const field of ["id", "title", "category", "categoryLabel", "tagline", "challenge", "solution"]) {
+        if (!p[field]) {
+            console.error(`Project missing "${field}":`, p.id || p.title);
+            process.exit(1);
+        }
+    }
+    if (ids.has(p.id)) {
+        console.error("Duplicate project id:", p.id);
         process.exit(1);
     }
+    ids.add(p.id);
     if (!categories.has(p.category)) {
         console.error("Invalid category:", p.category, "in", p.title);
         process.exit(1);
     }
-    const { situation, task, action, result } = p.star;
-    if (!situation || !task || !action || !result) {
-        console.error("Project missing STAR field:", p.title);
+    if (!Array.isArray(p.highlights) || p.highlights.length === 0 || !Array.isArray(p.stack) || p.stack.length === 0) {
+        console.error("Project needs highlights and stack:", p.title);
+        process.exit(1);
+    }
+    if (p.repoUrl === null && !p.private) {
+        console.error("Project without repoUrl must be marked private:", p.title);
+        process.exit(1);
+    }
+    if (p.repoUrl && !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+$/.test(p.repoUrl)) {
+        console.error("Invalid GitHub repo URL:", p.repoUrl);
         process.exit(1);
     }
 }
 
-console.log("All 11 projects successfully validated with complete engineering criteria.");
+// Unverifiable marketing figures are not allowed in project copy
+const percentPattern = /\d+\s*%/;
+for (const p of projects) {
+    const text = [p.tagline, p.challenge, p.solution, ...p.highlights].join(" ");
+    if (percentPattern.test(text)) {
+        console.error("Percentage claim found in project copy:", p.title);
+        process.exit(1);
+    }
+}
+
+console.log(`All ${projects.length} projects validated.`);
 
 const idsToCheck = [
     "filter-tabs",
     "projects-grid",
     "skills-container",
-    "experience-container"
+    "experience-container",
+    "project-modal",
+    "modal-close-btn"
 ];
 for (const id of idsToCheck) {
     if (!html.includes(`id="${id}"`)) {
@@ -202,7 +222,7 @@ if (!appJsContent.includes("chip-count") || !cssContent.includes(".chip-count"))
 console.log("Friendly Filter Bar with category icons & micro-badges verified successfully!");
 
 // Concise Executive Project Modal & README Callout Verification
-const modalRequiredClasses = ["modal-executive-grid", "modal-exec-card", "modal-readme-box", "btn-modal-readme-action"];
+const modalRequiredClasses = ["modal-executive-grid", "modal-exec-card", "modal-readme-box", "btn-modal-github"];
 for (const cls of modalRequiredClasses) {
     if (!appJsContent.includes(cls)) {
         console.error(`Missing modal class ${cls} in js/app.js`);
@@ -213,8 +233,8 @@ for (const cls of modalRequiredClasses) {
         process.exit(1);
     }
 }
-if (!appJsContent.includes("#readme")) {
-    console.error("Missing direct GitHub #readme anchor link in modal callout action");
+if (!appJsContent.includes("Repositorio privado") || !appJsContent.includes("card-private-label")) {
+    console.error("Missing private repository handling in js/app.js");
     process.exit(1);
 }
-console.log("Executive Project Modal with README callout verified successfully!");
+console.log("Project modal verified successfully!");
