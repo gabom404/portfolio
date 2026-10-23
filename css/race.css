@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Race components: start lights, circuit navigator, pit stop, lap game
+   ========================================================================== */
+
+/* ---------- start lights ---------- */
+.gantry { display: flex; gap: 8px; justify-content: center; }
+.gantry__lamp {
+  width: 26px; aspect-ratio: 1; border-radius: 50%;
+  background: #2C0D0E; box-shadow: inset 0 0 0 3px #170607;
+  transition: background .06s;
+}
+.gantry__lamp.is-on { background: #FF2525; box-shadow: 0 0 28px #FF2525, inset 0 0 0 3px #FF8080; }
+.gantry--big { gap: clamp(10px, 2vw, 18px); padding: 14px 18px; background: #0B0C0E; border-radius: 6px; width: max-content; margin: 18px auto 22px; }
+.gantry--big .gantry__lamp { width: clamp(40px, 8vw, 70px); }
+
+.lights-intro {
+  position: fixed; inset: 0; z-index: 150;
+  background: var(--ink); color: var(--paper);
+  display: grid; place-items: center; text-align: center;
+  padding: max(24px, env(safe-area-inset-top, 0px)) var(--gutter-r) max(24px, env(safe-area-inset-bottom, 0px)) var(--gutter);
+  transition: clip-path .8s var(--ease);
+  clip-path: inset(0 0 0 0);
+}
+.lights-intro.is-leaving { clip-path: inset(0 0 100% 0); }
+.lights-intro .kicker { color: #9C9EA6; }
+.lights-intro__title { font: 900 clamp(2.4rem, 7vw, 4.6rem)/1 var(--font-display); text-transform: uppercase; }
+.lights-intro__hint { color: #B9BBC2; margin-top: 10px; max-width: 42ch; margin-inline: auto; }
+.lights-intro__best { font: 13px var(--font-mono); color: #9C9EA6; margin-top: 8px; min-height: 1.4em; }
+.lights-intro__skip {
+  position: absolute; right: var(--gutter-r); bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  background: none; border: 1px solid #44464E; color: var(--paper); padding: 9px 16px; font: 13px var(--font-mono);
+}
+
+/* ---------- circuit navigator ----------
+   Below 1640px it is a compact timing strip at the bottom of the screen;
+   on wide screens it floats as a minimap in the empty right gutter. */
+.circuit-nav {
+  position: fixed; z-index: 40;
+  left: 50%; bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: min(780px, calc(100% - 32px));
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  padding: 6px 14px 6px 8px;
+  box-shadow: 0 16px 32px -24px rgba(0,0,0,.5);
+  transition: translate .35s var(--ease), opacity .35s var(--ease);
+}
+/* parked on the grid: tucked away while the hero is in view, back on the first scroll or on focus */
+.circuit-nav.is-parked:not(:focus-within) { translate: 0 calc(100% + 32px); opacity: 0; pointer-events: none; }
+.circuit-nav__map { width: 100%; height: auto; overflow: visible; display: block; }
+.circuit-nav__runoff { fill: none; stroke: var(--line-2); stroke-width: 44; stroke-linejoin: round; }
+.circuit-nav__track { fill: none; stroke: var(--ink); stroke-width: 22; stroke-linejoin: round; }
+.circuit-nav__done { fill: none; stroke: var(--livery-1); stroke-width: 8; stroke-linejoin: round; stroke-linecap: round; }
+.circuit-nav__corner { cursor: pointer; }
+.circuit-nav__corner circle { fill: var(--paper); stroke: var(--ink); stroke-width: 5; transition: fill .2s; }
+.circuit-nav__corner text { font: 700 34px var(--font-mono); fill: var(--ink); text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.circuit-nav__corner.is-active circle { fill: var(--livery-1); stroke: var(--livery-1); }
+.circuit-nav__corner.is-active text { fill: var(--livery-accent); }
+.circuit-nav__car { transition: transform .12s linear; }
+.circuit-nav__list {
+  display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 12px;
+  overflow-x: auto; scrollbar-width: none;
+  font: 12px var(--font-mono);
+}
+.circuit-nav__list::-webkit-scrollbar { display: none; }
+.circuit-nav__list a { text-decoration: none; color: var(--ink-2); padding: 8px 0; white-space: nowrap; }
+.circuit-nav__list a.is-active { color: var(--ink); font-weight: 700; }
+.circuit-nav__list a b { color: var(--livery-1); }
+@media (max-width: 760px) {
+  .circuit-nav {
+    left: 0; right: 0; bottom: 0; transform: none; width: auto;
+    grid-template-columns: 56px minmax(0, 1fr); gap: 10px;
+    border-width: 1px 0 0;
+    padding: 5px var(--gutter-r) max(5px, env(safe-area-inset-bottom, 0px)) var(--gutter);
+  }
+  .circuit-nav__list { justify-content: flex-start; }
+}
+@media (min-width: 1640px) {
+  .circuit-nav {
+    left: auto; transform: none;
+    right: max(20px, env(safe-area-inset-right, 0px)); bottom: 20px;
+    width: 200px; display: block; padding: 8px 8px 6px;
+  }
+  .circuit-nav__list { flex-wrap: wrap; justify-content: flex-start; gap: 2px 8px; font-size: 10.5px; margin-top: 4px; overflow: visible; }
+  .circuit-nav__list a { padding: 2px 0; }
+  .circuit-nav.is-parked:not(:focus-within) { translate: none; opacity: 1; pointer-events: auto; }
+}
+@media print { .circuit-nav { display: none; } }
+
+/* ---------- pit stop ---------- */
+.pitstop {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center;
+  margin-top: 40px; background: var(--card); border: 1px solid var(--line); padding: clamp(18px, 3vw, 28px);
+}
+@media (max-width: 860px) { .pitstop { grid-template-columns: 1fr; } }
+.pitstop__info { display: grid; gap: 12px; align-content: start; }
+.pitstop__title { font: 900 32px/1 var(--font-display); text-transform: uppercase; }
+.pitstop__info p { color: var(--ink-2); }
+.pitstop__readout { display: flex; gap: 32px; }
+.pitstop__readout div { display: grid; }
+.pitstop__readout b { font: 900 40px/1 var(--font-display); }
+.pitstop__msg { min-height: 1.5em; font-weight: 600; color: var(--ink) !important; }
+.pitstop__car svg { width: 100%; height: auto; border-radius: 4px; }
+.pit-tyre rect { fill: #141518; stroke: #3A3B42; stroke-width: 3; transition: fill .12s, stroke .12s; }
+.pit-tyre text { font: 700 22px var(--font-mono); fill: #6C6E76; text-anchor: middle; pointer-events: none; }
+.pit-tyre { cursor: pointer; }
+.pit-tyre.is-target rect { stroke: var(--signal-yellow); stroke-width: 6; animation: tyre-pulse .6s ease-in-out infinite alternate; }
+.pit-tyre.is-target text { fill: var(--signal-yellow); }
+.pit-tyre.is-done rect { fill: #2C2D33; stroke: var(--signal-green); }
+.pit-tyre.is-done text { fill: var(--signal-green); }
+.pit-tyre.is-wrong rect { stroke: var(--signal-red); stroke-width: 6; }
+@keyframes tyre-pulse { to { stroke-opacity: .35; } }
+
+/* ---------- lap game ---------- */
+.drive {
+  position: fixed; inset: 0; z-index: 130;
+  background: #121316; color: var(--paper);
+  display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  padding: max(10px, env(safe-area-inset-top, 0px)) var(--gutter-r) max(10px, env(safe-area-inset-bottom, 0px)) var(--gutter);
+  gap: 8px;
+}
+.drive__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.drive__top h2 { font: 900 clamp(22px, 3.4vw, 34px)/1 var(--font-display); text-transform: uppercase; }
+.drive__top .btn { background: var(--paper); color: var(--ink); padding: 9px 16px; }
+.drive__hud { display: flex; flex-wrap: wrap; gap: 6px 28px; }
+.drive__hud div { display: grid; }
+.drive__hud .kicker { color: #9C9EA6; font-size: 10.5px; }
+.drive__hud b { font: 700 20px var(--font-mono); }
+@media (max-width: 480px) {
+  .drive__hud { display: grid; grid-template-columns: repeat(5, auto); justify-content: space-between; gap: 4px 10px; }
+  .drive__hud .kicker { font-size: 9.5px; letter-spacing: .08em; }
+  .drive__hud b { font-size: 15px; }
+}
+.drive__stage { position: relative; min-height: 0; }
+.drive__canvas { width: 100%; height: 100%; display: block; background: #2D5A2A; border-radius: 4px; touch-action: none; }
+.drive__card {
+  position: absolute; left: 12px; top: 12px; max-width: min(340px, calc(100% - 24px));
+  background: var(--paper); color: var(--ink); border-top: 5px solid var(--livery-1);
+  padding: 12px 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  animation: card-in .3s var(--ease) both;
+}
+.drive__card .kicker { font-size: 10.5px; }
+.drive__card b { display: block; font: 900 22px/1 var(--font-display); text-transform: uppercase; margin: 4px 0; }
+.drive__card p { font-size: 14px; color: var(--ink-2); }
+.drive__help { color: #9C9EA6; font-size: 14px; }
+.drive__pad { display: none; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.drive__pad button {
+  height: 64px; font-size: 24px; border: 1px solid #3A3B42; background: #1D1E22; color: var(--paper); border-radius: 6px;
+  touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.drive__pad .pad-gas { background: var(--livery-1); color: var(--livery-accent); border-color: transparent; }
+.drive__pad button.is-down { filter: brightness(1.4); }
+@media (hover: none), (max-width: 760px) { .drive__pad { display: grid; } .drive__help { display: none; } }
+
+body.is-locked { overflow: hidden; }
+body.is-locked .circuit-nav { opacity: 0; pointer-events: none; }

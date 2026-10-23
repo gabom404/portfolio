@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Circuito 404 — design tokens
+   Editorial race-programme look: warm paper, black ink, livery colours.
+   Livery variables are switched at runtime by js/livery.js and are used by
+   the page *and* by the SVG drawings (fill="var(--livery-1)").
+   ========================================================================== */
+:root {
+  /* paper & ink */
+  --paper: #F7F6F2;
+  --paper-2: #EFEDE7;
+  --card: #FFFFFF;
+  --ink: #111214;
+  --ink-2: #5D5F66;
+  --ink-3: #8C8E95;
+  --line: #CFCCC3;
+  --line-2: #E2DFD7;
+
+  /* livery (default: Naranja 404) */
+  --livery-1: #FF5A1F;
+  --livery-2: #16181D;
+  --livery-accent: #F5F3EE;
+
+  /* signal colours (race control) */
+  --signal-red: #E0212B;
+  --signal-green: #12A150;
+  --signal-yellow: #F2C230;
+  --signal-purple: #8E3FD8;
+
+  /* tyre compounds, used by the project filters */
+  --tyre-soft: #E0212B;
+  --tyre-medium: #F2C230;
+  --tyre-hard: #F5F3EE;
+  --tyre-inter: #12A150;
+  --tyre-wet: #1F6FE5;
+
+  /* type */
+  --font-display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-text: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+  /* scale */
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-2: 1.75rem;
+  --step-3: clamp(2rem, 4.4vw, 3rem);
+  --step-4: clamp(2.6rem, 6vw, 4.6rem);
+  --step-5: clamp(6rem, 18vw, 14rem);
+
+  /* space & shape */
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --maxw: 1180px;
+  --radius: 2px;
+  --ease: cubic-bezier(.2, .7, .1, 1);
+
+  color-scheme: light;
+}

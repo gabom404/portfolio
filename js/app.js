@@ -1,489 +1,271 @@
 /**
- * app.js
- * Interactive controller for Gabriel Martínez's Portfolio
- * Google Material Design 3 Architecture, Material Symbols & Full Mobile Responsiveness
+ * app.js — wires the page together: garage, spec sheets, car setup,
+ * menu, contact, and the race modules in js/race/.
  */
+(function (root) {
+  'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderFilterTabs();
-  renderProjects('all');
-  setupModalHandlers();
-  setupMobileNav();
-  setupSmoothScroll();
-});
+  var C = root.C404;
+  var i18n = C.i18n;
+  var reduceMotion = root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ==========================================================================
-   Filter Categories (Material 3 Filter Chips)
-   ========================================================================== */
+  /* ======================= Garage ======================= */
+  var CATEGORIES = [
+    { key: 'all', tyre: 'var(--ink-3)' },
+    { key: 'backend', tyre: 'var(--tyre-soft)' },
+    { key: 'fullstack', tyre: 'var(--tyre-medium)' },
+    { key: 'mobile', tyre: 'var(--tyre-hard)' },
+    { key: 'python-ai', tyre: 'var(--tyre-inter)' },
+    { key: 'frontend', tyre: 'var(--tyre-wet)' }
+  ];
+  var currentCategory = 'all';
 
-const CATEGORIES = [
-  { key: 'all', label: 'Todos', icon: 'apps' },
-  { key: 'backend', label: 'Backend y APIs', icon: 'dns' },
-  { key: 'fullstack', label: 'Full Stack', icon: 'layers' },
-  { key: 'mobile', label: 'Desarrollo Móvil', icon: 'smartphone' },
-  { key: 'python-ai', label: 'Python e IA', icon: 'psychology' },
-  { key: 'frontend', label: 'Frontend Web', icon: 'public' }
-];
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
 
-let currentCategory = 'all';
+  function renderCompounds() {
+    var box = document.getElementById('compounds');
+    if (!box) return;
+    box.innerHTML = '';
+    CATEGORIES.forEach(function (c) {
+      var count = c.key === 'all' ? root.PROJECTS.length : root.PROJECTS.filter(function (p) { return p.category === c.key; }).length;
+      if (!count) return;
+      var b = el('button', 'compound');
+      b.type = 'button';
+      b.style.setProperty('--c', c.tyre);
+      b.setAttribute('aria-pressed', String(c.key === currentCategory));
+      b.appendChild(el('span', 'compound__tyre'));
+      b.appendChild(el('span', null, i18n.t('cat.' + c.key)));
+      b.appendChild(el('span', 'compound__count', String(count)));
+      b.addEventListener('click', function () { currentCategory = c.key; renderCompounds(); renderGarage(); });
+      box.appendChild(b);
+    });
+  }
 
-function renderFilterTabs() {
-  const container = document.getElementById('filter-tabs');
-  if (!container || typeof PROJECTS === 'undefined') return;
+  function renderGarage() {
+    var grid = document.getElementById('garage-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    root.PROJECTS.forEach(function (p, idx) {
+      if (currentCategory !== 'all' && p.category !== currentCategory) return;
+      var card = el('article', 'car-card');
+      card.style.animationDelay = Math.min(idx, 6) * 40 + 'ms';
 
-  const counts = { all: PROJECTS.length };
-  CATEGORIES.forEach(cat => {
-    if (cat.key !== 'all') {
-      counts[cat.key] = PROJECTS.filter(p => p.category === cat.key).length;
+      var top = el('div', 'car-card__top');
+      top.appendChild(el('span', 'car-card__num', String(idx + 1).padStart(2, '0')));
+      var tags = el('div', 'car-card__tags');
+      tags.appendChild(el('span', 'tag', i18n.t('cat.' + p.category)));
+      if (p.isWorkExperience) tags.appendChild(el('span', 'tag tag--work', i18n.t('tag.work')));
+      if (p.team) tags.appendChild(el('span', 'tag tag--team', i18n.t('tag.team')));
+      if (p.private) tags.appendChild(el('span', 'tag tag--private', i18n.t('tag.private')));
+      top.appendChild(tags);
+      card.appendChild(top);
+
+      var body = el('div');
+      body.appendChild(el('h3', null, i18n.pick(p.name)));
+      body.appendChild(el('p', 'car-card__line', i18n.pick(p.tagline)));
+      card.appendChild(body);
+
+      var bottom = el('div');
+      bottom.appendChild(el('p', 'car-card__stack', p.stack.slice(0, 4).join(' · ')));
+      var actions = el('div', 'car-card__actions');
+      var btn = el('button', 'btn', i18n.t('card.sheet'));
+      btn.type = 'button';
+      btn.setAttribute('aria-label', i18n.t('card.sheet') + ' · ' + i18n.pick(p.name));
+      btn.addEventListener('click', function () { openSheet(p, btn); });
+      actions.appendChild(btn);
+      if (p.repoUrl) {
+        var a = el('a', 'btn btn--line car-card__repo', i18n.t('card.code'));
+        a.href = p.repoUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        a.setAttribute('aria-label', i18n.t('card.code') + ' · ' + i18n.pick(p.name));
+        actions.appendChild(a);
+      }
+      bottom.appendChild(actions);
+      card.appendChild(bottom);
+      grid.appendChild(card);
+    });
+  }
+
+  /* ======================= Spec sheet dialog ======================= */
+  var sheet, sheetContent, sheetClose, sheetReturn = null;
+
+  function openSheet(p, opener) {
+    sheetReturn = opener || document.activeElement;
+    sheetContent.innerHTML = '';
+    var meta = [i18n.t('cat.' + p.category)];
+    if (p.isWorkExperience) meta.push(i18n.t('sheet.for', { company: p.workExperienceCompany }));
+    if (p.team) meta.push(i18n.t('tag.team'));
+    sheetContent.appendChild(el('p', 'kicker', meta.join(' · ')));
+    var h = el('h2', null, i18n.pick(p.name)); h.id = 'sheet-title';
+    sheetContent.appendChild(h);
+    sheetContent.appendChild(el('p', 'sheet__tagline', i18n.pick(p.tagline)));
+
+    var grid = el('div', 'sheet__grid');
+    [['sheet.challenge', p.challenge], ['sheet.solution', p.solution]].forEach(function (pair) {
+      var b = el('div', 'sheet__block');
+      b.appendChild(el('h3', null, i18n.t(pair[0])));
+      b.appendChild(el('p', null, i18n.pick(pair[1])));
+      grid.appendChild(b);
+    });
+    sheetContent.appendChild(grid);
+
+    var hl = el('div', 'sheet__block'); hl.style.marginTop = '22px';
+    hl.appendChild(el('h3', null, i18n.t('sheet.highlights')));
+    var list = el('ol', 'sheet__list');
+    p.highlights.forEach(function (x, i) {
+      var li = el('li');
+      li.appendChild(el('span', 'sec', 'S' + (i + 1)));
+      li.appendChild(el('span', null, i18n.pick(x)));
+      list.appendChild(li);
+    });
+    hl.appendChild(list);
+    sheetContent.appendChild(hl);
+
+    var stack = el('div', 'sheet__stack');
+    p.stack.forEach(function (s) { stack.appendChild(el('span', null, s)); });
+    sheetContent.appendChild(stack);
+
+    var foot = el('div', 'sheet__foot');
+    if (p.repoUrl) {
+      var a = el('a', 'btn btn--livery', i18n.t('sheet.repo'));
+      a.href = p.repoUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      foot.appendChild(a);
+    } else {
+      foot.appendChild(el('p', 'sheet__private', i18n.t('sheet.private')));
     }
-  });
+    sheetContent.appendChild(foot);
 
-  container.innerHTML = CATEGORIES.map((cat) => `
-    <button class="md-filter-chip ${cat.key === currentCategory ? 'active' : ''}" data-category="${cat.key}" type="button" aria-pressed="${cat.key === currentCategory}">
-      <span class="material-symbols-outlined chip-icon">${cat.icon}</span>
-      <span class="chip-label">${cat.label}</span>
-      <span class="chip-count">${counts[cat.key] || 0}</span>
-    </button>
-  `).join('');
-
-  container.querySelectorAll('.md-filter-chip').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const targetBtn = e.currentTarget;
-      container.querySelectorAll('.md-filter-chip').forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-pressed', 'false');
-      });
-
-      targetBtn.classList.add('active');
-      targetBtn.setAttribute('aria-pressed', 'true');
-      currentCategory = targetBtn.getAttribute('data-category');
-      renderProjects(currentCategory);
-    });
-  });
-}
-
-/* ==========================================================================
-   Project Icons (Google Material Symbols & Tonal Surface Colors)
-   ========================================================================== */
-
-const PROJECT_ICONS = {
-  promora: {
-    bg: '#FFF7ED',
-    color: '#C2410C',
-    icon: 'loyalty'
-  },
-  biblioteca: {
-    bg: '#EFF6FF',
-    color: '#1D4ED8',
-    icon: 'menu_book'
-  },
-  novapos: {
-    bg: '#ECFDF5',
-    color: '#047857',
-    icon: 'point_of_sale'
-  },
-  'wallet-id': {
-    bg: '#EEF2FF',
-    color: '#4338CA',
-    icon: 'account_balance_wallet'
-  },
-  'attendance-track': {
-    bg: '#F0FDFA',
-    color: '#0F766E',
-    icon: 'badge'
-  },
-  eventos: {
-    bg: '#F0F9FF',
-    color: '#0369A1',
-    icon: 'event'
-  },
-  'cupon-x': {
-    bg: '#F5F3FF',
-    color: '#6D28D9',
-    icon: 'bolt'
-  },
-  'enfoque-app': {
-    bg: '#FFF1F2',
-    color: '#BE123C',
-    icon: 'timer'
-  },
-  delieat: {
-    bg: '#FEFCE8',
-    color: '#A16207',
-    icon: 'restaurant'
-  },
-  databusters: {
-    bg: '#EEF2FF',
-    color: '#3730A3',
-    icon: 'inventory_2'
-  },
-  turimox: {
-    bg: '#F0FDF4',
-    color: '#15803D',
-    icon: 'travel_explore'
-  }
-};
-
-function getProjectIcon(id) {
-  return PROJECT_ICONS[id] || {
-    bg: '#F1F5F9',
-    color: '#334155',
-    icon: 'terminal'
-  };
-}
-
-/* ==========================================================================
-   Render User-Friendly Material 3 Project Cards
-   ========================================================================== */
-
-function renderProjects(filterCategory = 'all') {
-  const grid = document.getElementById('projects-grid');
-  if (!grid || typeof PROJECTS === 'undefined') return;
-
-  const filtered = filterCategory === 'all'
-    ? PROJECTS
-    : PROJECTS.filter(p => p.category === filterCategory);
-
-  grid.innerHTML = '';
-
-  filtered.forEach(project => {
-    const card = document.createElement('article');
-    card.className = 'project-card';
-    card.setAttribute('data-id', project.id);
-
-    const iconMeta = getProjectIcon(project.id);
-    const stackPreviewText = project.stack.slice(0, 4).join(', ');
-    const primaryHighlight = project.highlights && project.highlights[0] ? project.highlights[0] : '';
-
-    const metricPillHtml = primaryHighlight ? `
-      <div class="card-metric-pill">
-        <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-        <span>${primaryHighlight}</span>
-      </div>
-    ` : '';
-
-    const repoActionHtml = project.repoUrl ? `
-        <a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn" title="Ver repositorio en GitHub" aria-label="Ver repositorio ${project.title} en GitHub">
-          <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
-        </a>` : `
-        <span class="card-private-label" title="El código de este proyecto está en un repositorio privado">
-          <span class="material-symbols-outlined" aria-hidden="true">lock</span>
-          <span>Privado</span>
-        </span>`;
-
-    card.innerHTML = `
-      <!-- Top Row: Icon squircle + Direct GitHub Action Link -->
-      <div class="card-top-row">
-        <div class="card-icon-squircle" style="background-color: ${iconMeta.bg}; color: ${iconMeta.color};">
-          <span class="material-symbols-outlined">${iconMeta.icon}</span>
-        </div>
-        ${repoActionHtml}
-      </div>
-
-      <!-- Main Body -->
-      <div class="card-main-content">
-        <div class="card-meta-row">
-          <span class="card-category-label">${project.categoryLabel}</span>
-          ${project.isWorkExperience ? `
-            <span class="card-badge-exp" title="Desarrollado para ${project.workExperienceCompany}">
-              <span class="material-symbols-outlined" aria-hidden="true">work</span>
-              <span>Experiencia Laboral</span>
-            </span>
-          ` : ''}
-          ${project.team ? `
-            <span class="card-badge-team" title="Proyecto académico desarrollado en equipo">
-              <span class="material-symbols-outlined" aria-hidden="true">groups</span>
-              <span>En equipo</span>
-            </span>
-          ` : ''}
-        </div>
-        <h3 class="card-title">${project.title}</h3>
-        <p class="card-tagline">${project.tagline}</p>
-
-        ${metricPillHtml}
-
-        <div class="card-stack-row">
-          <span>${stackPreviewText}</span>
-        </div>
-      </div>
-
-      <!-- Bottom Action Button: Material 3 Tonal Button -->
-      <div class="card-bottom-action">
-        <button class="btn-card-learn-more" type="button" data-project-id="${project.id}">
-          <span>Ver detalles</span>
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
-      </div>
-    `;
-
-    grid.appendChild(card);
-  });
-
-  // Attach learn more button listeners
-  grid.querySelectorAll('.btn-card-learn-more').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const projId = e.currentTarget.getAttribute('data-project-id');
-      openProjectModal(projId);
-    });
-  });
-}
-
-/* ==========================================================================
-   Material 3 Project Details Dialog (Reader Experience)
-   ========================================================================== */
-
-function setupModalHandlers() {
-  const modal = document.getElementById('project-modal');
-  const closeBtn = document.getElementById('modal-close-btn');
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeProjectModal);
+    sheet.hidden = false;
+    document.body.classList.add('is-locked');
+    sheetClose.focus({ preventScroll: true });
   }
 
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeProjectModal();
-      }
-    });
+  function closeSheet() {
+    if (sheet.hidden) return;
+    sheet.hidden = true;
+    document.body.classList.remove('is-locked');
+    if (sheetReturn && sheetReturn.isConnected && sheetReturn.focus) sheetReturn.focus({ preventScroll: true });
+  }
 
-    document.addEventListener('keydown', (e) => {
-      if (!modal.classList.contains('is-visible')) return;
-
-      if (e.key === 'Escape') {
-        closeProjectModal();
-        return;
-      }
-
-      // Keep keyboard focus inside the dialog while it is open
+  function initSheet() {
+    sheet = document.getElementById('sheet');
+    sheetContent = document.getElementById('sheet-content');
+    sheetClose = document.getElementById('sheet-close');
+    sheetClose.addEventListener('click', closeSheet);
+    sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });
+    document.addEventListener('keydown', function (e) {
+      if (sheet.hidden) return;
+      if (e.key === 'Escape') { closeSheet(); return; }
       if (e.key === 'Tab') {
-        const focusable = modal.querySelectorAll('a[href], button:not([disabled])');
-        if (!focusable.length) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
+        var f = sheet.querySelectorAll('a[href], button');
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     });
   }
-}
 
-let lastFocusedElement = null;
-
-function openProjectModal(projectId) {
-  const modal = document.getElementById('project-modal');
-  const content = document.getElementById('modal-content');
-  if (!modal || !content || typeof PROJECTS === 'undefined') return;
-
-  const project = PROJECTS.find(p => p.id === projectId);
-  if (!project) return;
-
-  const iconMeta = getProjectIcon(project.id);
-
-  const metricsListHtml = (project.highlights || []).map(m => `
-    <li class="modal-metric-item">
-      <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-      <span>${m}</span>
-    </li>
-  `).join('');
-
-  const stackPillsHtml = (project.stack || []).map(t => `
-    <span class="modal-tech-pill">${t}</span>
-  `).join('');
-
-  const challengeSummary = project.challenge || '';
-  const solutionSummary = project.solution || '';
-
-  content.innerHTML = `
-    <!-- Header -->
-    <div class="modal-header">
-      <div class="modal-icon-box" style="background-color: ${iconMeta.bg}; color: ${iconMeta.color};">
-        <span class="material-symbols-outlined">${iconMeta.icon}</span>
-      </div>
-      <div>
-        <div class="modal-meta-row">
-          <span class="modal-category">${project.categoryLabel}</span>
-          ${project.isWorkExperience ? `
-            <span class="modal-badge-exp">
-              <span class="material-symbols-outlined" aria-hidden="true">work</span>
-              <span>Experiencia Laboral • ${project.workExperienceCompany}</span>
-            </span>
-          ` : ''}
-          ${project.team ? `
-            <span class="modal-badge-exp modal-badge-team">
-              <span class="material-symbols-outlined" aria-hidden="true">groups</span>
-              <span>Proyecto en equipo</span>
-            </span>
-          ` : ''}
-        </div>
-        <h2 class="modal-title" id="modal-title">${project.title}</h2>
-        <p class="modal-tagline">${project.tagline}</p>
-      </div>
-    </div>
-
-    <!-- Highlighted Verified Results -->
-    <div class="modal-metrics-card">
-      <div class="modal-metrics-title">
-        <span class="material-symbols-outlined">trending_up</span>
-        <span>Aspectos destacados</span>
-      </div>
-      <ul class="modal-metrics-list">
-        ${metricsListHtml}
-      </ul>
-    </div>
-
-    <!-- Executive Engineering Breakdown (Clean Scannable Summary) -->
-    <div class="modal-executive-grid">
-      <div class="modal-exec-card challenge">
-        <div class="modal-exec-heading">
-          <span class="material-symbols-outlined">crisis_alert</span>
-          <span>El Desafío</span>
-        </div>
-        <p class="modal-exec-text">${challengeSummary}</p>
-      </div>
-
-      <div class="modal-exec-card solution">
-        <div class="modal-exec-heading">
-          <span class="material-symbols-outlined">architecture</span>
-          <span>Solución Técnica</span>
-        </div>
-        <p class="modal-exec-text">${solutionSummary}</p>
-      </div>
-    </div>
-
-    ${project.repoUrl ? '' : `
-    <div class="modal-readme-box">
-      <div class="modal-readme-header">
-        <span class="material-symbols-outlined readme-icon" aria-hidden="true">lock</span>
-        <div class="modal-readme-info">
-          <h4 class="modal-readme-title">Repositorio privado</h4>
-          <p class="modal-readme-desc">El código no es público. Puedo mostrarlo y explicarlo en una entrevista.</p>
-        </div>
-      </div>
-    </div>`}
-
-    <!-- Tech Stack Tags -->
-    <div class="modal-tech-stack">
-      <div class="modal-tech-title">Tecnologías y Herramientas</div>
-      <div class="modal-tech-pills">
-        ${stackPillsHtml}
-      </div>
-    </div>
-
-    <!-- Footer Actions -->
-    <div class="modal-footer-actions">
-      <button class="btn-modal-close" id="btn-modal-footer-close" type="button">Cerrar</button>
-      ${project.repoUrl ? `<a class="btn-modal-github" href="${project.repoUrl}" target="_blank" rel="noopener noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-        <span>Ver repositorio en GitHub</span>
-        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
-      </a>` : ''}
-    </div>
-  `;
-
-  const footerClose = document.getElementById('btn-modal-footer-close');
-  if (footerClose) {
-    footerClose.addEventListener('click', closeProjectModal);
-  }
-
-  lastFocusedElement = document.activeElement;
-  modal.classList.add('is-visible');
-  modal.setAttribute('aria-hidden', 'false');
-  modal.setAttribute('aria-labelledby', 'modal-title');
-  document.body.style.overflow = 'hidden';
-
-  const closeBtn = document.getElementById('modal-close-btn');
-  if (closeBtn) closeBtn.focus();
-}
-
-function closeProjectModal() {
-  const modal = document.getElementById('project-modal');
-  if (!modal) return;
-
-  modal.classList.remove('is-visible');
-  modal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-
-  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-    lastFocusedElement.focus();
-  }
-}
-
-/* ==========================================================================
-   Material 3 Mobile Navigation Drawer
-   ========================================================================== */
-
-function setupMobileNav() {
-  const toggleBtn = document.getElementById('md-nav-toggle');
-  const drawer = document.getElementById('md-nav-drawer');
-  const scrim = document.getElementById('md-drawer-scrim');
-  const closeBtn = document.getElementById('md-drawer-close');
-
-  if (!toggleBtn || !drawer || !scrim) return;
-
-  function openDrawer() {
-    drawer.classList.add('is-open');
-    scrim.classList.add('is-open');
-    toggleBtn.setAttribute('aria-expanded', 'true');
-    drawer.setAttribute('aria-hidden', 'false');
-    scrim.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    drawer.classList.remove('is-open');
-    scrim.classList.remove('is-open');
-    toggleBtn.setAttribute('aria-expanded', 'false');
-    drawer.setAttribute('aria-hidden', 'true');
-    scrim.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  toggleBtn.addEventListener('click', openDrawer);
-  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-  scrim.addEventListener('click', closeDrawer);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-      closeDrawer();
+  /* ======================= Car setup ======================= */
+  function initSetup() {
+    var parts = document.querySelectorAll('.part');
+    var hots = document.querySelectorAll('.hot');
+    function show(key) {
+      parts.forEach(function (p) { p.setAttribute('aria-pressed', String(p.dataset.part === key)); });
+      hots.forEach(function (h) { h.classList.toggle('is-on', h.dataset.part === key); });
     }
-  });
+    parts.forEach(function (p) {
+      ['mouseenter', 'focus', 'click'].forEach(function (ev) { p.addEventListener(ev, function () { show(p.dataset.part); }); });
+    });
+    show('motor');
+  }
 
-  drawer.querySelectorAll('.md-drawer-link, .btn-drawer-contact').forEach(link => {
-    link.addEventListener('click', closeDrawer);
-  });
-}
+  /* ======================= Hero car launch ======================= */
+  function launchCar() {
+    var stage = document.getElementById('car-stage');
+    if (!stage || reduceMotion) return;
+    stage.classList.remove('is-returning');
+    stage.classList.add('is-launching');
+    setTimeout(function () {
+      stage.classList.remove('is-launching');
+      stage.classList.add('is-returning');
+      void stage.offsetWidth;                       // restart from the left edge
+      stage.classList.remove('is-returning');
+    }, 1150);
+  }
 
-/* ==========================================================================
-   Smooth Navigation & Active Link Tracking
-   ========================================================================== */
+  /* ======================= Lap game (loaded on demand) ======================= */
+  var driveLoading = null;
+  function loadDrive() {
+    if (C.drive) return Promise.resolve();
+    if (driveLoading) return driveLoading;
+    driveLoading = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = 'js/race/drive.js';
+      s.onload = resolve;
+      s.onerror = function () { driveLoading = null; reject(new Error('drive.js failed to load')); };
+      document.body.appendChild(s);
+    });
+    return driveLoading;
+  }
 
-function setupSmoothScroll() {
-  const navLinks = document.querySelectorAll('.nav-link, .md-drawer-link');
-  const sections = document.querySelectorAll('section[id], footer[id]');
+  /* ======================= Menu, contact ======================= */
+  function initMenu() {
+    var toggle = document.getElementById('menu-toggle');
+    var nav = document.getElementById('main-nav');
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) { nav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', 'false'); }
+    });
+  }
 
-  window.addEventListener('scroll', () => {
-    let current = '';
-    const scrollPos = window.scrollY + 120;
-
-    sections.forEach(sec => {
-      const top = sec.offsetTop;
-      const height = sec.offsetHeight;
-      if (scrollPos >= top && scrollPos < top + height) {
-        current = sec.getAttribute('id');
+  function initCopy() {
+    var btn = document.getElementById('copy-email');
+    var text = document.getElementById('email-text');
+    var timer = 0;
+    btn.addEventListener('click', function () {
+      function done(key) {
+        btn.textContent = i18n.t(key);
+        clearTimeout(timer);
+        timer = setTimeout(function () { btn.textContent = i18n.t('radio.copy'); }, 2200);
       }
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(text);
+        var s = root.getSelection(); s.removeAllRanges(); s.addRange(r);
+        done('copy.fail');
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text.textContent.trim()).then(function () { done('copy.ok'); }, fallback);
+      } else fallback();
+    });
+  }
+
+  /* ======================= Boot ======================= */
+  document.addEventListener('DOMContentLoaded', function () {
+    i18n.init();
+    C.livery.init();
+    initSheet();
+    renderCompounds();
+    renderGarage();
+    initSetup();
+    initMenu();
+    initCopy();
+    C.circuitNav.init();
+    C.pitstop.init();
+    C.lights.init({ onReact: function (r) { if (!r.jump) setTimeout(launchCar, 900); } });
+
+    document.getElementById('replay-lights').addEventListener('click', function () { C.lights.open(); });
+    document.getElementById('open-drive').addEventListener('click', function () {
+      loadDrive().then(function () { C.drive.open(); });
     });
 
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) {
-        link.classList.add('active');
-      }
-    });
+    i18n.onChange(function () { renderCompounds(); renderGarage(); closeSheet(); });
   });
-}
+})(typeof window !== 'undefined' ? window : globalThis);
