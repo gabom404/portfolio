@@ -69,8 +69,8 @@ portfolio/
 
 | Proyecto | Tipo | Tecnologías |
 |---|---|---|
-| **NovaPOS** — punto de venta e inventario | Experiencia laboral (Empire Barber Shop) | PHP 8, PDO, MySQL, FPDF |
-| **AttendanceTrack** — asistencia y turnos con QR | Experiencia laboral (Dipal Design) | PHP, MySQL, html5-qrcode, TCPDF |
+| **NovaPOS** — punto de venta e inventario | Experiencia laboral | PHP 8, PDO, MySQL, FPDF |
+| **AttendanceTrack** — asistencia y turnos con QR | Experiencia laboral | PHP, MySQL, html5-qrcode, TCPDF |
 | **WalletID** — billetera digital para campus | Proyecto personal | PHP, MySQL, JavaScript |
 | **Promora** — motor de códigos promocionales | En equipo | PHP 8, Laravel, PHPUnit, Postman |
 | **Biblioteca** — API REST con contrato OpenAPI | En equipo | Laravel, Sanctum, OpenAPI, Stoplight |

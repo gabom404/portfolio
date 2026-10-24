@@ -54,14 +54,16 @@ PROJECTS.forEach(p => {
   check(Array.isArray(p.stack) && p.stack.length > 0, `${where}: stack`);
   if (p.repoUrl === null) check(p.private === true, `${where}: no repo link but not marked private`);
   else check(/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+$/.test(p.repoUrl), `${where}: bad repo url ${p.repoUrl}`);
-  if (p.isWorkExperience) check(!!p.workExperienceCompany, `${where}: work experience needs a company`);
   // no unverifiable marketing figures
   const copy = ["tagline", "challenge", "solution"].map(k => p[k].es + " " + p[k].en).join(" ") + p.highlights.map(h => h.es + h.en).join(" ");
   check(!/\d+\s*%/.test(copy), `${where}: percentage claim in copy`);
 });
 check(html.includes(`<b class="tabular">${PROJECTS.length}</b>`), "driver stats must show the real project count");
-const work = PROJECTS.filter(p => p.isWorkExperience).map(p => p.workExperienceCompany).sort();
-check(JSON.stringify(work) === JSON.stringify(["Dipal Design", "Empire Barber Shop"]), "work-experience projects changed unexpectedly");
+const work = PROJECTS.filter(p => p.isWorkExperience).map(p => p.id).sort();
+check(JSON.stringify(work) === JSON.stringify(["attendance-track", "novapos"]), "work-experience projects changed unexpectedly");
+// former employers and clients are not named anywhere on the site
+const clientNames = /dipal|empire|barber/i;
+["index.html", "js/i18n.js", "js/projects-data.js", "js/app.js", "README.md"].forEach(f => check(!clientNames.test(read(f)), `client name found in ${f}`));
 
 /* ---------- translations ---------- */
 const keys = new Set();

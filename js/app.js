@@ -97,7 +97,7 @@
     sheetReturn = opener || document.activeElement;
     sheetContent.innerHTML = '';
     var meta = [i18n.t('cat.' + p.category)];
-    if (p.isWorkExperience) meta.push(i18n.t('sheet.for', { company: p.workExperienceCompany }));
+    if (p.isWorkExperience) meta.push(i18n.t('tag.work'));
     if (p.team) meta.push(i18n.t('tag.team'));
     sheetContent.appendChild(el('p', 'kicker', meta.join(' · ')));
     var h = el('h2', null, i18n.pick(p.name)); h.id = 'sheet-title';

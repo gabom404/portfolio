@@ -16,10 +16,9 @@ var PROJECTS = [
     title: { es: "Punto de venta e inventario", en: "Point of sale and inventory" },
     category: "fullstack",
     isWorkExperience: true,
-    workExperienceCompany: "Empire Barber Shop",
     tagline: {
-      es: "Sistema de punto de venta, inventario y reportes desarrollado e implementado para Empire Barber Shop.",
-      en: "Point of sale, inventory and reporting system built and deployed for Empire Barber Shop."
+      es: "Sistema de punto de venta, inventario y reportes desarrollado e implementado para una empresa del sector servicios.",
+      en: "Point of sale, inventory and reporting system built and deployed for a service-sector company."
     },
     repoUrl: "https://github.com/gabom404/novapos-system",
     stack: ["PHP 8", "PDO", "MySQL", "Bootstrap", "JavaScript", "FPDF"],
@@ -43,10 +42,9 @@ var PROJECTS = [
     title: { es: "Control de asistencia y turnos", en: "Attendance and shift tracking" },
     category: "backend",
     isWorkExperience: true,
-    workExperienceCompany: "Dipal Design",
     tagline: {
-      es: "Control de asistencia con credenciales QR leídas por cámara, horarios por turno y reportes en PDF, desarrollado e implementado para Dipal Design.",
-      en: "Attendance tracking with QR badges read by the camera, shift schedules and PDF reports, built and deployed for Dipal Design."
+      es: "Control de asistencia con credenciales QR leídas por cámara, horarios por turno y reportes en PDF, desarrollado e implementado para una empresa privada.",
+      en: "Attendance tracking with QR badges read by the camera, shift schedules and PDF reports, built and deployed for a private company."
     },
     repoUrl: "https://github.com/gabom404/attendance-track",
     stack: ["PHP", "MySQL", "JavaScript", "html5-qrcode", "TCPDF", "API REST"],
