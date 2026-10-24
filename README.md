@@ -28,7 +28,7 @@ Es un sitio estático (HTML, CSS y JavaScript) sin dependencias ni paso de compi
 - **Navegador de circuito** (`js/race/circuit-nav.js`): un minimapa con un carro que avanza por el trazado según el scroll. En pantallas anchas flota al costado; en las demás es una barra inferior compacta.
 - **Vuelta rápida** (`js/race/drive.js`): mini-juego en canvas con vista superior, física arcade, cronómetro y mejor vuelta. Cada curva desbloquea un dato real de un proyecto. Se juega con flechas o WASD, o con botones táctiles en el celular. El código se descarga solo al abrir el juego.
 - **Pit stop** (`js/race/pitstop.js`): cambiar las cuatro llantas en el orden en que se iluminan (clic, toque o teclas 1–4). Cada error suma un segundo.
-- **Livery** (`js/livery.js`): cinco combinaciones de color propias que cambian el carro y los acentos del sitio.
+- **Livery** (`js/livery.js`): cuatro combinaciones de color (rojo, azul noche, plata y turquesa, azul y rosa) que cambian el carro y los acentos del sitio.
 - **Español / inglés** (`js/i18n.js`): el botón ES/EN cambia los textos, `<html lang>` y los datos de los proyectos.
 
 Los récords, la livery y el idioma se guardan en el navegador (`localStorage`); si no está disponible, el sitio funciona igual.

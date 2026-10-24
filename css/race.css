@@ -52,12 +52,12 @@
 .circuit-nav__map { width: 100%; height: auto; overflow: visible; display: block; }
 .circuit-nav__runoff { fill: none; stroke: var(--line-2); stroke-width: 44; stroke-linejoin: round; }
 .circuit-nav__track { fill: none; stroke: var(--ink); stroke-width: 22; stroke-linejoin: round; }
-.circuit-nav__done { fill: none; stroke: var(--livery-1); stroke-width: 8; stroke-linejoin: round; stroke-linecap: round; }
+.circuit-nav__done { fill: none; stroke: var(--livery-ui); stroke-width: 8; stroke-linejoin: round; stroke-linecap: round; }
 .circuit-nav__corner { cursor: pointer; }
 .circuit-nav__corner circle { fill: var(--paper); stroke: var(--ink); stroke-width: 5; transition: fill .2s; }
 .circuit-nav__corner text { font: 700 34px var(--font-mono); fill: var(--ink); text-anchor: middle; dominant-baseline: central; pointer-events: none; }
-.circuit-nav__corner.is-active circle { fill: var(--livery-1); stroke: var(--livery-1); }
-.circuit-nav__corner.is-active text { fill: var(--livery-accent); }
+.circuit-nav__corner.is-active circle { fill: var(--livery-ui); stroke: var(--livery-ui); }
+.circuit-nav__corner.is-active text { fill: var(--livery-on); }
 .circuit-nav__car { transition: transform .12s linear; }
 .circuit-nav__list {
   display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 12px;
@@ -67,7 +67,7 @@
 .circuit-nav__list::-webkit-scrollbar { display: none; }
 .circuit-nav__list a { text-decoration: none; color: var(--ink-2); padding: 8px 0; white-space: nowrap; }
 .circuit-nav__list a.is-active { color: var(--ink); font-weight: 700; }
-.circuit-nav__list a b { color: var(--livery-1); }
+.circuit-nav__list a b { color: var(--livery-ui); }
 @media (max-width: 760px) {
   .circuit-nav {
     left: 0; right: 0; bottom: 0; transform: none; width: auto;
@@ -120,6 +120,7 @@
 
 /* ---------- lap game ---------- */
 .drive {
+  --livery-ui: var(--livery-ui-dark); --livery-on: var(--livery-on-dark);
   position: fixed; inset: 0; z-index: 130;
   background: #121316; color: var(--paper);
   display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto auto;
@@ -142,7 +143,7 @@
 .drive__canvas { width: 100%; height: 100%; display: block; background: #2D5A2A; border-radius: 4px; touch-action: none; }
 .drive__card {
   position: absolute; left: 12px; top: 12px; max-width: min(340px, calc(100% - 24px));
-  background: var(--paper); color: var(--ink); border-top: 5px solid var(--livery-1);
+  background: var(--paper); color: var(--ink); border-top: 5px solid var(--livery-ui);
   padding: 12px 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35);
   animation: card-in .3s var(--ease) both;
 }
@@ -155,7 +156,7 @@
   height: 64px; font-size: 24px; border: 1px solid #3A3B42; background: #1D1E22; color: var(--paper); border-radius: 6px;
   touch-action: none; user-select: none; -webkit-user-select: none;
 }
-.drive__pad .pad-gas { background: var(--livery-1); color: var(--livery-accent); border-color: transparent; }
+.drive__pad .pad-gas { background: var(--livery-ui); color: var(--livery-on); border-color: transparent; }
 .drive__pad button.is-down { filter: brightness(1.4); }
 @media (hover: none), (max-width: 760px) { .drive__pad { display: grid; } .drive__help { display: none; } }
 

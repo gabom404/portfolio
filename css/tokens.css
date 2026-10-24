@@ -2,7 +2,7 @@
    Circuito 404 — design tokens
    Editorial race-programme look: warm paper, black ink, livery colours.
    Livery variables are switched at runtime by js/livery.js and are used by
-   the page *and* by the SVG drawings (fill="var(--livery-1)").
+   the page *and* by the SVG drawings (.lv1, .lv2, .lva classes).
    ========================================================================== */
 :root {
   /* paper & ink */
@@ -15,10 +15,16 @@
   --line: #CFCCC3;
   --line-2: #E2DFD7;
 
-  /* livery (default: Naranja 404) */
-  --livery-1: #FF5A1F;
-  --livery-2: #16181D;
-  --livery-accent: #F5F3EE;
+  /* livery (default: Rojo). --livery-1/2/accent paint the car drawings;
+     --livery-ui/-on colour the interface (text on paper, buttons) and can
+     differ when the body colour is too light or too dark to read. */
+  --livery-1: #D40000;
+  --livery-2: #16171B;
+  --livery-accent: #F7F4EE;
+  --livery-ui: var(--livery-1);
+  --livery-on: var(--livery-accent);
+  --livery-ui-dark: var(--livery-ui);     /* on dark sections */
+  --livery-on-dark: var(--livery-on);
 
   /* signal colours (race control) */
   --signal-red: #E0212B;

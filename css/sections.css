@@ -31,7 +31,7 @@
   font-weight: 900;
   font-size: var(--step-5);
   line-height: .76;
-  color: var(--livery-1);
+  color: var(--livery-ui);
   letter-spacing: -.02em;
   transition: color .4s var(--ease);
 }
@@ -91,7 +91,7 @@
   align-items: center;
   padding: 7px 10px;
   background: var(--card);
-  border-left: 3px solid var(--livery-1);
+  border-left: 3px solid var(--livery-ui);
 }
 .timing-tower .pos { font-weight: 700; }
 .timing-tower .who { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -116,7 +116,7 @@
 .licence {
   background: var(--card);
   border: 1px solid var(--line);
-  border-top: 8px solid var(--livery-1);
+  border-top: 8px solid var(--livery-ui);
   box-shadow: 0 1px 0 var(--line-2), 0 18px 40px -28px rgba(0,0,0,.35);
 }
 .licence__head {
@@ -135,7 +135,7 @@
 
 .driver-stats { display: grid; gap: 0; border-top: 3px solid var(--ink); }
 .driver-stats li { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--line); }
-.driver-stats b { font: 900 54px/1 var(--font-display); color: var(--livery-1); }
+.driver-stats b { font: 900 54px/1 var(--font-display); color: var(--livery-ui); }
 .driver-stats span { color: var(--ink-2); }
 
 /* ---------- T3 · Setup ---------- */
@@ -159,7 +159,7 @@
 .part__chips { grid-column: 2; display: flex; flex-wrap: wrap; gap: 6px; }
 .part__chips span { font-size: 13px; padding: 2px 9px; border: 1px solid var(--line); background: var(--paper); }
 .part[aria-pressed="true"] { background: var(--card); }
-.part[aria-pressed="true"] .part__n { color: var(--livery-1); }
+.part[aria-pressed="true"] .part__n { color: var(--livery-ui); }
 .part[aria-pressed="true"] .part__chips span { border-color: var(--ink); }
 
 /* ---------- T4 · Garaje ---------- */
@@ -185,10 +185,10 @@
 }
 @keyframes card-in { from { opacity: 0; transform: translateY(8px); } }
 .car-card__top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.car-card__num { font: 900 44px/.8 var(--font-display); color: var(--livery-1); }
+.car-card__num { font: 900 44px/.8 var(--font-display); color: var(--livery-ui); }
 .car-card__tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .tag { font: 700 10.5px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border: 1px solid var(--line); background: var(--card); }
-.tag--work { border-color: var(--livery-1); color: var(--ink); }
+.tag--work { border-color: var(--livery-ui); color: var(--ink); }
 .tag--team { border-color: #1F6FE5; }
 .tag--private { border-color: var(--ink-3); color: var(--ink-2); }
 .car-card h3 { font: 900 28px/1 var(--font-display); text-transform: uppercase; }
@@ -207,7 +207,7 @@
 }
 .sheet__card {
   position: relative; width: min(760px, 100%); max-height: 100%; overflow: auto;
-  background: var(--paper); border-top: 8px solid var(--livery-1);
+  background: var(--paper); border-top: 8px solid var(--livery-ui);
   padding: 26px clamp(18px, 4vw, 34px) 30px;
 }
 .sheet__close { position: absolute; right: 14px; top: 12px; background: none; border: 1px solid var(--line); padding: 6px 10px; font: 12px var(--font-mono); }
@@ -240,7 +240,7 @@
   position: absolute; top: 4px; height: 18px;
   left: calc(var(--from) / var(--cols) * 100%);
   width: max(10px, calc((var(--to) - var(--from)) / var(--cols) * 100%));
-  background: var(--livery-1);
+  background: var(--livery-ui);
 }
 .lapchart__row--school .lapchart__bar { background: repeating-linear-gradient(45deg, var(--ink) 0 6px, var(--ink-2) 6px 12px); }
 .races { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; margin-top: 32px; }
@@ -262,8 +262,8 @@
 .stint p { color: var(--ink-2); font-size: 15.5px; }
 
 /* ---------- T7 · Radio ---------- */
-.section--radio { background: var(--ink); color: var(--paper); padding-bottom: clamp(56px, 8vw, 96px); margin-top: clamp(48px, 7vw, 96px); }
-.section--radio .num { font: 900 22px var(--font-display); color: var(--livery-1); }
+.section--radio { --livery-ui: var(--livery-ui-dark); --livery-on: var(--livery-on-dark); background: var(--ink); color: var(--paper); padding-bottom: clamp(56px, 8vw, 96px); margin-top: clamp(48px, 7vw, 96px); }
+.section--radio .num { font: 900 22px var(--font-display); color: var(--livery-ui); }
 .radio { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px 56px; align-items: end; }
 @media (max-width: 860px) { .radio { grid-template-columns: 1fr; } }
 .radio__title { font: 900 clamp(4rem, 12vw, 9rem)/.85 var(--font-display); text-transform: uppercase; margin-top: 8px; }

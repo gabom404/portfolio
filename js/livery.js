@@ -1,16 +1,17 @@
 /**
- * livery.js — five original colour schemes for car 404.
+ * livery.js — four colour schemes for car 404 (red is the default).
  * Changes the --livery-* CSS variables used by the page and every SVG drawing.
  */
 (function (root) {
   'use strict';
 
+  // c1 body · c2 second colour · accent numbers and details
+  // ui/on (optional): interface colour on paper and the text on it; uiDark/onDark: the same on dark sections
   var LIVERIES = [
-    { id: 'naranja', name: { es: 'Naranja 404', en: '404 Orange' }, c1: '#FF5A1F', c2: '#16181D', accent: '#F5F3EE' },
-    { id: 'ilopango', name: { es: 'Azul Ilopango', en: 'Ilopango Blue' }, c1: '#1E5BFF', c2: '#0B1B3A', accent: '#E9F6FF' },
-    { id: 'volcan', name: { es: 'Verde Volcán', en: 'Volcano Green' }, c1: '#0F9A5B', c2: '#0E1A14', accent: '#F2E94E' },
-    { id: 'plata', name: { es: 'Plata Nocturna', en: 'Night Silver' }, c1: '#9AA0AA', c2: '#15161A', accent: '#FF5A1F' },
-    { id: 'carbono', name: { es: 'Negro Carbón', en: 'Carbon Black' }, c1: '#1C1D22', c2: '#FF5A1F', accent: '#F5F3EE' }
+    { id: 'rojo', name: { es: 'Rojo', en: 'Red' }, c1: '#D40000', c2: '#16171B', accent: '#F7F4EE' },
+    { id: 'azul-noche', name: { es: 'Azul noche', en: 'Midnight blue' }, c1: '#1A2B5F', c2: '#E1122E', accent: '#FFC906', uiDark: '#FFC906', onDark: '#111214' },
+    { id: 'plata', name: { es: 'Plata y turquesa', en: 'Silver and teal' }, c1: '#BFC5CC', c2: '#00A19B', accent: '#111317', ui: '#00857F', on: '#FFFFFF' },
+    { id: 'azul-rosa', name: { es: 'Azul y rosa', en: 'Blue and pink' }, c1: '#0B62C4', c2: '#FF6FAE', accent: '#FFFFFF' }
   ];
 
   var current = LIVERIES[0];
@@ -26,6 +27,10 @@
     s.setProperty('--livery-1', current.c1);
     s.setProperty('--livery-2', current.c2);
     s.setProperty('--livery-accent', current.accent);
+    // optional interface overrides; removing them falls back to the tokens in css/tokens.css
+    [['--livery-ui', 'ui'], ['--livery-on', 'on'], ['--livery-ui-dark', 'uiDark'], ['--livery-on-dark', 'onDark']].forEach(function (p) {
+      if (current[p[1]]) s.setProperty(p[0], current[p[1]]); else s.removeProperty(p[0]);
+    });
     try { localStorage.setItem('c404-livery', current.id); } catch (e) { /* storage unavailable */ }
     render();
   }
@@ -67,7 +72,7 @@
   function init() {
     var saved = null;
     try { saved = localStorage.getItem('c404-livery'); } catch (e) { /* ignore */ }
-    apply(saved || 'naranja');
+    apply(saved || 'rojo');
     root.C404.i18n.onChange(render);
   }
 

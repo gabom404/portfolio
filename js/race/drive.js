@@ -198,13 +198,13 @@
     track.CORNERS.forEach(function (c) {
       var x = c.point[0] * SCALE, y = c.point[1] * SCALE;
       var passed = cps.indexOf(c) !== -1 && cps.indexOf(c) < lap.next;
-      ctx.fillStyle = passed ? css('--livery-1') || '#FF5A1F' : '#111214';
+      ctx.fillStyle = passed ? css('--livery-ui') || '#D40000' : '#111214';
       ctx.fillRect(x - 30, y - 92, 60, 36);
       ctx.fillStyle = '#F5F3EE';
       ctx.fillText(c.id, x, y - 74);
     });
 
-    drawCar(css('--livery-1') || '#FF5A1F', css('--livery-2') || '#16181D', css('--livery-accent') || '#F5F3EE');
+    drawCar(css('--livery-1') || '#D40000', css('--livery-2') || '#16171B', css('--livery-accent') || '#F7F4EE');
   }
 
   function loop(now) {
