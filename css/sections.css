@@ -177,7 +177,7 @@
 .compound[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .compound[aria-pressed="true"] .compound__count { color: var(--line); }
 
-.garage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 22px; }
+.garage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 36px 22px; }
 .car-card {
   display: grid; grid-template-rows: auto 1fr auto; gap: 12px;
   border-top: 3px solid var(--ink); padding-top: 14px;
@@ -193,7 +193,7 @@
 .tag--private { border-color: var(--ink-3); color: var(--ink-2); }
 .car-card h3 { font: 900 28px/1 var(--font-display); text-transform: uppercase; }
 .car-card__line { color: var(--ink-2); font-size: 15.5px; }
-.car-card__stack { font: 12px var(--font-mono); color: var(--ink-2); }
+.car-card__stack { font: 12px var(--font-mono); color: var(--ink-2); margin-bottom: 16px; }
 .car-card__actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .car-card__actions .btn { padding: 10px 16px; font-size: 14px; }
 .car-card__repo { font-size: 14px; font-weight: 600; }

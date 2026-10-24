@@ -32,8 +32,8 @@ var PROJECTS = [
       en: "The business tracked sales and stock by hand and needed a simple system without expensive licences."
     },
     solution: {
-      es: "Aplicación en PHP 8 con PDO y MySQL: productos con existencias mínimas, clientes, vendedores, ventas con descuento de inventario dentro de una transacción, tickets y reportes de ganancias en PDF.",
-      en: "A PHP 8 application with PDO and MySQL: products with minimum stock, customers, sellers, sales that update stock inside a transaction, receipts and profit reports in PDF."
+      es: "Aplicación en PHP 8 con PDO y MySQL: productos con control de existencias (no deja vender más de lo disponible), clientes, vendedores, ventas con descuento de inventario dentro de una transacción, tickets y reportes de ganancias en PDF.",
+      en: "A PHP 8 application with PDO and MySQL: products with stock control (it never sells more than what is available), customers, sellers, sales that update stock inside a transaction, receipts and profit reports in PDF."
     }
   },
   {
@@ -43,23 +43,23 @@ var PROJECTS = [
     category: "backend",
     isWorkExperience: true,
     tagline: {
-      es: "Control de asistencia con credenciales QR leídas por cámara, horarios por turno y reportes en PDF, desarrollado e implementado para una empresa privada.",
-      en: "Attendance tracking with QR badges read by the camera, shift schedules and PDF reports, built and deployed for a private company."
+      es: "Control de asistencia con credenciales QR leídas por cámara, horarios por turno y reporte de horas para Excel, desarrollado e implementado para una empresa privada.",
+      en: "Attendance tracking with QR badges read by the camera, shift schedules and an hours report for Excel, built and deployed for a private company."
     },
     repoUrl: "https://github.com/gabom404/attendance-track",
     stack: ["PHP", "MySQL", "JavaScript", "html5-qrcode", "TCPDF", "API REST"],
     highlights: [
       { es: "Marcaje con credencial QR y foto del empleado para confirmar identidad", en: "QR badge check-in with the employee photo to confirm identity" },
       { es: "Horarios de lunes a domingo con tolerancia y cálculo de horas extra", en: "Monday-to-Sunday shifts with grace periods and overtime calculation" },
-      { es: "Endpoint REST en JSON y reportes consolidados en PDF", en: "JSON REST endpoint and consolidated PDF reports" }
+      { es: "Credenciales QR en PDF listas para imprimir y endpoint en JSON", en: "Printable QR badges in PDF and a JSON endpoint" }
     ],
     challenge: {
       es: "La asistencia del personal en distintos proyectos se registraba y consolidaba a mano.",
       en: "Staff attendance across several projects was recorded and consolidated by hand."
     },
     solution: {
-      es: "Terminal web que lee la credencial QR con la cámara, muestra la foto del empleado y registra entrada o salida según su turno. El panel administrativo gestiona empleados, proyectos y justificaciones, y genera reportes con TCPDF. Todas las consultas usan sentencias preparadas.",
-      en: "A web terminal reads the QR badge with the camera, shows the employee photo and records check-in or check-out against the shift. The admin panel manages employees, projects and excuses, and produces reports with TCPDF. Every query uses prepared statements."
+      es: "Terminal web que lee la credencial QR con la cámara, muestra la foto del empleado y registra entrada o salida según su turno. El panel administrativo gestiona empleados, proyectos y justificaciones, genera las credenciales en PDF con TCPDF y exporta el reporte de horas para Excel. Todas las consultas usan sentencias preparadas.",
+      en: "A web terminal reads the QR badge with the camera, shows the employee photo and records check-in or check-out against the shift. The admin panel manages employees, projects and excuses, creates the badges as PDF with TCPDF and exports the hours report for Excel. Every query uses prepared statements."
     }
   },
   {
