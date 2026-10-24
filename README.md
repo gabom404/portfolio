@@ -44,7 +44,7 @@ Antes de la largada, la "Vuelta rápida" pide nombre y apellido. El formulario i
 
 Las reglas de `firestore.rules` solo permiten crear documentos con esos campos y tamaños; desde el sitio nadie puede leerlos, cambiarlos ni borrarlos. Los datos se consultan en la consola de Firebase. Si `apiKey` y `projectId` están vacíos, el juego funciona sin formulario y sin guardar nada.
 
-Para activarlo: crear un proyecto en Firebase, crear la base de Firestore, publicar `firestore.rules` y copiar `apiKey` y `projectId` de la app web en `js/race/visitors.js`.
+Está conectado al proyecto de Firebase `gabom404-portafolio`. Para usar otro proyecto: crear la base de Firestore, publicar `firestore.rules` (`firebase deploy --only firestore:rules`) y cambiar `apiKey` y `projectId` en `js/race/visitors.js`. La `apiKey` de una app web de Firebase identifica el proyecto y no es un secreto; lo que protege los datos son las reglas.
 
 ## Accesibilidad
 

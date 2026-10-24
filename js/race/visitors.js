@@ -14,8 +14,8 @@
   /* Firebase web config of the project (public identifiers, not secrets).
      Leave apiKey empty to run the game without saving anything. */
   var FIREBASE = {
-    apiKey: '',
-    projectId: ''
+    apiKey: 'AIzaSyBiLOgAuYSnVwHPUlUPBD1jfymew1eW8sM',
+    projectId: 'gabom404-portafolio'
   };
 
   var STORAGE_PLAYER = 'c404-player';
