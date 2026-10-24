@@ -214,6 +214,7 @@
     }
     // scene.js draws the 2.5D view; drive.js runs the game and falls back to a flat view without it
     driveLoading = load('js/race/scene.js').catch(function () { /* flat view */ })
+      .then(function () { return load('js/race/visitors.js').catch(function () { /* play without the entry form */ }); })
       .then(function () { return load('js/race/drive.js'); })
       .catch(function (e) { driveLoading = null; throw e; });
     return driveLoading;

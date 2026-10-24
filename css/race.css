@@ -155,6 +155,28 @@
 .drive__card b { display: block; font: 900 22px/1 var(--font-display); text-transform: uppercase; margin: 4px 0; }
 .drive__card p { font-size: 14px; color: var(--ink-2); }
 .drive__help { color: #9C9EA6; font-size: 14px; }
+.drive__entry {
+  position: absolute; inset: 0; z-index: 2;
+  display: grid; place-items: center; padding: 12px;
+  background: rgba(18, 19, 22, .72); backdrop-filter: blur(3px);
+  border-radius: 4px; overflow-y: auto;
+}
+.drive__entry-form {
+  width: min(420px, 100%); display: grid; gap: 8px;
+  background: var(--paper); color: var(--ink); border-top: 5px solid var(--livery-ui);
+  padding: 18px 20px 16px; box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+.drive__entry-form h3 { font: 900 28px/1 var(--font-display); text-transform: uppercase; margin-bottom: 6px; }
+.drive__entry-form label { font: 11px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); margin-top: 4px; }
+.drive__entry-form input {
+  font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--card); color: var(--ink);
+}
+.drive__entry-form input:focus-visible { outline: 3px solid var(--livery-ui); outline-offset: 1px; }
+.drive__entry-form input[aria-invalid="true"] { border-color: var(--signal-red); }
+.drive__entry-form .btn { margin-top: 4px; }
+.drive__entry-error { min-height: 1.3em; font-size: 14px; font-weight: 600; color: var(--signal-red); }
+.drive__entry-note { font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
 .drive__pad { display: none; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .drive__pad button {
   height: 64px; font-size: 24px; border: 1px solid #3A3B42; background: #1D1E22; color: var(--paper); border-radius: 6px;

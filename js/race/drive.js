@@ -87,6 +87,7 @@
   var car, lap, track, trackPath, cps, startPoint, startAngle;
   var running = false, raf = 0, lastT = 0, cardTimer = 0, dpr = 1, start = null, shownLamps = -1;
   var scene = null, groundCanvas = null, stage = null, lastDt = 0;
+  var entry = null, entryForm = null, entryName = null, entryError = null, lapsDone = 0;
   var reduceMotion = root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function t(k, v) { return root.C404.i18n.t(k, v); }
@@ -105,13 +106,50 @@
     try { best = best || Number(localStorage.getItem(STORAGE_BEST)) || null; } catch (e) { /* ignore */ }
     lap = createLap(cps.length);
     lap.best = best;
-    start = createStart(performance.now(), root.C404.lights ? root.C404.lights.randomHold() : 200 + Math.random() * 2800);
+    start = null;
+    lapsDone = 0;
     shownLamps = -1;
     hud.lap.textContent = formatLap(0);
     hud.last.textContent = '—';
     hud.best.textContent = formatLap(lap.best);
     hud.cp.textContent = '0/' + cps.length;
+    var visitors = root.C404.visitors;
+    if (visitors && visitors.enabled()) askName(visitors);      // the entry form first, then the start lights
+    else beginStart();
+  }
+
+  function beginStart() {
+    start = createStart(performance.now(), root.C404.lights ? root.C404.lights.randomHold() : 200 + Math.random() * 2800);
+    shownLamps = -1;
     showLights(0);
+  }
+
+  /* ---------- entry form: who is driving ---------- */
+  function askName(visitors) {
+    showCard('', '', 0);
+    var prev = visitors.player || visitors.remembered();
+    entryName.value = prev ? prev.name : '';
+    entryError.textContent = '';
+    entryName.removeAttribute('aria-invalid');
+    entry.hidden = false;
+    (prev ? entryForm.querySelector('button[type="submit"]') : entryName).focus({ preventScroll: true });
+  }
+
+  function submitEntry(e) {
+    e.preventDefault();
+    var visitors = root.C404.visitors;
+    var problem = visitors.checkName(entryName.value);
+    if (problem) {
+      entryError.textContent = t(problem);
+      entryName.setAttribute('aria-invalid', 'true');
+      entryName.focus();
+      return;
+    }
+    visitors.register(entryName.value, root.C404.i18n.lang);
+    entry.hidden = true;
+    closeBtn.focus({ preventScroll: true });
+    lastT = performance.now();
+    beginStart();
   }
 
   function resize() {
@@ -158,6 +196,7 @@
   }
 
   function startProcedure(now) {
+    if (!start) return false;                           // still filling in the entry form
     if (start.out) {
       if (start.reaction == null && !start.jump && keys.up) {
         start.reaction = Math.round(now - start.outAt);
@@ -214,6 +253,8 @@
           hud.best.textContent = formatLap(lap.best);
           hud.cp.textContent = '0/' + cps.length;
           try { localStorage.setItem(STORAGE_BEST, String(lap.best)); } catch (e) { /* ignore */ }
+          if (root.C404.visitors) root.C404.visitors.lap(time, lapsDone === 0 ? start.reaction : null, lapsDone === 0 && start.jump);
+          lapsDone += 1;
           showCard(t('drive.lapDone'), formatLap(time), 2600);
         }
       }
@@ -305,10 +346,19 @@
   function onKeyDown(e) {
     if (dlg.hidden) return;
     if (e.key === 'Escape') { close(); return; }
+    if (entry && !entry.hidden) {                       // typing a name: keep focus inside the dialog, no driving keys
+      if (e.key === 'Tab') {
+        var f = [closeBtn].concat(Array.prototype.slice.call(entryForm.querySelectorAll('input, button')));
+        var i = f.indexOf(document.activeElement);
+        e.preventDefault();
+        f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+      }
+      return;
+    }
     if (e.key === 'Tab') { e.preventDefault(); closeBtn.focus(); return; }
     setKey(e, true);
   }
-  function onKeyUp(e) { if (!dlg.hidden) setKey(e, false); }
+  function onKeyUp(e) { if (!dlg.hidden && (!entry || entry.hidden)) setKey(e, false); }
 
   function onVisibility() {
     if (dlg.hidden) return;
@@ -327,7 +377,7 @@
       scene.setColors({ body: css('--livery-1'), body2: css('--livery-2'), accent: css('--livery-accent'), ui: st.getPropertyValue('--livery-ui').trim() });
       scene.reset();
     }
-    closeBtn.focus({ preventScroll: true });
+    if (!entry || entry.hidden) closeBtn.focus({ preventScroll: true });
     running = true;
     lastT = performance.now();
     raf = requestAnimationFrame(loop);
@@ -349,6 +399,12 @@
     dlg = document.getElementById('drive');
     canvas = document.getElementById('drive-canvas');
     stage = canvas.parentNode;
+    entry = document.getElementById('drive-entry');
+    entryForm = document.getElementById('drive-entry-form');
+    entryName = document.getElementById('entry-name');
+    entryError = document.getElementById('entry-error');
+    entryForm.addEventListener('submit', submitEntry);
+    entryName.addEventListener('input', function () { entryError.textContent = ''; entryName.removeAttribute('aria-invalid'); });
     if (root.C404.scene) {
       groundCanvas = document.createElement('canvas');
       groundCanvas.className = 'drive__ground';

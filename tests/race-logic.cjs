@@ -11,10 +11,10 @@ const root = path.resolve(__dirname, "..");
 const ctx = { Math, console };
 ctx.globalThis = ctx;
 vm.createContext(ctx);
-for (const f of ["js/race/track.js", "js/race/lights.js", "js/race/pitstop.js", "js/race/circuit-nav.js", "js/race/drive.js", "js/race/scene.js"]) {
+for (const f of ["js/race/track.js", "js/race/lights.js", "js/race/pitstop.js", "js/race/circuit-nav.js", "js/race/drive.js", "js/race/scene.js", "js/race/visitors.js"]) {
   vm.runInContext(fs.readFileSync(path.join(root, f), "utf8"), ctx, { filename: f });
 }
-const { track, lights, pitstop, circuitNav, drive, scene } = ctx.C404;
+const { track, lights, pitstop, circuitNav, drive, scene, visitors } = ctx.C404;
 
 let passed = 0;
 function test(name, fn) { fn(); passed++; console.log("ok -", name); }
@@ -159,6 +159,29 @@ test("a jump start adds the penalty to that lap only", () => {
   drive.hitCheckpoint(lap, 0);
   assert.strictEqual(drive.crossLine(lap, 59000), 29000, "next lap has no penalty");
   assert.strictEqual(lap.best, 29000);
+});
+
+/* ---------- entry form ---------- */
+test("names: real first and last names pass", () => {
+  ["Gabriel Martínez", "María José López", "Ana O'Neil", "Jean-Luc Picard", "Lucía de la Cruz", "Li Na", "Óscar Núñez"]
+    .forEach(n => assert.strictEqual(visitors.checkName(n), null, n));
+});
+test("names: placeholders, single words and keyboard mashes are rejected", () => {
+  const cases = { "user": "visit.err.length", "Gabriel": "visit.err.surname", "Test User": "visit.err.fake", "Usuario Prueba": "visit.err.fake",
+    "asdf qwerty": "visit.err.fake", "Sdfg Hjkl": "visit.err.fake", "Aaaa Bbbb": "visit.err.fake", "Juan Juan": "visit.err.fake",
+    "Juan123 Pérez": "visit.err.chars", "@gabo dev": "visit.err.chars", "   ": "visit.err.length", "Admin Gabriel": "visit.err.fake" };
+  Object.entries(cases).forEach(([n, err]) => assert.strictEqual(visitors.checkName(n), err, n));
+});
+test("names are tidied before saving", () => {
+  assert.strictEqual(visitors.tidy("  maría   josé  LÓPEZ "), "María José López");
+  assert.strictEqual(visitors.tidy("jean-luc picard"), "Jean-Luc Picard");
+});
+test("Firestore fields use the REST value types", () => {
+  const f = visitors.toFields({ nombre: "Ana Pérez", tiempoMs: 45004.4, salidaEnFalso: false, fecha: new Date("2026-10-24T12:00:00Z") }).fields;
+  assert.deepStrictEqual({ ...f.nombre }, { stringValue: "Ana Pérez" });
+  assert.deepStrictEqual({ ...f.tiempoMs }, { integerValue: "45004" });
+  assert.deepStrictEqual({ ...f.salidaEnFalso }, { booleanValue: false });
+  assert.deepStrictEqual({ ...f.fecha }, { timestampValue: "2026-10-24T12:00:00.000Z" });
 });
 
 /* ---------- 2.5D camera ---------- */

@@ -1,0 +1,37 @@
+rules_version = '2';
+
+// Reglas de Cloud Firestore para el registro de jugadores de la "Vuelta rápida".
+// El sitio solo puede CREAR documentos con estos campos; nadie puede leerlos,
+// cambiarlos ni borrarlos desde el navegador. Los datos se ven en la consola de Firebase.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function texto(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max;
+    }
+
+    match /visitas/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['nombre', 'idioma', 'fecha'])
+        && texto(request.resource.data.nombre, 5, 60)
+        && request.resource.data.idioma in ['es', 'en']
+        && request.resource.data.fecha is timestamp;
+      allow read, update, delete: if false;
+    }
+
+    match /vueltas/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['nombre', 'tiempoMs', 'reaccionMs', 'salidaEnFalso', 'fecha'])
+        && texto(request.resource.data.nombre, 5, 60)
+        && request.resource.data.tiempoMs is int
+        && request.resource.data.tiempoMs > 5000 && request.resource.data.tiempoMs < 900000
+        && request.resource.data.reaccionMs is int
+        && request.resource.data.reaccionMs >= -1 && request.resource.data.reaccionMs < 10000
+        && request.resource.data.salidaEnFalso is bool
+        && request.resource.data.fecha is timestamp;
+      allow read, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

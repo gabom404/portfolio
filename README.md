@@ -33,6 +33,19 @@ Es un sitio estático (HTML, CSS y JavaScript) sin dependencias ni paso de compi
 
 Los récords, la livery y el idioma se guardan en el navegador (`localStorage`); si no está disponible, el sitio funciona igual.
 
+## Registro de jugadores (Firebase)
+
+Antes de la largada, la "Vuelta rápida" pide nombre y apellido. El formulario indica que el nombre queda guardado junto con los tiempos. Se rechazan nombres de relleno ("user", "test", "admin"), una sola palabra o letras al azar; no hay forma de comprobar que un nombre sea real, pero sí de filtrar los obviamente falsos.
+
+`js/race/visitors.js` guarda en Cloud Firestore, por su API REST y sin SDK:
+
+- `visitas`: nombre, idioma y fecha de cada partida.
+- `vueltas`: nombre, tiempo de vuelta, tiempo de reacción, si hubo salida en falso y fecha.
+
+Las reglas de `firestore.rules` solo permiten crear documentos con esos campos y tamaños; desde el sitio nadie puede leerlos, cambiarlos ni borrarlos. Los datos se consultan en la consola de Firebase. Si `apiKey` y `projectId` están vacíos, el juego funciona sin formulario y sin guardar nada.
+
+Para activarlo: crear un proyecto en Firebase, crear la base de Firestore, publicar `firestore.rules` y copiar `apiKey` y `projectId` de la app web en `js/race/visitors.js`.
+
 ## Accesibilidad
 
 - Todo se puede usar con teclado: el semáforo y el juego se cierran con `Esc`, y los diálogos mantienen el foco dentro mientras están abiertos.
@@ -60,6 +73,7 @@ portfolio/
 │       ├── circuit-nav.js     # Navegador de circuito ligado al scroll
 │       ├── pitstop.js         # Pit stop
 │       ├── drive.js           # Mini-juego "Vuelta rápida": física, vueltas y controles (se carga al abrirlo)
+│       ├── visitors.js        # Formulario de inscripción y registro en Firestore
 │       └── scene.js           # Vista 2.5D del juego: cámara de persecución, pista en WebGL y carro 3D
 └── tests/
     ├── verify-portfolio.cjs   # Datos, traducciones completas, enlaces y estructura del HTML

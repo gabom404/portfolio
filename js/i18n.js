@@ -109,6 +109,11 @@
     'drive.right': 'Steer right',
     'drive.brake': 'Brake',
     'drive.gas': 'Accelerate',
+    'visit.kicker': 'Entry · Circuito 404',
+    'visit.title': 'Who is driving?',
+    'visit.name': 'First and last name',
+    'visit.submit': 'Go to the grid',
+    'visit.note': 'Your name is saved along with your times.',
   };
 
   /* Strings used only from JavaScript ({name} placeholders are filled by t()). */
@@ -148,6 +153,10 @@
       'drive.cpTitle': 'Curva {n} superada',
       'drive.lapDone': 'Vuelta completa',
       'drive.offTrack': 'Fuera de pista',
+      'visit.err.length': 'Escribí tu nombre y apellido (entre 5 y 60 caracteres).',
+      'visit.err.chars': 'Usá solo letras, espacios, guiones o apóstrofos.',
+      'visit.err.surname': 'Escribí también tu apellido.',
+      'visit.err.fake': 'Ese no parece un nombre real. Escribí tu nombre y apellido.',
       'drive.ready': 'Preparados…',
       'drive.wait': 'Acelerá cuando se apaguen las luces. Si salís antes, es salida en falso.',
       'drive.go': '¡Fuera luces!',
@@ -191,6 +200,10 @@
       'drive.cpTitle': 'Corner {n} cleared',
       'drive.lapDone': 'Lap complete',
       'drive.offTrack': 'Off track',
+      'visit.err.length': 'Type your first and last name (5 to 60 characters).',
+      'visit.err.chars': 'Use only letters, spaces, hyphens or apostrophes.',
+      'visit.err.surname': 'Please add your last name too.',
+      'visit.err.fake': 'That does not look like a real name. Please type your first and last name.',
       'drive.ready': 'Get ready…',
       'drive.wait': 'Accelerate when the lights go out. Going early is a jump start.',
       'drive.go': 'Lights out!',

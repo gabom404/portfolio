@@ -471,6 +471,17 @@
     <div class="drive__stage">
       <canvas class="drive__canvas" id="drive-canvas" role="img" aria-label="Circuito 404 visto desde atrás del monoplaza" data-i18n-attr="aria-label:drive.canvas"></canvas>
       <div class="drive__card" id="drive-card" aria-live="polite" hidden></div>
+      <div class="drive__entry" id="drive-entry" hidden>
+        <form class="drive__entry-form" id="drive-entry-form" novalidate>
+          <p class="kicker" data-i18n="visit.kicker">Inscripción · Circuito 404</p>
+          <h3 id="drive-entry-title" data-i18n="visit.title">¿Quién maneja?</h3>
+          <label for="entry-name" data-i18n="visit.name">Nombre y apellido</label>
+          <input id="entry-name" name="name" type="text" autocomplete="name" maxlength="60" required aria-describedby="entry-error">
+          <p class="drive__entry-error" id="entry-error" role="alert"></p>
+          <button class="btn btn--livery" type="submit" data-i18n="visit.submit">Ir a la parrilla</button>
+          <p class="drive__entry-note" data-i18n="visit.note">Tu nombre queda guardado junto con tus tiempos.</p>
+        </form>
+      </div>
     </div>
     <p class="drive__help" data-i18n="drive.help">Flechas o WASD para manejar. Pasá por las curvas para desbloquear datos del garaje.</p>
     <div class="drive__pad">
