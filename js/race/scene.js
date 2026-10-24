@@ -355,12 +355,18 @@
     return cv;
   }
 
-  function gantrySprite() {
+  function gantrySprite(lit) {
     var cv = canvas(600, 230), g = cv.getContext('2d');
     g.fillStyle = '#2A2B30'; g.fillRect(8, 30, 22, 200); g.fillRect(570, 30, 22, 200);
     g.fillStyle = '#16171B'; g.fillRect(0, 22, 600, 64);
     g.fillStyle = '#0B0C0E'; g.fillRect(210, 30, 180, 48);
-    for (var i = 0; i < 5; i++) { g.fillStyle = '#3A0E10'; g.beginPath(); g.arc(234 + i * 33, 54, 12, 0, Math.PI * 2); g.fill(); }
+    for (var i = 0; i < 5; i++) {
+      var on = i < (lit || 0);
+      g.shadowColor = on ? '#FF2525' : 'transparent'; g.shadowBlur = on ? 18 : 0;
+      g.fillStyle = on ? '#FF2B2B' : '#3A0E10';
+      g.beginPath(); g.arc(234 + i * 33, 54, 12, 0, Math.PI * 2); g.fill();
+    }
+    g.shadowBlur = 0;
     g.fillStyle = '#F7F4EE'; g.font = '900 30px "Big Shoulders Display", "Arial Narrow", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
     g.fillText('CIRCUITO 404', 108, 56); g.fillText('START · FINISH', 492, 56);
     return cv;
@@ -444,7 +450,8 @@
       var q = track.pointAt((f + 1) % 1);
       props.push({ x: q.x * SCALE + rx * (HALF + 150), y: q.y * SCALE + ry * (HALF + 150), img: standSprite(rand), w: 280, h: 100 });
     });
-    props.push({ x: start.x * SCALE, y: start.y * SCALE, img: gantrySprite(), w: HALF * 2 + 64, h: 66, gantry: true });
+    var gantryImgs = [0, 1, 2, 3, 4, 5].map(gantrySprite);               // start lights: 0–5 lit
+    props.push({ x: start.x * SCALE, y: start.y * SCALE, img: gantryImgs[0], w: HALF * 2 + 64, h: 66, gantry: true });
     var boards = track.CORNERS.slice(1).map(function (c) {
       var p0 = track.pointAt((c.fraction + 0.99) % 1), p1 = track.pointAt((c.fraction + 0.01) % 1), pc = track.pointAt(c.fraction);
       var ix = (p0.x + p1.x) / 2 - pc.x, iy = (p0.y + p1.y) / 2 - pc.y, l = Math.hypot(ix, iy) || 1;
@@ -627,7 +634,7 @@
         if (!q || q.z > 4200) return;
         var w = pr.w * q.k, h = pr.h * q.k;
         if (q.x + w / 2 < 0 || q.x - w / 2 > W) return;
-        var img = pr.on && boards.indexOf(pr) === next ? pr.on : pr.img;
+        var img = pr.gantry ? gantryImgs[st.lamps || 0] : (pr.on && boards.indexOf(pr) === next ? pr.on : pr.img);
         items.push({ z: q.z, kind: 'sprite', img: img, x: q.x - w / 2, y: q.y - h, w: w, h: h, alpha: 1 - 0.75 * Math.min(1, Math.max(0, (q.z - 700) / 2900)) });
       });
 

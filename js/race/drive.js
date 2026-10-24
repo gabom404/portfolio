@@ -14,6 +14,9 @@
   var GRIP = 9, GRIP_OFF = 3.2;
   var KMH = 0.55;                // world units/s → km/h shown on the HUD
   var STORAGE_BEST = 'c404-best-lap';
+  var STORAGE_REACTION = 'c404-best-reaction';   // shared with the start lights on the home page
+  var START_DELAY = 600, START_STEP = 700;       // ms before the first light, and between lights
+  var JUMP_PENALTY = 1000;                       // ms added to the lap after a jump start
 
   /* ---------- pure helpers (unit-tested) ---------- */
 
@@ -43,8 +46,17 @@
     return { x: s.x + vx * dt, y: s.y + vy * dt, vx: vx, vy: vy, heading: h, speed: fwd };
   }
 
+  /** Start procedure: five lights come on one by one, then go out after a random hold (ms). */
+  function createStart(t0, hold) { return { t0: t0, outAt: t0 + START_DELAY + 5 * START_STEP + hold, out: false, jump: false, reaction: null }; }
+  /** Number of lit lights (0–5) at time `now`; 0 again once the lights are out. */
+  function lampsAt(start, now) {
+    if (now >= start.outAt) return 0;
+    var e = now - start.t0 - START_DELAY;
+    return e < 0 ? 0 : Math.min(5, Math.floor(e / START_STEP) + 1);
+  }
+
   /** Lap timing with ordered checkpoints. */
-  function createLap(count) { return { count: count, next: 0, startedAt: null, best: null, last: null }; }
+  function createLap(count) { return { count: count, next: 0, startedAt: null, best: null, last: null, penalty: 0 }; }
   function startLap(lap, t) { lap.startedAt = t; lap.next = 0; }
   /** Returns true when the checkpoint was the expected one. */
   function hitCheckpoint(lap, i) {
@@ -55,7 +67,8 @@
   /** Crossing the line: returns the lap time (ms) if every checkpoint was passed, else null. */
   function crossLine(lap, t) {
     if (lap.startedAt == null || lap.next < lap.count) return null;
-    var time = Math.round(t - lap.startedAt);
+    var time = Math.round(t - lap.startedAt + (lap.penalty || 0));
+    lap.penalty = 0;
     lap.last = time;
     if (lap.best == null || time < lap.best) lap.best = time;
     lap.startedAt = t;
@@ -72,7 +85,7 @@
   var dlg, canvas, ctx, card, hud = {}, closeBtn, lastFocus = null;
   var keys = { up: false, down: false, left: false, right: false };
   var car, lap, track, trackPath, cps, startPoint, startAngle;
-  var running = false, raf = 0, lastT = 0, cardTimer = 0, dpr = 1, moved = false;
+  var running = false, raf = 0, lastT = 0, cardTimer = 0, dpr = 1, start = null, shownLamps = -1;
   var scene = null, groundCanvas = null, stage = null, lastDt = 0;
   var reduceMotion = root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -83,18 +96,22 @@
     var p = track.pointAt(0.985);
     var q = track.pointAt(0);
     startAngle = Math.atan2(q.y - p.y, q.x - p.x);
-    car = { x: p.x * SCALE, y: p.y * SCALE, vx: 0, vy: 0, heading: startAngle, speed: 0 };
     startPoint = { x: q.x * SCALE, y: q.y * SCALE, angle: startAngle };
+    // pole position: the first grid box, on the left, with the nose on its line
+    var g = track.pointAt(0.988), g2 = track.pointAt(0.991);
+    var ga = Math.atan2(g2.y - g.y, g2.x - g.x), fx = Math.cos(ga), fy = Math.sin(ga);
+    car = { x: g.x * SCALE - fy * -22 - fx * 34, y: g.y * SCALE + fx * -22 - fy * 34, vx: 0, vy: 0, heading: ga, speed: 0 };
     var best = lap ? lap.best : null;
     try { best = best || Number(localStorage.getItem(STORAGE_BEST)) || null; } catch (e) { /* ignore */ }
     lap = createLap(cps.length);
     lap.best = best;
-    moved = false;
+    start = createStart(performance.now(), root.C404.lights ? root.C404.lights.randomHold() : 200 + Math.random() * 2800);
+    shownLamps = -1;
     hud.lap.textContent = formatLap(0);
     hud.last.textContent = '—';
     hud.best.textContent = formatLap(lap.best);
     hud.cp.textContent = '0/' + cps.length;
-    showCard(t('drive.start'), '', 0);
+    showLights(0);
   }
 
   function resize() {
@@ -125,6 +142,50 @@
     if (ms) cardTimer = setTimeout(function () { card.hidden = true; }, ms);
   }
 
+  /** The start card: a small gantry with the lit lights. */
+  function showLights(n) {
+    if (n === shownLamps) return;
+    if (shownLamps < 0 || card.hidden || !card.querySelector('.gantry')) {
+      showCard(t('drive.ready'), t('drive.wait'), 0);
+      var gantry = document.createElement('div');
+      gantry.className = 'gantry';
+      gantry.setAttribute('aria-hidden', 'true');
+      for (var i = 0; i < 5; i++) gantry.appendChild(document.createElement('span')).className = 'gantry__lamp';
+      card.insertBefore(gantry, card.children[1]);
+    }
+    shownLamps = n;
+    Array.prototype.forEach.call(card.querySelectorAll('.gantry__lamp'), function (l, i) { l.classList.toggle('is-on', i < n); });
+  }
+
+  function startProcedure(now) {
+    if (start.out) {
+      if (start.reaction == null && !start.jump && keys.up) {
+        start.reaction = Math.round(now - start.outAt);
+        var best = null;
+        try { best = Number(localStorage.getItem(STORAGE_REACTION)) || null; } catch (e) { /* ignore */ }
+        var lights = root.C404.lights;
+        var record = lights ? lights.bestOf(best, start.reaction) : Math.min(best || Infinity, start.reaction);
+        try { localStorage.setItem(STORAGE_REACTION, String(record)); } catch (e) { /* ignore */ }
+        showCard(t('drive.go'), t('drive.reaction', { ms: start.reaction }), 2200);
+      }
+      return true;
+    }
+    if (keys.up && !start.jump) {                       // throttle before the lights go out
+      start.jump = true;
+      lap.penalty = JUMP_PENALTY;
+    }
+    if (now >= start.outAt) {
+      start.out = true;
+      startLap(lap, start.outAt);
+      shownLamps = -1;
+      if (start.jump) showCard(t('drive.jump'), t('drive.jumpText'), 2600);
+      else showCard(t('drive.go'), t('drive.goText'), 0);
+      return true;
+    }
+    showLights(lampsAt(start, now));
+    return false;
+  }
+
   function factFor(i) {
     var list = root.PROJECTS || [];
     var p = list[i % Math.max(1, list.length)];
@@ -134,12 +195,11 @@
   }
 
   function update(dt, now) {
+    var go = startProcedure(now);                      // the car waits on the grid until lights out
     var near = track.nearest(car.x / SCALE, car.y / SCALE);
     var onTrack = near.dist * SCALE <= HALF_WIDTH;
-    car = stepCar(car, keys, dt, onTrack);
+    car = stepCar(car, go ? keys : {}, dt, onTrack);
     car.offTrack = !onTrack;
-
-    if (!moved && Math.abs(car.speed) > 5) { moved = true; startLap(lap, now); showCard('', '', 0); }
 
     if (lap.startedAt != null) {
       var c = cps[lap.next];
@@ -157,7 +217,7 @@
           showCard(t('drive.lapDone'), formatLap(time), 2600);
         }
       }
-      hud.lap.textContent = formatLap(now - lap.startedAt);
+      hud.lap.textContent = formatLap(now - lap.startedAt + (lap.penalty || 0));
     }
     hud.speed.textContent = Math.round(Math.max(0, car.speed) * KMH);
   }
@@ -183,7 +243,7 @@
 
   function render() {
     if (scene) {
-      var ok = scene.render({ car: car, lap: lap, cps: cps, keys: keys, dt: lastDt, now: performance.now(), reduceMotion: reduceMotion });
+      var ok = scene.render({ car: car, lap: lap, cps: cps, keys: keys, dt: lastDt, now: performance.now(), reduceMotion: reduceMotion, lamps: start ? lampsAt(start, performance.now()) : 0 });
       if (ok) return;
       useFlatView();
     }
@@ -328,7 +388,8 @@
     open: function () { setup(); open(); },
     close: function () { if (ready) close(); },
     /** Read-only snapshot of the car and lap (used by the browser tests). */
-    state: function () { return car && lap ? { x: car.x, y: car.y, heading: car.heading, speed: car.speed, offTrack: !!car.offTrack, next: lap.next, best: lap.best, last: lap.last } : null; },
+    state: function () { return car && lap ? { x: car.x, y: car.y, heading: car.heading, speed: car.speed, offTrack: !!car.offTrack, next: lap.next, best: lap.best, last: lap.last, out: !!(start && start.out), jump: !!(start && start.jump), reaction: start ? start.reaction : null } : null; },
+    createStart: createStart, lampsAt: lampsAt, JUMP_PENALTY: JUMP_PENALTY,
     stepCar: stepCar, createLap: createLap, startLap: startLap, hitCheckpoint: hitCheckpoint, crossLine: crossLine, formatLap: formatLap,
     constants: { MAX_SPEED: MAX_SPEED, MAX_SPEED_OFF: MAX_SPEED_OFF, HALF_WIDTH: HALF_WIDTH, SCALE: SCALE }
   };

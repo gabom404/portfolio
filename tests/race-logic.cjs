@@ -141,6 +141,26 @@ test("the circuit can be driven clean: a simple autopilot finishes a lap on trac
   assert.ok(off / frames < 0.05, "the racing line should stay on the asphalt");
 });
 
+test("game start: five lights one by one, then lights out after the hold", () => {
+  const st = drive.createStart(0, 1000);
+  assert.strictEqual(drive.lampsAt(st, 100), 0, "short pause before the first light");
+  assert.strictEqual(drive.lampsAt(st, 650), 1);
+  assert.strictEqual(drive.lampsAt(st, 650 + 700 * 4), 5);
+  assert.strictEqual(drive.lampsAt(st, st.outAt - 1), 5, "all five stay on during the hold");
+  assert.strictEqual(drive.lampsAt(st, st.outAt), 0, "lights out");
+  assert.strictEqual(st.outAt, 600 + 5 * 700 + 1000);
+});
+test("a jump start adds the penalty to that lap only", () => {
+  const lap = drive.createLap(1);
+  drive.startLap(lap, 0);
+  lap.penalty = drive.JUMP_PENALTY;
+  drive.hitCheckpoint(lap, 0);
+  assert.strictEqual(drive.crossLine(lap, 30000), 31000);
+  drive.hitCheckpoint(lap, 0);
+  assert.strictEqual(drive.crossLine(lap, 59000), 29000, "next lap has no penalty");
+  assert.strictEqual(lap.best, 29000);
+});
+
 /* ---------- 2.5D camera ---------- */
 test("chase camera: points ahead project below the horizon, nearer points lower and bigger", () => {
   const cam = { x: 0, y: 0, dir: 0, h: 30, f: 500, cx: 400, hy: 200 };

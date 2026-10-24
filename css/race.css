@@ -150,6 +150,8 @@
   animation: card-in .3s var(--ease) both;
 }
 .drive__card .kicker { font-size: 10.5px; }
+.drive__card .gantry { justify-content: flex-start; gap: 6px; margin: 8px 0 4px; }
+.drive__card .gantry__lamp { width: 22px; }
 .drive__card b { display: block; font: 900 22px/1 var(--font-display); text-transform: uppercase; margin: 4px 0; }
 .drive__card p { font-size: 14px; color: var(--ink-2); }
 .drive__help { color: #9C9EA6; font-size: 14px; }
