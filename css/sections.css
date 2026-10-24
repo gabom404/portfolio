@@ -8,9 +8,14 @@
 .lva { fill: var(--livery-accent); }
 .lv1-stroke { stroke: var(--livery-1); fill: none; }
 .lva-text { fill: var(--livery-accent); }
+.lv2-stroke { stroke: var(--livery-2); }
+.lva-stroke { stroke: var(--livery-accent); fill: none; }
+.tyre__band { stroke: var(--tyre-medium); fill: none; transition: stroke .3s; }
 .car-number { font: italic 900 30px var(--font-display); }
 .car-wordmark { font: 700 13px var(--font-mono); letter-spacing: 3px; opacity: .9; }
-.car-top-number { font: 900 26px var(--font-display); text-anchor: middle; }
+.car-top__num { font: 900 26px var(--font-display); fill: var(--livery-accent); text-anchor: middle; }
+.car-top__num--nose { font-size: 17px; }
+.car-top__wing-text { font: 700 11px var(--font-mono); letter-spacing: .18em; fill: var(--livery-accent); text-anchor: middle; dominant-baseline: central; }
 .helmet-number { font: italic 900 40px var(--font-display); }
 
 /* ---------- T1 · Parrilla ---------- */
@@ -137,8 +142,11 @@
 .setup { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; align-items: center; }
 @media (max-width: 900px) { .setup { grid-template-columns: 1fr; } }
 .car-top { width: 100%; height: auto; }
-.hot { stroke: var(--livery-1); opacity: 0; transition: opacity .25s; }
+.hot { opacity: 0; transition: opacity .25s; pointer-events: none; }
 .hot.is-on { opacity: 1; }
+.hot rect { fill: none; }
+.hot__halo { stroke: var(--paper); stroke-width: 8; }
+.hot__line { stroke: var(--ink); stroke-width: 3; stroke-dasharray: 10 7; }
 .parts { display: grid; border-top: 3px solid var(--ink); }
 .part {
   display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 6px 12px;

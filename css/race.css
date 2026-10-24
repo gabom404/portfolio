@@ -103,14 +103,19 @@
 .pitstop__readout b { font: 900 40px/1 var(--font-display); }
 .pitstop__msg { min-height: 1.5em; font-weight: 600; color: var(--ink) !important; }
 .pitstop__car svg { width: 100%; height: auto; border-radius: 4px; }
-.pit-tyre rect { fill: #141518; stroke: #3A3B42; stroke-width: 3; transition: fill .12s, stroke .12s; }
-.pit-tyre text { font: 700 22px var(--font-mono); fill: #6C6E76; text-anchor: middle; pointer-events: none; }
-.pit-tyre { cursor: pointer; }
-.pit-tyre.is-target rect { stroke: var(--signal-yellow); stroke-width: 6; animation: tyre-pulse .6s ease-in-out infinite alternate; }
-.pit-tyre.is-target text { fill: var(--signal-yellow); }
-.pit-tyre.is-done rect { fill: #2C2D33; stroke: var(--signal-green); }
-.pit-tyre.is-done text { fill: var(--signal-green); }
-.pit-tyre.is-wrong rect { stroke: var(--signal-red); stroke-width: 6; }
+.pit-tyre { cursor: pointer; outline: none; }
+.pit-tyre__ring { fill: transparent; stroke: transparent; stroke-width: 4; transition: stroke .12s, fill .12s; }
+.pit-tyre__badge { fill: #1A1B1F; stroke: #4A4C54; stroke-width: 2; transition: fill .12s, stroke .12s; }
+.pit-tyre__num { font: 700 17px var(--font-mono); fill: #9C9EA6; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.pit-tyre:focus-visible .pit-tyre__ring { stroke: var(--paper); stroke-dasharray: 6 5; }
+.pit-tyre.is-target .pit-tyre__ring { stroke: var(--signal-yellow); fill: rgba(242, 194, 48, .14); animation: tyre-pulse .6s ease-in-out infinite alternate; }
+.pit-tyre.is-target .pit-tyre__badge { fill: var(--signal-yellow); stroke: var(--signal-yellow); }
+.pit-tyre.is-target .pit-tyre__num { fill: #111214; }
+.pit-tyre.is-done .pit-tyre__ring { stroke: var(--signal-green); }
+.pit-tyre.is-done .pit-tyre__badge { fill: var(--signal-green); stroke: var(--signal-green); }
+.pit-tyre.is-done .pit-tyre__num { fill: #fff; }
+.pit-tyre.is-done .tyre__band { stroke: var(--tyre-soft); }       /* fresh softs fitted */
+.pit-tyre.is-wrong .pit-tyre__ring { stroke: var(--signal-red); stroke-width: 6; }
 @keyframes tyre-pulse { to { stroke-opacity: .35; } }
 
 /* ---------- lap game ---------- */
