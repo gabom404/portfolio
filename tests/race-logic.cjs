@@ -11,10 +11,10 @@ const root = path.resolve(__dirname, "..");
 const ctx = { Math, console };
 ctx.globalThis = ctx;
 vm.createContext(ctx);
-for (const f of ["js/race/track.js", "js/race/lights.js", "js/race/pitstop.js", "js/race/circuit-nav.js", "js/race/drive.js"]) {
+for (const f of ["js/race/track.js", "js/race/lights.js", "js/race/pitstop.js", "js/race/circuit-nav.js", "js/race/drive.js", "js/race/scene.js"]) {
   vm.runInContext(fs.readFileSync(path.join(root, f), "utf8"), ctx, { filename: f });
 }
-const { track, lights, pitstop, circuitNav, drive } = ctx.C404;
+const { track, lights, pitstop, circuitNav, drive, scene } = ctx.C404;
 
 let passed = 0;
 function test(name, fn) { fn(); passed++; console.log("ok -", name); }
@@ -139,6 +139,26 @@ test("the circuit can be driven clean: a simple autopilot finishes a lap on trac
   }
   assert.ok(time != null, "the lap should finish within two minutes");
   assert.ok(off / frames < 0.05, "the racing line should stay on the asphalt");
+});
+
+/* ---------- 2.5D camera ---------- */
+test("chase camera: points ahead project below the horizon, nearer points lower and bigger", () => {
+  const cam = { x: 0, y: 0, dir: 0, h: 30, f: 500, cx: 400, hy: 200 };
+  const far = scene.project(cam, 600, 0, 0), near = scene.project(cam, 100, 0, 0);
+  assert.strictEqual(far.x, 400);
+  assert.ok(Math.abs(far.y - (200 + 30 * 500 / 600)) < 1e-9);
+  assert.ok(near.y > far.y && near.k > far.k);
+  assert.strictEqual(scene.project(cam, -50, 0, 0), null, "behind the camera is not drawn");
+  assert.ok(scene.project(cam, 100, 20, 0).x > 400, "+y is to the right when looking along +x");
+  assert.ok(scene.project(cam, 100, 0, 30).y === 200, "a point at camera height sits on the horizon");
+});
+test("chase camera stays behind the car and follows its heading with a lag", () => {
+  const cam = { dir: null };
+  scene.follow(cam, { x: 100, y: 50, heading: 0 }, 1 / 60, 0);
+  assert.ok(cam.x < 100 && Math.abs(cam.y - 50) < 1e-9);
+  scene.follow(cam, { x: 100, y: 50, heading: 1 }, 1 / 60, 0);
+  assert.ok(cam.dir > 0 && cam.dir < 1, "turns part of the way each frame");
+  assert.ok(Math.abs(scene.wrapAngle(Math.PI * 3) - Math.PI) < 1e-9);
 });
 
 console.log(`\n${passed} race-logic tests passed.`);

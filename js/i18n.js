@@ -103,7 +103,7 @@
     'drive.last': 'Last',
     'drive.best': 'Best',
     'drive.cp': 'Corners',
-    'drive.canvas': 'Circuito 404 track seen from above',
+    'drive.canvas': 'Circuito 404 seen from behind the car',
     'drive.help': 'Arrow keys or WASD to drive. Go through the corners to unlock facts from the garage.',
     'drive.left': 'Steer left',
     'drive.right': 'Steer right',

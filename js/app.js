@@ -203,13 +203,19 @@
   function loadDrive() {
     if (C.drive) return Promise.resolve();
     if (driveLoading) return driveLoading;
-    driveLoading = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = 'js/race/drive.js';
-      s.onload = resolve;
-      s.onerror = function () { driveLoading = null; reject(new Error('drive.js failed to load')); };
-      document.body.appendChild(s);
-    });
+    function load(src) {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = function () { reject(new Error(src + ' failed to load')); };
+        document.body.appendChild(s);
+      });
+    }
+    // scene.js draws the 2.5D view; drive.js runs the game and falls back to a flat view without it
+    driveLoading = load('js/race/scene.js').catch(function () { /* flat view */ })
+      .then(function () { return load('js/race/drive.js'); })
+      .catch(function (e) { driveLoading = null; throw e; });
     return driveLoading;
   }
 

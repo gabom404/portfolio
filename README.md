@@ -26,7 +26,7 @@ Es un sitio estático (HTML, CSS y JavaScript) sin dependencias ni paso de compi
 
 - **Semáforo de largada** (`js/race/lights.js`): se encienden cinco luces y se apagan tras un tiempo aleatorio. Mide la reacción en milisegundos y detecta la salida en falso. Aparece en la primera visita y se puede saltar o repetir.
 - **Navegador de circuito** (`js/race/circuit-nav.js`): un minimapa con un carro que avanza por el trazado según el scroll. En pantallas anchas flota al costado; en las demás es una barra inferior compacta.
-- **Vuelta rápida** (`js/race/drive.js`): mini-juego en canvas con vista superior, física arcade, cronómetro y mejor vuelta. Cada curva desbloquea un dato real de un proyecto. Se juega con flechas o WASD, o con botones táctiles en el celular. El código se descarga solo al abrir el juego.
+- **Vuelta rápida** (`js/race/drive.js` y `js/race/scene.js`): mini-juego en 2.5D con cámara detrás del monoplaza. La pista y el cielo con volcanes se dibujan con un shader WebGL en estilo "Mode 7"; el carro es un modelo de polígonos pintado con la livery, y hay árboles, tribunas, pórtico de salida y carteles de curva. Física arcade, cronómetro y mejor vuelta; sin WebGL vuelve a la vista superior. Cada curva desbloquea un dato real de un proyecto. Se juega con flechas o WASD, o con botones táctiles en el celular. El código se descarga solo al abrir el juego.
 - **Pit stop** (`js/race/pitstop.js`): cambiar las cuatro llantas en el orden en que se iluminan (clic, toque o teclas 1–4). Cada error suma un segundo.
 - **Livery** (`js/livery.js`): cuatro combinaciones de color (rojo, azul noche, plata y turquesa, azul y rosa) que cambian el carro y los acentos del sitio.
 - **Español / inglés** (`js/i18n.js`): el botón ES/EN cambia los textos, `<html lang>` y los datos de los proyectos.
@@ -59,7 +59,8 @@ portfolio/
 │       ├── lights.js          # Semáforo de largada
 │       ├── circuit-nav.js     # Navegador de circuito ligado al scroll
 │       ├── pitstop.js         # Pit stop
-│       └── drive.js           # Mini-juego "Vuelta rápida" (se carga al abrirlo)
+│       ├── drive.js           # Mini-juego "Vuelta rápida": física, vueltas y controles (se carga al abrirlo)
+│       └── scene.js           # Vista 2.5D del juego: cámara de persecución, pista en WebGL y carro 3D
 └── tests/
     ├── verify-portfolio.cjs   # Datos, traducciones completas, enlaces y estructura del HTML
     └── race-logic.cjs         # Lógica del semáforo, pit stop, circuito y juego

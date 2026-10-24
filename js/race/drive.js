@@ -1,6 +1,7 @@
 /**
- * drive.js — "Hot lap": drive car 404 around Circuito 404 (top-down, arcade physics).
- * Loaded on demand the first time the visitor opens the game.
+ * drive.js — "Hot lap": drive car 404 around Circuito 404 (arcade physics).
+ * The 2.5D chase view lives in scene.js; without WebGL the game falls back to a
+ * top-down view drawn here. Both files load on demand the first time the game opens.
  */
 (function (root) {
   'use strict';
@@ -72,6 +73,8 @@
   var keys = { up: false, down: false, left: false, right: false };
   var car, lap, track, trackPath, cps, startPoint, startAngle;
   var running = false, raf = 0, lastT = 0, cardTimer = 0, dpr = 1, moved = false;
+  var scene = null, groundCanvas = null, stage = null, lastDt = 0;
+  var reduceMotion = root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function t(k, v) { return root.C404.i18n.t(k, v); }
   function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
@@ -97,8 +100,17 @@
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     var r = canvas.getBoundingClientRect();
-    canvas.width = Math.max(1, Math.round(r.width * dpr));
-    canvas.height = Math.max(1, Math.round(r.height * dpr));
+    var w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+    if (scene) scene.resize(w, h, dpr);
+    else { canvas.width = w; canvas.height = h; }
+  }
+
+  /** Falls back to the top-down view (no WebGL, or the GPU context was lost). */
+  function useFlatView() {
+    scene = null;
+    if (groundCanvas && groundCanvas.parentNode) groundCanvas.parentNode.removeChild(groundCanvas);
+    if (stage) stage.classList.remove('is-3d');
+    resize();
   }
 
   function showCard(title, text, ms) {
@@ -170,6 +182,11 @@
   }
 
   function render() {
+    if (scene) {
+      var ok = scene.render({ car: car, lap: lap, cps: cps, keys: keys, dt: lastDt, now: performance.now(), reduceMotion: reduceMotion });
+      if (ok) return;
+      useFlatView();
+    }
     var w = canvas.width, h = canvas.height;
     var zoom = Math.min(w, h) / 760;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -211,6 +228,7 @@
     if (!running) return;
     var dt = Math.min(0.033, (now - lastT) / 1000 || 0);
     lastT = now;
+    lastDt = dt;
     update(dt, now);
     render();
     raf = requestAnimationFrame(loop);
@@ -244,6 +262,11 @@
     document.body.classList.add('is-locked');
     resize();
     reset();
+    if (scene) {
+      var st = getComputedStyle(dlg);
+      scene.setColors({ body: css('--livery-1'), body2: css('--livery-2'), accent: css('--livery-accent'), ui: st.getPropertyValue('--livery-ui').trim() });
+      scene.reset();
+    }
     closeBtn.focus({ preventScroll: true });
     running = true;
     lastT = performance.now();
@@ -265,6 +288,17 @@
     ready = true;
     dlg = document.getElementById('drive');
     canvas = document.getElementById('drive-canvas');
+    stage = canvas.parentNode;
+    if (root.C404.scene) {
+      groundCanvas = document.createElement('canvas');
+      groundCanvas.className = 'drive__ground';
+      groundCanvas.setAttribute('aria-hidden', 'true');
+      stage.insertBefore(groundCanvas, canvas);
+      try {
+        scene = root.C404.scene.create({ ground: groundCanvas, overlay: canvas, track: root.C404.track, scale: SCALE, halfWidth: HALF_WIDTH });
+      } catch (e) { scene = null; }
+      if (scene) stage.classList.add('is-3d'); else useFlatView();
+    }
     ctx = canvas.getContext('2d');
     card = document.getElementById('drive-card');
     closeBtn = document.getElementById('drive-close');

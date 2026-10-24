@@ -16,7 +16,7 @@ const files = [
   "index.html", "README.md",
   "css/tokens.css", "css/base.css", "css/sections.css", "css/race.css",
   "js/i18n.js", "js/projects-data.js", "js/livery.js", "js/app.js",
-  "js/race/track.js", "js/race/lights.js", "js/race/circuit-nav.js", "js/race/pitstop.js", "js/race/drive.js"
+  "js/race/track.js", "js/race/lights.js", "js/race/circuit-nav.js", "js/race/pitstop.js", "js/race/drive.js", "js/race/scene.js"
 ];
 files.forEach(f => check(fs.existsSync(path.join(root, f)), `missing file ${f}`));
 const html = read("index.html");
@@ -25,8 +25,8 @@ const html = read("index.html");
 ["css/tokens.css", "css/base.css", "css/sections.css", "css/race.css"].forEach(f => check(html.includes(`href="${f}"`), `stylesheet not linked: ${f}`));
 ["js/i18n.js", "js/projects-data.js", "js/race/track.js", "js/livery.js", "js/race/lights.js", "js/race/circuit-nav.js", "js/race/pitstop.js", "js/app.js"]
   .forEach(f => check(html.includes(`src="${f}"`), `script not linked: ${f}`));
-check(!html.includes('src="js/race/drive.js"'), "drive.js must load on demand, not up front");
-check(read("js/app.js").includes("js/race/drive.js"), "app.js must lazy-load js/race/drive.js");
+check(!html.includes('src="js/race/drive.js"') && !html.includes('src="js/race/scene.js"'), "drive.js and scene.js must load on demand, not up front");
+check(read("js/app.js").includes("js/race/drive.js") && read("js/app.js").includes("js/race/scene.js"), "app.js must lazy-load the game scripts");
 
 /* ---------- load data + i18n in a sandbox ---------- */
 const ctx = { console };
@@ -95,7 +95,7 @@ const brands = /\b(Formula ?1|F1®|FIA|Ferrari|Mercedes|Red Bull|McLaren|Pirelli
 
 /* ---------- README ---------- */
 const readme = read("README.md");
-["js/race/drive.js", "js/race/circuit-nav.js", "tests/race-logic.cjs"].forEach(f => check(readme.includes(f), `README should mention ${f}`));
+["js/race/drive.js", "js/race/scene.js", "js/race/circuit-nav.js", "tests/race-logic.cjs"].forEach(f => check(readme.includes(f), `README should mention ${f}`));
 
 if (failures) { console.error(`\n${failures} check(s) failed.`); process.exit(1); }
 console.log("All portfolio checks passed.");
