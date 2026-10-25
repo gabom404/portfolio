@@ -74,8 +74,7 @@
     return root.fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(toFields(data)),
-      keepalive: true
+      body: JSON.stringify(toFields(data))
     }).then(function (r) { return r.ok; }, function () { return false; });
   }
 
