@@ -193,28 +193,28 @@ var PROJECTS = [
   },
   {
     id: "enfoque-app",
-    name: "Enfoque",
-    title: { es: "App de concentración", en: "Focus app" },
+    name: "Floria",
+    title: { es: "App de enfoque para estudiantes", en: "Focus app for students" },
     category: "mobile",
     team: true,
     tagline: {
-      es: "Aplicación móvil en Flutter para organizar tareas y sesiones de concentración tipo Pomodoro.",
-      en: "Flutter mobile app to organise tasks and Pomodoro-style focus sessions."
+      es: "App móvil en Flutter que liga cada sesión de estudio a una tarea y bloquea las apps que distraen mientras dura el enfoque. Funciona sin conexión.",
+      en: "Flutter mobile app that ties each study session to a task and blocks distracting apps while it runs. Works fully offline."
     },
-    repoUrl: "https://github.com/Gaboum11/enfoque_app",
-    stack: ["Flutter", "Dart", "Material 3"],
+    repoUrl: "https://github.com/Chocolatinax/AppEnfoque",
+    stack: ["Flutter", "Dart", "Kotlin", "SQLite", "Material 3"],
     highlights: [
-      { es: "Sesiones de enfoque, tareas e historial", en: "Focus sessions, tasks and history" },
-      { es: "Interfaz con Material 3", en: "Material 3 interface" },
-      { es: "Código organizado en modelos, pantallas y widgets", en: "Code organised into models, screens and widgets" }
+      { es: "Bloqueo de apps en Android con un Servicio de Accesibilidad en Kotlin", en: "App blocking on Android through a Kotlin Accessibility Service" },
+      { es: "Tareas, historial y sesión en curso guardados en SQLite, sin backend", en: "Tasks, history and the running session stored in SQLite, with no backend" },
+      { es: "Pruebas de repositorios, validaciones y reloj de sesión", en: "Tests for repositories, validators and the session clock" }
     ],
     challenge: {
-      es: "Las apps de temporizador suelen tener interfaces recargadas que distraen.",
-      en: "Timer apps often have busy interfaces that get in the way."
+      es: "Técnicas como Pomodoro fallan cuando nada impide abrir la app que distrae.",
+      en: "Techniques like Pomodoro fail when nothing stops you from opening the app that distracts you."
     },
     solution: {
-      es: "App en Flutter con pantallas de bienvenida, tareas, sesión activa, historial y perfil, con un tema propio basado en Material 3.",
-      en: "A Flutter app with welcome, tasks, active session, history and profile screens, using a custom Material 3 theme."
+      es: "Cada sesión va ligada a una tarea y a un objetivo; si durante el enfoque se abre una app bloqueada, aparece un recordatorio para volver. El reloj guarda el inicio y las pausas, así que la sesión sigue aunque se cierre la app.",
+      en: "Each session is tied to a task and a goal; opening a blocked app during focus shows a reminder to go back. The clock stores the start time and pauses, so the session keeps going even if the app is closed."
     }
   },
   {

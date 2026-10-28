@@ -91,7 +91,7 @@ portfolio/
 | **Biblioteca** — API REST con contrato OpenAPI | En equipo | Laravel, Sanctum, OpenAPI, Stoplight |
 | **Gestión de Eventos** | En equipo | Flask, PostgreSQL, JWT, Next.js, Docker Compose |
 | **Cupon-X** — plataforma de cupones | En equipo | Node.js, Express, PostgreSQL, PL/pgSQL |
-| **Enfoque** — app de concentración | En equipo | Flutter, Dart |
+| **Floria** — app de enfoque para estudiantes | En equipo | Flutter, Kotlin, SQLite |
 | **DeliEat** — recetas con IA | Repositorio privado | Django REST Framework, React, OpenAI API |
 | **Databusters** — inventario y ventas | En equipo, privado | Python, PyQt6, MySQL |
 | **Turimox** — portal de ecoturismo | En equipo | HTML, SCSS, JavaScript, Firebase |
